@@ -1,11 +1,39 @@
 {
-  "title": "Nombre parroquias",
-  "description": "Descripción del sitio",
-  "image": "",
-  "icon": "",
-  "social": {},
-  "bank": [],
-  "nav": [],
+  "title": "Llamados",
+  "description": "Dios te sueña a lo grande. ¿Y tú? ¿Cómo te sueñas? Atrévete a descubrir el sentido de tu vida.",
+  "image": "/media/YESYES.webp",
+  "icon": "/media/unnamed-removebg-preview.webp",
+  "social": {
+    "youtube": "https://www.youtube.com/@seminariopamplona"
+  },
+  "bank": [
+    {
+      "title": "Dono a mi Iglesia",
+      "account": "https://www.donoamiiglesia.es/san/Home#!/donar/4960f4c9-3f65-eb11-8139-0050569a44c2"
+    },
+    {
+      "title": "Bizum",
+      "account": "04698"
+    }
+  ],
+  "nav": [
+    {
+      "title": "Disciernimiento",
+      "links": ["docs/discierne.md", "docs/7-pasos.md", "docs/5-pasos.md", "docs/noviazgo-y-seminario.md", "docs/faq.md", "docs/miedo.md", "docs/contacto.md"]
+    },
+    {
+      "title": "Sacerdocio ",
+      "links": ["docs/porque-ser-sacerdote.md", "docs/que-hace-un-sacerdote.md", "docs/celibato.md", "docs/seminario.md", "docs/diaconado-permanente.md"]
+    },
+    {
+      "title": "Vida laical y familia ",
+      "links": ["docs/ser-laico-es-una-vocacion.md", "docs/desafios.md", "docs/vocacion-matrimonial.md", "docs/familia-iglesia-domestica.md", "docs/diaconado-permanente.md", "docs/ministerios-laicales.md", "docs/noviazgo.md"]
+    },
+    {
+      "title": "Vida religiosa y misión ",
+      "links": ["docs/Los votos: pobreza-castidad-obediencia.md", "docs/porque-ser-monja.md", "docs/que-hace-un-monje.md", "docs/vida-activa.md", "docs/vida-contemplativa.md"]
+    }
+  ],
   "theme": {
     "bodyFont": "Quicksand",
     "headingFont": "Story Script",
