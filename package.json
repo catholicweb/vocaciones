@@ -1,0 +1,29 @@
+{
+  "name": "Vocaciones Navarra",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "optimize-images": "node docs/.vitepress/optimize-images.js",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "npm run optimize-images && vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.16",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.16",
+    "fast-glob": "^3.3.3",
+    "gray-matter": "^4.0.3",
+    "ical.js": "^2.2.1",
+    "leaflet": "^1.9.4",
+    "markdown-it": "^14.1.0",
+    "postcss": "^8.4.49",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^4.1.16",
+    "typography": "^0.16.24",
+    "vitepress": "^1.5.0"
+  }
+}

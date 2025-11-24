@@ -1,0 +1,47 @@
+<template>
+  <div class="hero relative flex items-center justify-center min-h-[50vh] mb-2 text-center text-white font-extrabold [text-shadow:_0_0_8px_rgba(0,0,0,1)]" :style="heroBgStyle(block.image)">
+    <!-- Overlay -->
+    <div class="absolute inset-0 [background:radial-gradient(closest-side,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0)_100%)]"></div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-4">
+      <h1 v-if="block.title" class="mb-5 text-5xl">
+        {{ block.title }}
+      </h1>
+      <p v-if="block.description" class="mb-5">
+        {{ block.description }}
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 [text-shadow:none]">
+        <a v-for="(elem, idx) in block.elements" :key="idx" :href="elem.link" class="bg-accent text-white font-medium px-5 py-2 rounded-lg transition-colors">
+          {{ elem.title }}
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+function heroBgStyle(imageUrl) {
+  if (!imageUrl) return "background-color: #808080;";
+  const src720 = imageUrl.replace("480", "720");
+  const src1080 = imageUrl.replace("480", "1080");
+
+  return {
+    backgroundImage: `image-set(
+      url('${imageUrl}') 1x,
+      url('${src720}') 2x,
+      url('${src1080}') 3x
+    )`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  };
+}
+
+defineProps({
+  block: {
+    type: Object,
+    required: true,
+  },
+});
+</script>

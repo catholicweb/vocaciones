@@ -1,0 +1,52 @@
+@import "tailwindcss";
+@import "vars.css";
+@plugin "@tailwindcss/typography";
+
+.typewriter {
+  max-width: fit-content;
+  border-right: 4px solid;
+  white-space: nowrap;
+  overflow: hidden;
+  animation:
+    typewriter 3s steps(25) normal both,
+    blinkTextCursor 500ms steps(4) infinite normal;
+}
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+@keyframes blinkTextCursor {
+  from {
+    border-right-color: currentColor;
+  }
+  to {
+    border-right-color: transparent;
+  }
+}
+
+non h2 strong {
+  position: relative;
+  white-space: nowrap;
+  &:after {
+    --deco-height: 0.3125em;
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--deco-height) * -0.625);
+    height: var(--deco-height);
+
+    background-color: var(--color-accent); /* color dinámico */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg width='100' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-17 30.5C-1 22 72-4 54 13 37.9 28.2-2.5 57.5 16 55.5s72-29 104-40' stroke='black' stroke-width='10' fill='none'/%3E%3C/svg%3E") no-repeat;
+    -webkit-mask-size: auto 100%;
+    -webkit-mask-repeat: round;
+
+    mask: url("data:image/svg+xml,%3Csvg width='100' height='64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-17 30.5C-1 22 72-4 54 13 37.9 28.2-2.5 57.5 16 55.5s72-29 104-40' stroke='black' stroke-width='10' fill='none'/%3E%3C/svg%3E") no-repeat;
+    mask-size: auto 100%;
+    mask-repeat: round;
+  }
+}

@@ -1,0 +1,283 @@
+components:
+  text:
+    label: Text Content
+    type: rich-text
+  languages:
+    label: Idioma
+    type: select
+    options:
+      multiple: true
+      values: ["Español", "Catalán", "Gallego", "Euskera", "Inglés", "Francés", "Alemán", "Italiano", "Portugués", "Rumano", "Árabe", "Chino", "Búlgaro", "Polaco"]
+  font:
+    label: Tipo letra
+    type: select
+    options:
+      creatable: true
+      values: ["Roboto", "Open Sans", "Lato", "Montserrat", "Poppins", "Merriweather", "Raleway", "Oswald", "Playfair Display", "Source Sans Pro", "Nunito", "Quicksand", "Work Sans", "Bebas Neue", "Muli", "Roboto Slab", "Lora", "Josefin Sans", "Droid Serif", "Cabin", "Arimo", "Ubuntu", "Zilla Slab", "Tisa", "Anton", "Fira Sans", "Varela Round", "Crimson Pro", "Spectral", "Exo 2", "Bitter", "Archivo", "Dosis", "PT Sans", "Lobster", "Pacifico", "Dancing Script", "Sacramento", "Tangerine", "Unbounded", "Pangolin", "Bree Serif", "Vollkorn", "Monda", "Be Vietnam", "Karla", "Noto Sans", "Kalam"]
+  selector:
+    label: Selector
+    type: select
+    options:
+      creatable: true
+      values: ["h1", "h2", "h3", "h4", "h5", "h6", "p", "img", "blockquote", "a", "ul", "ol", "li", "div", "span", "strong", "em", "br", "hr", "table", "tr", "td", "th", "form", "input", "button", "label", "select", "option", "textarea", "iframe", "header", "footer", "nav", "article", "section", "aside", "details", "summary", "video", "audio", "canvas", "svg"]
+  blocktype:
+    label: Selector
+    type: select
+    options:
+      creatable: false
+      values: ["card-full", "gallery", "resource-list", "video-grid", "hero-banner", "portfolio", "product-cards", "article-list", "team-cards", "compact-list", "text", "timeline", "calendar-cards", "carousel", "accordion"]
+  color:
+    label: Colors
+    type: select
+    options:
+      creatable: true
+      values: ["white", "black", "red", "green", "blue", "yellow", "orange", "purple", "pink", "brown", "gray", "lightgray", "darkgray", "beige", "ivory", "teal", "coral", "slateblue", "rgb(255, 99, 71)", "hsl(180, 100%, 25%)"]
+  multiplier:
+    label: Multiplier
+    type: select
+    options:
+      creatable: true
+      values: ["0.25", "0.5", "0.75", "1", "1.25", "1.50", "2", "4"]
+  location:
+    label: Lugares
+    type: select
+    options:
+      multiple: true
+      creatable: true
+      values: ["a", "b"]
+  rrule:
+    label: Fechas
+    type: select
+    options:
+      multiple: true
+      values:
+        [
+          { value: "no", label: "Lunes" },
+          { value: "tu", label: "Martes" },
+          { value: "we", label: "Miércoles" },
+          { value: "th", label: "Jueves" },
+          { value: "fr", label: "Viernes" },
+          { value: "sa", label: "Sábado" },
+          { value: "su", label: "Domingo" },
+          { value: "mo,tu,we,th,fr", label: "Lunes a viernes" },
+          { value: "yearly", label: "Anualmente" },
+          { value: "monthly", label: "Mensualmente" },
+          { value: "biweekly", label: "Bisemanalmente" },
+          { value: "week1", label: "1ª semana del mes" },
+          { value: "week2", label: "2ª semana del mes" },
+          { value: "week3", label: "3ª semana del mes" },
+          { value: "week4", label: "4ª semana del mes" },
+          { value: "week5", label: "5ª semana del mes" },
+        ]
+  effect:
+    label: Efectos CSS
+    type: select
+    options:
+      creatable: true
+      values: ["opacity: 0;", "opacity: 0.5;", "transform: scale(0.8);", "transform: scale(1.2);", "transform: scaleX(1.5);", "transform: scaleY(.5);", "transform: rotate(6deg);", "transform: rotate(-6deg);", "transform: translateX(-20%);", "transform: translateX(20%);", "transform: translateY(-20%);", "transform: translateY(20%);", "transform: translate(-50%, -50%);", "filter: blur(5px);", "filter: brightness(1.2);", "filter: contrast(150%);", "filter: grayscale(100%);", "filter: invert(100%);", "color: rgb(var(--color-accent));"]
+  hero:
+    label: Hero
+    type: object
+    fields:
+      - { name: title, label: Título, type: string }
+      - { name: description, label: Subtitulo, type: string }
+      - { name: image, label: Image, type: image }
+      - name: elements
+        label: Acciones
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+          - { name: title, label: Título, type: string }
+          - { name: link, label: Accion, type: string }
+  gallery:
+    label: Galleria imagenes
+    type: object
+    fields:
+      - { name: title, label: Título, type: string }
+      - { name: description, label: Subtitulo, type: string }
+      - name: elements
+        label: Elementos
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+          - { name: title, label: Título, type: string }
+          - { name: description, label: Subtitulo, type: string }
+          - { name: image, label: Imagen, type: image }
+          - { name: type, label: tipo de bloque, component: blocktype }
+media:
+  input: docs/public/media
+  output: /media
+  categories: ["image", "document"]
+content:
+  - name: pages
+    label: Paginas
+    type: collection
+    path: docs
+    view:
+      fields: [image, title]
+      primary: title
+    filename: "{primary}.md"
+    exclude: [.vitepress, public, aviso-legal.md, config.json, events.json, theme-builder.md]
+    fields:
+      - { name: title, label: Título, type: string }
+      - { name: description, label: Subtitulo, type: string }
+      - { name: image, label: Imagen, type: image }
+      - name: sections
+        label: Secciones de la página
+        type: block
+        list: { collapsible: { collapsed: false, summary: "{fields.title}" } }
+        blocks:
+          - name: gallery
+            label: Galeria de imagenes
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: list, type: image, label: Seleccion de imagenes, options: { multiple: true } }
+          - name: text
+            label: Texto
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: html, label: Texto largo, type: rich-text }
+          - name: gospel
+            label: Evangelio del día
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: readings, label: Mostrar primera/segunda y salmo, type: boolean, default: false }
+              - { name: audio, label: Añadir audio, type: boolean, default: false }
+          - name: calendar
+            label: Eventos
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: filter, label: Filtro. Incluir solo eventos que contengan, type: string }
+          - name: video
+            label: Youtube
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: urls, label: enlace a Youtube, type: string, list: { collapsible: { collapsed: true } } }
+              - { name: filter, label: Filtro. Incluir solo videos que contengan, type: string }
+          - name: map
+            label: Mapa
+            fields:
+              - { name: title, type: string, label: Título sección }
+              - { name: geo, type: string, label: "Coordenadas (ej: 42.801941, -1.645660)" }
+              - { name: name, type: string, label: Nombre (opcional) }
+              - { name: address, type: string, label: Dirección postal (opcional) }
+              - { name: phone, type: string, label: Telefono (opcional) }
+              - { name: email, type: string, label: Email (opcional) }
+              - { name: image, type: image, label: Imagen (opcional) }
+          - name: form
+            label: Formulario (coming soon)
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: field, type: string, label: Pregunta, list: true }
+          - name: fundraising
+            label: Campaña financiación
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: name, type: string, label: "Nombre causa (ej: Nuevo tejado)" }
+              - { name: description, type: string, label: Descripcion }
+              - { name: raised, type: number, label: Recaudado hasta la fecha }
+              - { name: goal, type: number, label: Total a recaudar }
+              - { name: image, type: image, label: Imagen }
+          - name: pope
+            label: Mensaje papal (coming soon)
+            fields:
+              - { name: title, type: string, label: Titulo }
+              - { name: summary, label: Mostrar modo resumen, type: boolean, default: true }
+          - name: hero
+            label: Hero (cabezera)
+            component: hero
+          - name: links
+            label: Enlaces internos
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - name: links
+                label: Enlaces internos
+                type: reference
+                options: { collection: pages, multiple: true, label: "{title}" }
+
+  - name: events
+    type: file
+    label: Eventos
+    format: json
+    path: docs/events.json
+    fields:
+      - { name: urls, type: string, list: true, label: URL calendarios (terminadas en .ics) }
+      - name: events
+        label: Lista eventos
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} ({fields.date})" } }
+        fields:
+          - { name: image, label: Image, type: image }
+          - { name: title, label: Titulo, type: string }
+          - { name: location, label: Ubicación, component: location }
+          - { name: date, type: date, label: Fecha y hora de inicio, options: { time: true, format: dd/MM/yyyy HH:mm, step: 300 } }
+          - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
+  - name: config
+    type: file
+    label: Configuración
+    path: docs/config.json
+    format: json
+    fields:
+      - { name: title, label: Titulo sitio, type: string }
+      - { name: description, label: Description del sitio, type: text }
+      - { name: image, label: Imagen del sitio, type: image }
+      - { name: icon, label: Icono del sitio, type: image }
+
+      - name: social
+        label: Pie de página (footer)
+        type: object
+        fields:
+          - { name: youtube, label: Youtube, type: string }
+          - { name: instagram, label: Instagram, type: string }
+          - { name: twitter, label: X/Twitter, type: string }
+          - { name: tiktok, label: Tiktok, type: string }
+          - { name: twitch, label: Twitch, type: string }
+          - { name: facebook, label: Facebook, type: string }
+      - name: collaborators
+        label: Colaboradores
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+          - { name: title, label: Nombre, type: string }
+          - { name: phonenumber, label: Numero de telefono (opcional), type: string }
+          - { name: email, label: Correo electrónico (opcional), type: string }
+          - { name: image, label: Image, type: image }
+      - name: bank
+        label: Bizum y cuentas bancarias
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+          - { name: title, label: "Nombre (ej: BIZUM/BBVA/...)", type: string }
+          - { name: account, label: Numero de cuenta/bizum, type: string }
+      - name: nav
+        label: Menu de navegación
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+          - { name: title, label: Titulo sección, type: string }
+          - name: links
+            label: Enlaces
+            type: reference
+            options: { collection: pages, multiple: true, label: "{title}" }
+      - name: languages
+        label: Idiomas de la web
+        component: languages
+      - name: theme
+        label: Tema visual
+        type: object
+        fields:
+          - { name: bodyFont, label: Tipo de letra del cuerpo (cualquiera de https://fonts.google.com/), component: font }
+          - { name: headingFont, label: Tipo de letra de los titulos (cualquiera de https://fonts.google.com/), component: font }
+          - { name: accentColor, label: Color elementos acentuados, component: color }
+          - { name: accentPrimary, label: Color elementos secundario, component: color }
+          - { name: borderRadius, label: Redondeado de borders, component: multiplier }
+          - { name: borderWidth, label: Grosor de los borders, component: multiplier }
+          - { name: shadowDepth, label: Profundidaz de las sombras, component: multiplier }
+          - name: styles
+            label: Estilos y efectos individuales
+            type: object
+            list: { collapsible: { collapsed: true, summary: "{fields.selector}" } }
+            fields:
+              - { name: selector, label: "Elemento", component: selector }
+              - { name: cssClass, label: "Efecto a aplicar", component: effect }
+              - { name: scroll, label: "Aplicar al hacer scroll", type: boolean, default: false }

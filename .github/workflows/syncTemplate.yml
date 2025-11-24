@@ -1,0 +1,45 @@
+name: Sync from Template
+
+on:
+  schedule:
+    # Runs at 3:00 AM UTC every day
+    - cron: "0 3 * * *"
+  workflow_dispatch: # Allows manual trigger from Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if this is the template repo
+        run: |
+          if [ "${{ github.repository }}" == "catholicweb/web-template" ]; then
+            echo "This is the template repository. Skipping sync."
+            exit 0
+          fi
+
+      - name: Checkout child repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper merging
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add template as upstream remote
+        run: |
+          git remote add upstream https://github.com/catholicweb/web-template.git || true
+          git fetch upstream
+
+      - name: Merge template changes (template wins on conflicts)
+        run: |
+          git merge upstream/main -X theirs --no-edit
+
+      - name: Push changes to child repository
+        run: |
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
