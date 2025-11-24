@@ -1,4 +1,4 @@
-# VitePress + Tailwind CSS
+# Template for parish websites
 
 ## Setup
 
