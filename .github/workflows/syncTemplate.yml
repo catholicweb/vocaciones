@@ -40,6 +40,10 @@ jobs:
         run: |
           git merge upstream/main -X theirs --no-edit --allow-unrelated-histories
 
-      - name: Push changes to child repository
+      - name: Revert workflow and other updates
+        run: |
+          git restore .github/workflows || true
+
+      - name: Push changes to repository
         run: |
           git push origin main
