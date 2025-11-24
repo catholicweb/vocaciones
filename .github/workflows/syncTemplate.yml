@@ -2,9 +2,8 @@ name: Sync from Template
 
 on:
   schedule:
-    # Runs at 3:00 AM UTC every day
     - cron: "0 3 * * *"
-  workflow_dispatch: # Allows manual trigger from Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -25,8 +24,7 @@ jobs:
       - name: Checkout child repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history for proper merging
-          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: Configure Git
         run: |
@@ -40,10 +38,8 @@ jobs:
 
       - name: Merge template changes (template wins on conflicts)
         run: |
-          git merge upstream/main -X theirs --no-edit --allow-unrelated-histories 
+          git merge upstream/main -X theirs --no-edit --allow-unrelated-histories
 
       - name: Push changes to child repository
         run: |
           git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
