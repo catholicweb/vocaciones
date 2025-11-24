@@ -2,7 +2,7 @@ name: Sync from Template
 
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 3 * * *"   # 03:00 UTC cada día
   workflow_dispatch:
 
 permissions:
@@ -36,14 +36,17 @@ jobs:
           git remote add upstream https://github.com/catholicweb/web-template.git || true
           git fetch upstream
 
-      - name: Merge template changes (template wins on conflicts)
+      - name: Merge template changes (excluding workflows)
         run: |
-          git merge upstream/main -X theirs --no-edit --allow-unrelated-histories
+          # Merge sin commit automático, usando "theirs" en conflictos
+          git merge upstream/main --no-commit -X theirs --allow-unrelated-histories || true
 
-      - name: Revert workflow and other updates
-        run: |
-          git restore HEAD -- .github/workflows
+          # Quita del staging todos los workflows para que no se incluyan en el commit
+          git reset .github/workflows || true
 
-      - name: Push changes to repository
+          # Haz commit de los cambios restantes
+          git commit -m "Sync template changes (excluding workflows)" || echo "No changes to commit"
+
+      - name: Push changes to child repository
         run: |
           git push origin main
