@@ -36,7 +36,7 @@ jobs:
 
       - name: Merge template changes (template wins on conflicts)
         run: |
-          git merge upstream/main -X theirs --no-edit
+          git merge upstream/main -X theirs --no-edit --allow-unrelated-histories 
 
       - name: Push changes to child repository
         run: |
