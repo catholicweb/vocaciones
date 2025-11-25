@@ -21,11 +21,12 @@ function readFrontmatter(filePath) {
 async function createManifest(config) {
   let manifest = {
     name: config.title,
-    short_name: config.description,
+    short_name: config.title,
+    description: config.description,
     start_url: "/",
     display: "standalone",
     background_color: config.theme.accentColor,
-    theme_color: "#333",
+    theme_color: config.theme.accentColor,
     icons: [
       { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
@@ -94,12 +95,12 @@ async function autocomplete(fm, config) {
 
 function grid(section) {
   if (section.grid == "tiny") {
-    return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-1/3 *:sm:w-1/4 *:md:w-1/5 *:p-1";
+    return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-1/3 *:sm:w-1/4 *:md:w-1/5 *:p-1";
   }
   if (section.grid == "small") {
-    return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-1/2 *:sm:w-1/3 *:md:w-1/4 *:p-2";
+    return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-1/2 *:sm:w-1/3 *:md:w-1/4 *:p-2";
   }
-  return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
+  return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
 }
 
 async function getYouTubeInfo(urlOrId) {
@@ -119,6 +120,7 @@ async function getYouTubeInfo(urlOrId) {
     author: data.author_name,
     src: `https://www.youtube.com/embed/${id}`,
     image: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+    vertical: data.height / data.width > 1,
   };
 }
 

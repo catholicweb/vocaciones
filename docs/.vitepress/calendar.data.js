@@ -14,6 +14,12 @@ function readFrontmatter(filePath) {
   return matter(content).data || {};
 }
 
+function exportCalendar(events) {
+  // TODO: export also as ICS
+  const jsonString = JSON.stringify(events);
+  fs.writeFileSync("./docs/public/calendar.json", jsonString, "utf8");
+}
+
 function intersectOptions(options, field) {
   options = options.join(",").toUpperCase().split(",");
   const validValues = {
@@ -25,8 +31,6 @@ function intersectOptions(options, field) {
   };
   const validSet = new Set(validValues[field]);
   let valid = options.filter((opt) => validSet.has(opt));
-
-  console.log(validSet, options, valid);
 
   if (field == "BYDAY") {
     const weekMatch = options.join(",").match(/WEEK(\d+)/);
@@ -47,26 +51,24 @@ function intersectOptions(options, field) {
 export default {
   async load() {
     let config = readFrontmatter("./docs/events.json");
-    console.log(config);
-
     const events = [];
 
-    for (var i = 0; i < config.events.length; i++) {
-      const event = config.events[i];
-      console.log(events);
-      events.push({
-        summary: event.summary || "",
-        startTime: event.date.split(" ")[1],
-        startDate: event.date.split(" ")[0],
-        image: event.image,
-        byday: intersectOptions(event.rrule, "BYDAY")?.join(","),
-        freq: intersectOptions(event.rrule, "FREQ")?.join(","),
-        location: event.location?.join(","),
-        exceptions: event.exceptions,
-      });
-    }
-
-    console.log(events);
+    Object.keys(config).forEach((key) => {
+      if (!key.startsWith("events")) return;
+      for (var i = 0; i < config[key].length; i++) {
+        const event = config[key][i];
+        events.push({
+          summary: event.summary || "",
+          startTime: event.date.split(" ")[1],
+          startDate: event.date.split(" ")[0],
+          image: event.image,
+          byday: intersectOptions(event.rrule, "BYDAY")?.join(","),
+          freq: intersectOptions(event.rrule, "FREQ")?.join(","),
+          location: event.location?.join(","),
+          exceptions: event.exceptions,
+        });
+      }
+    });
 
     for (var i = 0; i < config.urls.length; i++) {
       const url = config.urls[i];
@@ -128,6 +130,7 @@ export default {
         console.error("Error loading calendar data:", error);
       }
     }
+    exportCalendar(events);
     return { events };
   },
 };

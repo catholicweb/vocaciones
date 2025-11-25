@@ -42,7 +42,7 @@ async function reloadOnUpdate(request, cached, fresh) {
 
     if (newText !== oldText) {
       const clients = await self.clients.matchAll({ type: "window" });
-      for (const client of clientsList) client.navigate(client.url);
+      for (const client of clients) client.navigate(client.url);
     }
   }
 }

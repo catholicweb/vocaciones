@@ -2,6 +2,14 @@ components:
   text:
     label: Text Content
     type: rich-text
+  times:
+    label: horas
+    type: select
+    options:
+      multiple: true
+      creatable: true
+      values: ["06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"]
+
   languages:
     label: Idioma
     type: select
@@ -52,7 +60,7 @@ components:
       multiple: true
       values:
         [
-          { value: "no", label: "Lunes" },
+          { value: "mo", label: "Lunes" },
           { value: "tu", label: "Martes" },
           { value: "we", label: "Miércoles" },
           { value: "th", label: "Jueves" },
@@ -62,7 +70,7 @@ components:
           { value: "mo,tu,we,th,fr", label: "Lunes a viernes" },
           { value: "yearly", label: "Anualmente" },
           { value: "monthly", label: "Mensualmente" },
-          { value: "biweekly", label: "Bisemanalmente" },
+          { value: "biweekly", label: "Cada dos semanas" },
           { value: "week1", label: "1ª semana del mes" },
           { value: "week2", label: "2ª semana del mes" },
           { value: "week3", label: "3ª semana del mes" },
@@ -201,17 +209,46 @@ content:
     format: json
     path: docs/events.json
     fields:
-      - { name: urls, type: string, list: true, label: URL calendarios (terminadas en .ics) }
-      - name: events
-        label: Lista eventos
+      - name: events-funerals
+        label: Funerales
         type: object
-        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} ({fields.date})" } }
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location}" } }
+        fields:
+          - { name: title, label: Nombre del difunto, type: string }
+          - { name: location, label: Ubicación, component: location }
+          - { name: date, type: date, label: Fecha y hora, options: { time: true, format: dd/MM/yyyy HH:mm, step: 300 } }
+      - name: events-masses
+        label: Horario de misas
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.location} - {fields.rrule}" } }
+        fields:
+          - { name: title, label: Nombre del difunto, type: string, default: Misa, hidden: true }
+          - { name: location, label: Ubicación, component: location }
+          - { name: times, label: Horas, component: times }
+          - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
+          - { name: except, type: date, label: Excepto, options: { format: dd/MM/yyyy }, list: { collapsible: { collapsed: true } } }
+      - name: events-group
+        label: Catequesis
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} - {fields.rrule}" } }
+        fields:
+          - { name: title, label: Título del evento, type: string }
+          - { name: location, label: Ubicación, component: location }
+          - { name: date, type: string, label: Fecha y hora de inicio, default: "25/12/2025 10:00", hidden: true }
+          - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
+          - { name: except, type: date, label: Excepto, options: { format: dd/MM/yyyy }, list: { collapsible: { collapsed: true } } }
+      - name: events-custom
+        label: Otros eventos
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} - {fields.date} - {fields.rrule}" } }
         fields:
           - { name: image, label: Image, type: image }
           - { name: title, label: Titulo, type: string }
           - { name: location, label: Ubicación, component: location }
           - { name: date, type: date, label: Fecha y hora de inicio, options: { time: true, format: dd/MM/yyyy HH:mm, step: 300 } }
           - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
+          - { name: except, type: date, label: Excepto, options: { format: dd/MM/yyyy }, list: { collapsible: { collapsed: true } } }
+      - { name: urls, type: string, list: true, label: Calendarios externos a importar (ej. url de Google Calendar terminada en .ics) }
   - name: config
     type: file
     label: Configuración
