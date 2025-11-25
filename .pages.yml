@@ -1,3 +1,5 @@
+settings:
+  hide: true
 components:
   text:
     label: Text Content
