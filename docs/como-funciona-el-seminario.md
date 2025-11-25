@@ -1,5 +1,5 @@
 ---
-title: "¿Como funciona el seminario? "
+title: "¿Cómo funciona el seminario? "
 image: /media/seminario pamplona-714741.webp
 sections:
   - _block: text
