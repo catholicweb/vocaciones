@@ -1,5 +1,5 @@
 ---
-title: "¿Porque el celibato? "
+title: "¿Por qué el celibato? "
 image: /media/crucifijo-metal-dorado-cristo-padre-espiritu-santo.webp
 sections:
   - _block: text
