@@ -1,5 +1,5 @@
 ---
-title: ¿Porque ser sacerdote?
+title: ¿Por qué ser sacerdote?
 image: /media/Javier_Pastor.webp
 sections:
   - _block: text
