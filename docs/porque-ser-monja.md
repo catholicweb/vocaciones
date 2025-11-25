@@ -1,5 +1,5 @@
 ---
-title: "¿Que hace una monja? "
+title: "¿Qué hace una monja? "
 image: /media/web2-sister-lucia-marie-op-dominican-first-profession-jeffrey-bruno-005.webp
 sections:
   - _block: text
