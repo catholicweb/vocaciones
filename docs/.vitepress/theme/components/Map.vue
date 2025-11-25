@@ -54,7 +54,9 @@ onMounted(async () => {
     iconSize: [20, 32],
   });
 
-  console.log(data.maps);
+  if (!data.maps.length) {
+    data.maps.push(props.block);
+  }
 
   data.maps.forEach((m) => {
     const g = m.geo.split(",").map((s) => Number(s.trim()));

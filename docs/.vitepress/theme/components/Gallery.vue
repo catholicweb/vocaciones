@@ -20,15 +20,17 @@
     </div>
 
     <!-- 2. Image Gallery (Pinterest/Instagram style) -->
-    <div v-if="block.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="relative aspect-square rounded-lg overflow-hidden group cursor-pointer">
-        <img :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
-        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/60 transition-all">
-          <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-            <h3 class="text-white font-bold text-lg mb-1">{{ item.title }}</h3>
-            <button v-if="item.callToAction" class="text-white text-sm underline text-left">
-              {{ item.callToAction }}
-            </button>
+    <div v-if="block.type === 'gallery'" :class="block.grid">
+      <div v-for="(item, i) in block.elements" :key="i">
+        <div class="relative aspect-square rounded-lg overflow-hidden group cursor-pointer">
+          <img :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
+          <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all">
+            <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+              <h3 class="text-white font-bold text-lg mb-1">{{ item.title }}</h3>
+              <button v-if="item.callToAction" class="text-white text-sm underline text-left">
+                {{ item.callToAction }}
+              </button>
+            </div>
           </div>
         </div>
       </div>

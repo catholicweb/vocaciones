@@ -20,7 +20,15 @@ const startX = ref(0);
 const currentX = ref(0);
 
 let cards = data.fundraisings;
+
 const currentIndex = ref(cards.findIndex((item) => item.name === props.block.name) || 0);
+
+if (!cards.length) {
+  cards.push(props.block);
+  cards.push(props.block);
+  cards.push(props.block);
+  currentIndex.value = 1;
+}
 
 const getCardStyle = (index) => {
   const offset = index - currentIndex.value;

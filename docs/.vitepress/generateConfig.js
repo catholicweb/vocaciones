@@ -34,6 +34,8 @@ async function createManifest(config) {
   const baseDir = path.resolve("");
   fs.writeFileSync(baseDir + "/docs/public/manifest.json", JSON.stringify(manifest), "utf8");
 
+  if (!config.icon) return;
+
   // Generate icons
   let fullPath = path.resolve(baseDir, "docs/public" + config.icon);
   for (const size of [192, 512]) {
@@ -46,9 +48,10 @@ async function createManifest(config) {
       console.error(`⚠️ Error generando icono ${size}:`, err.message);
     }
   }
+
   // generate the favicon
   await sharp(fullPath)
-    .resize(32, 32) // Resize to 32x32 pixels for the favicon size
+    .resize(64, 64) // Resize to 32x32 pixels for the favicon size
     .toFile(baseDir + `/docs/public/favicon.ico`);
 }
 
@@ -56,7 +59,6 @@ async function autocomplete(fm, config) {
   if (!fm.sections) return;
   addMeta(fm, config);
   for (var i = 0; i < fm.sections.length; i++) {
-    fm.sections[i].grid = grid(fm.sections[i]);
     if (typeof fm.sections[i].html === "string") {
       fm.sections[i].html = md.render(fm.sections[i].html);
       fm.sections[i].type = "text";
@@ -65,6 +67,7 @@ async function autocomplete(fm, config) {
       fm.sections[i] = addLinks(fm.sections[i]);
       fm.sections[i]._block = "gallery";
       fm.sections[i].type = "team-cards";
+      fm.sections[i].grid = "small";
     } else if (fm.sections[i].list) {
       fm.sections[i].elements = fm.sections[i].list.map((i) => {
         return {
@@ -74,6 +77,7 @@ async function autocomplete(fm, config) {
         };
       });
       fm.sections[i].type = "gallery";
+      fm.sections[i].grid = "tiny";
     } else if (fm.sections[i]._block == "gospel") {
       const today = new Date();
       const dateStr = today.toISOString().split("T")[0];
@@ -84,12 +88,18 @@ async function autocomplete(fm, config) {
     } else if (fm.sections[i]._block == "video") {
       fm.sections[i].elements = await Promise.all(fm.sections[i].urls.map(async (u) => await getYouTubeInfo(u)));
     }
+    fm.sections[i].grid = grid(fm.sections[i]);
   }
 }
 
 function grid(section) {
+  if (section.grid == "tiny") {
+    return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-1/3 *:sm:w-1/4 *:md:w-1/5 *:p-1";
+  }
+  if (section.grid == "small") {
+    return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-1/2 *:sm:w-1/3 *:md:w-1/4 *:p-2";
+  }
   return "container mx-auto flex flex-wrap items-center justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
-  //container mx-auto flex flex-nowrap items-center gap-6 overflow-x-auto py-4
 }
 
 async function getYouTubeInfo(urlOrId) {

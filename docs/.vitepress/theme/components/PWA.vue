@@ -67,11 +67,23 @@ if (typeof window !== "undefined" && "serviceWorker" in navigator) {
   }
 }
 
+async function requestNotificationPermission() {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") {
+    console.warn("Push notifications permission denied");
+    return false;
+  }
+  return true;
+}
+
 async function setupNotifications() {
   try {
     const sw = await navigator.serviceWorker.ready;
     const existing = await sw.pushManager.getSubscription();
     if (existing) return;
+
+    const granted = await requestNotificationPermission();
+    if (!granted) return;
 
     const sub = await sw.pushManager.subscribe({
       userVisibleOnly: true,
