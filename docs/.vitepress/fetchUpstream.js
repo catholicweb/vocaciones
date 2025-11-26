@@ -35,7 +35,7 @@ function fetchUpstream() {
 const eventName = process.env.EVENT_NAME;
 const schedule = process.env.EVENT_SCHEDULE;
 
-if (schedule == "0 3 * * *") {
+if (schedule == "0 3 * * *" || eventName == "workflow_dispatch") {
   fetchUpstream();
 } else {
   console.log("Not the right time to fetch...");
