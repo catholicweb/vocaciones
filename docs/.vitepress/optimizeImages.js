@@ -23,10 +23,7 @@ async function processImage(imgPath) {
     const metadata = await image.metadata();
 
     // ⛔ Skip if WebP and width ≤ 1080
-    if (ext === ".webp" && metadata.width <= 1080) {
-      console.log(`⚪ Skipped ${filename} (already webp ≤1080px)`);
-      return;
-    }
+    if (ext === ".webp" && metadata.width <= 1080) return;
 
     // Move original to /hq/
     await fs.mkdir(HQ_DIR, { recursive: true });
