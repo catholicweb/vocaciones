@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "optimize-images": "node docs/.vitepress/optimize-images.js",
+    "optimize-images": "node docs/.vitepress/optimizeImages.js",
+    "fetch-upstream": "node docs/.vitepress/fetchUpstream.js",
+    "docs:before-build": "npm run optimize-images && npm run fetch-upstream",
     "docs:dev": "vitepress dev docs",
-    "docs:build": "npm run optimize-images && vitepress build docs",
+    "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {

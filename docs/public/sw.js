@@ -24,6 +24,7 @@ async function staleWhileRevalidate(request) {
   const cached = await cache.match(request);
 
   const fetchPromise = fetch(request).then((fresh) => {
+    if (!fresh.ok) return;
     cache.put(request, fresh.clone());
     reloadOnUpdate(request, cached, fresh);
     return fresh;
@@ -36,7 +37,7 @@ async function reloadOnUpdate(request, cached, fresh) {
   const url = new URL(request.url);
   const isHTML = url.origin === location.origin && (url.pathname === "/" || !url.pathname.includes(".") || url.pathname.endsWith(".html"));
 
-  if (fresh.ok && isHTML && cached) {
+  if (isHTML && cached) {
     const newText = await fresh.clone().text();
     const oldText = await cached.clone().text();
 
