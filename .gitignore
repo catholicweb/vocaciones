@@ -1,4 +1,6 @@
 node_modules
+docs/public/calendar.json
+docs/public/manifest.json
 docs/.vitepress/theme/vars.css
 docs/.vitepress/cache
 docs/.vitepress/dist

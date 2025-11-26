@@ -3,7 +3,7 @@ const ASSETS = ["/", "/icon-512.png"];
 
 // ✅ Install and pre-cache known assets
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_NAME)));
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
   self.skipWaiting();
 });
 

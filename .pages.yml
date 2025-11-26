@@ -122,6 +122,7 @@ content:
   - name: pages
     label: Paginas
     type: collection
+    subfolders: false
     path: docs
     view:
       fields: [image, title]
@@ -218,7 +219,7 @@ content:
         fields:
           - { name: title, label: Nombre del difunto, type: string }
           - { name: location, label: Ubicación, component: location }
-          - { name: date, type: date, label: Fecha y hora, options: { time: true, format: dd/MM/yyyy HH:mm, step: 300 } }
+          - { name: date, type: date, label: Fecha y hora, options: { time: true, format: dd/MM/yyyy HH:mm, step: "300" } }
       - name: events-masses
         label: Horario de misas
         type: object
@@ -261,17 +262,10 @@ content:
       - { name: description, label: Description del sitio, type: text }
       - { name: image, label: Imagen del sitio, type: image }
       - { name: icon, label: Icono del sitio, type: image }
-
       - name: social
-        label: Pie de página (footer)
-        type: object
-        fields:
-          - { name: youtube, label: Youtube, type: string }
-          - { name: instagram, label: Instagram, type: string }
-          - { name: twitter, label: X/Twitter, type: string }
-          - { name: tiktok, label: Tiktok, type: string }
-          - { name: twitch, label: Twitch, type: string }
-          - { name: facebook, label: Facebook, type: string }
+        label: Social links
+        type: string
+        list: { collapsible: { collapsed: true } }
       - name: collaborators
         label: Colaboradores
         type: object
