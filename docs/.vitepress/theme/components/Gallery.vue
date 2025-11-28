@@ -244,7 +244,7 @@ const handleClick = (item) => {
 };
 </script>
 
-<style scoped>
+<style>
 /* Line clamping utility */
 .line-clamp-1 {
   display: -webkit-box;

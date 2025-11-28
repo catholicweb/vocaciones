@@ -4,6 +4,7 @@ import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
 import sharp from "sharp";
+import { getPreview } from "./oembed.js";
 
 const md = new MarkdownIt({ html: true, linkify: true });
 
@@ -58,14 +59,20 @@ async function createManifest(config) {
 
 async function autocomplete(fm, config) {
   if (!fm.sections) return;
-  addMeta(fm, config);
+
   for (var i = 0; i < fm.sections.length; i++) {
+    if (fm.sections[i].links) {
+      fm.sections[i].elements = await Promise.all(fm.sections[i].links.map((url) => getPreview(url)));
+    }
+    if (fm.sections[i]._block == "links") {
+      fm.sections[i]._block = "gallery-feature";
+      fm.sections[i].type = fm.sections[i].type || "team-cards";
+    }
     if (typeof fm.sections[i].html === "string") {
       fm.sections[i].html = md.render(fm.sections[i].html);
       fm.sections[i].type = "text";
       fm.sections[i]._block = "gallery";
     } else if (fm.sections[i]._block == "links") {
-      fm.sections[i] = addLinks(fm.sections[i]);
       fm.sections[i]._block = "gallery";
       fm.sections[i].type = "team-cards";
       fm.sections[i].grid = "small";
@@ -86,8 +93,6 @@ async function autocomplete(fm, config) {
         const data = await fetch(`https://gxvchjojub.execute-api.eu-west-1.amazonaws.com/production/getmissafreecontent?lang=es&day=${dateStr}`);
         fm.sections[i].gospel = await data.json();
       } catch (e) {}
-    } else if (fm.sections[i]._block == "video") {
-      fm.sections[i].elements = await Promise.all(fm.sections[i].urls.map(async (u) => await getYouTubeInfo(u)));
     }
     fm.sections[i].grid = grid(fm.sections[i]);
   }
@@ -103,57 +108,9 @@ function grid(section) {
   return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
 }
 
-async function getYouTubeInfo(urlOrId) {
-  // limpiar y obtener el ID
-  const id = extractVideoId(urlOrId);
-  if (!id) throw new Error("No se pudo extraer el ID del vídeo");
-
-  // usar oEmbed (no requiere API key)
-  const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`;
-  const res = await fetch(oembedUrl);
-  if (!res.ok) throw new Error(`Error ${res.status}`);
-  const data = await res.json();
-
-  return {
-    id,
-    title: data.title,
-    author: data.author_name,
-    src: `https://www.youtube.com/embed/${id}`,
-    image: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
-    vertical: data.height / data.width > 1,
-  };
-}
-
-// método auxiliar para extraer el ID del vídeo
-function extractVideoId(urlOrId) {
-  if (!urlOrId) return null;
-  if (/^[\w-]{11}$/.test(urlOrId)) return urlOrId; // ya es un id
-  const match = urlOrId.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/);
-  return match ? match[1] : null;
-}
-
 function addMeta(fm, config) {
   fm.head ??= [];
   fm.head.push(["meta", { property: "og:type", content: "website" }], ["meta", { property: "og:title", content: fm.title || config.title }], ["meta", { property: "og:description", content: fm.description || config.description }], ["meta", { property: "og:image", content: fm.image || config.image }], ["name", { property: "twitter:card", content: fm.image || config.image }]);
-}
-
-function addLinks(section) {
-  if (!section.links || !section.links.map) return;
-
-  const baseDir = path.resolve("");
-  section.elements = section.links.map((linkPath) => {
-    const fullPath = path.resolve(baseDir, linkPath);
-    const fm = readFrontmatter(fullPath);
-    return {
-      title: fm.title || path.basename(linkPath, ".md"),
-      description: fm.description || "",
-      image: fm.image || "",
-      link: linkPath.replace("docs/", "").replace(".md", ""),
-    };
-  });
-  section._block = "gallery-feature";
-  section.type = section.type || "team-cards";
-  return section;
 }
 
 async function generateNav(data) {

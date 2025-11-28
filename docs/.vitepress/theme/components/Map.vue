@@ -79,7 +79,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style>
 /* para que los iconos de leaflet se vean correctamente en Vite */
 .leaflet-container {
   width: 100%;

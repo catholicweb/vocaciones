@@ -57,11 +57,11 @@ const displayedReadings = computed(() => {
 });
 </script>
 
-<style scoped>
-.prose p {
+<style>
+.gospel .prose p {
 	margin-bottom: 0.5rem;
 }
-.prose strong {
+.gospel .prose strong {
 	color: #b30838;
 }
 </style>

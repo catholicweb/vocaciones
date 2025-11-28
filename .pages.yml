@@ -160,11 +160,11 @@ content:
               - { name: title, type: string, label: Titulo sección }
               - { name: filter, label: Filtro. Incluir solo eventos que contengan, type: string }
           - name: video
-            label: Youtube
+            label: Youtube/Vimeo/Spotify/....
             fields:
               - { name: title, type: string, label: Titulo sección }
-              - { name: urls, label: enlace a Youtube, type: string, list: { collapsible: { collapsed: true } } }
-              - { name: filter, label: Filtro. Incluir solo videos que contengan, type: string }
+              - { name: links, label: Enlaces externos, type: string, list: { collapsible: { collapsed: true } } }
+              - { name: filter, label: Filtro. Incluir solo videos/audios que contengan, type: string, hidden: true }
           - name: map
             label: Mapa
             fields:
