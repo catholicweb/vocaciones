@@ -61,7 +61,7 @@ onMounted(async () => {
   data.maps.forEach((m) => {
     const g = m.geo.split(",").map((s) => Number(s.trim()));
     let config = { icon: redIcon };
-    const html = `<a href="${m.link}">
+    const html = `<a href="${m.url}">
                     <h3 style="text-transform: capitalize; color: black;text-align: center;">
                                             ${m.name}
                                         </h3>

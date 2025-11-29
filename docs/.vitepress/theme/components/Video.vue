@@ -7,7 +7,7 @@
     <div v-for="(item, i) in block.elements" :key="i">
       <div class="relative rounded-lg overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-all aspect-[16/9]">
         <div v-if="playingVideo === item.src" class="w-full h-full items-end bg-black">
-          <iframe :src="item.src" data-testid="embed-iframe" width="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          <iframe :src="item.src" data-testid="embed-iframe" width="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="w-full h-full" loading="lazy"></iframe>
         </div>
 
         <div v-else @click="handleClick(item)" class="w-full h-full relative facade-image bg-cover bg-center bg-no-repeat" :style="{ backgroundImage: `url(${item.image})` }">

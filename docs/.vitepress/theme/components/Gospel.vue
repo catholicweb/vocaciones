@@ -1,8 +1,11 @@
 <template>
-	<div class="gospel max-w-3xl mx-auto p-6">
-		<h1 class="text-2xl font-bold text-center mb-6">
+	<div class="gospel max-w-3xl mx-auto p-6 my-6">
+		<div v-if="block.title" class="text-center">
+			<h2 class="my-6 text-4xl font-bold">{{ block.title }}</h2>
+		</div>
+		<h3 class="text-xl font-bold text-center mb-6">
 			{{ readings?.day_title || "Lecturas del día" }}
-		</h1>
+		</h3>
 
 		<template v-for="(reading, key) in displayedReadings" :key="key">
 			<h2 class="text-lg text-center font-semibold mb-1 mt-6">{{ reading.title }} - {{ reading.cita }}</h2>

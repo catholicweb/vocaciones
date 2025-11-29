@@ -34,8 +34,11 @@ function fetchUpstream() {
 
 const eventName = process.env.EVENT_NAME;
 const schedule = process.env.EVENT_SCHEDULE;
+const repository = process.env.GITHUB_REPOSITORY;
 
-if (schedule == "0 3 * * *" || eventName == "workflow_dispatch") {
+if (repository == "catholicweb/web-template") {
+  console.log("Do not autofecth...");
+} else if (schedule == "0 3 * * *" || eventName == "workflow_dispatch") {
   fetchUpstream();
 } else {
   console.log("Not the right time to fetch...");

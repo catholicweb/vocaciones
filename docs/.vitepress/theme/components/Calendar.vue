@@ -33,8 +33,10 @@ function groupData(data) {
       .toLowerCase()
       .includes((props.block.filter || "").toLowerCase()),
   );
-  console.log(data, filtered, props.block.filter);
-  return groupEvents(filtered, ["byday", "startDate", "", "startTime", "summary", "location"]);
+
+  const grouped = groupEvents(filtered, ["summary", "byday", "", "startTime", "location"]);
+  console.log(data, filtered, props.block.filter, grouped);
+  return grouped;
 }
 
 function slugify(str) {
@@ -84,9 +86,9 @@ function getSubKeys(table) {
                 <!-- Cada fila de la tabla puede tener múltiples elementos -->
                 <p v-for="(line, lineKey) in row[subKey]" class="flex items-center gap-2 mb-1" style="margin-right: 10px; display: flex">
                   {{ formatDate(lineKey) }}
-                  <!--<span v-if="typeof line === 'object' && !Array.isArray(line)" class="flex flex-wrap gap-1 text-gray-500">
+                  <span v-if="typeof line === 'object' && !Array.isArray(line)" class="flex flex-wrap gap-1 text-gray-500">
                     <i v-for="(item, index) in Object.keys(line)" :key="index" :class="{ 'line-through text-red-400': item.includes('exceptions') }"> ({{ formatDate(item) }}) </i>
-                  </span>-->
+                  </span>
                 </p>
               </td>
             </tr>

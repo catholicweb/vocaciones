@@ -72,7 +72,14 @@ async function autocomplete(fm, config) {
       fm.sections[i].html = md.render(fm.sections[i].html);
       fm.sections[i].type = "text";
       fm.sections[i]._block = "gallery";
-    } else if (fm.sections[i]._block == "links") {
+    }
+    if (fm.sections[i].elements && fm.sections[i].elements[0]?.html) {
+      for (var j = 0; j < fm.sections[i].elements.length; j++) {
+        fm.sections[i].elements[j].html = md.render(fm.sections[i].elements[j].html);
+      }
+    }
+
+    if (fm.sections[i]._block == "links") {
       fm.sections[i]._block = "gallery";
       fm.sections[i].type = "team-cards";
       fm.sections[i].grid = "small";

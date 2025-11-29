@@ -58,9 +58,9 @@ export default {
       for (var i = 0; i < config[key].length; i++) {
         const event = config[key][i];
         events.push({
-          summary: event.summary || "",
-          startTime: event.date.split(" ")[1],
-          startDate: event.date.split(" ")[0],
+          summary: event.title || event.summary || "",
+          startTime: event.date?.split(" ")[1] || event.times,
+          startDate: event.date?.split(" ")[0],
           image: event.image,
           byday: intersectOptions(event.rrule, "BYDAY")?.join(","),
           freq: intersectOptions(event.rrule, "FREQ")?.join(","),
@@ -70,7 +70,7 @@ export default {
       }
     });
 
-    for (var i = 0; i < config.urls.length; i++) {
+    for (var i = 0; i < config.urls?.length; i++) {
       const url = config.urls[i];
       try {
         const res = await fetch(url);
