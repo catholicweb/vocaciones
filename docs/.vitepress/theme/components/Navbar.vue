@@ -26,7 +26,8 @@ const currentLang = computed(() => {
 });
 
 function langUrl(url) {
-  return url.replace(/^\/+/, "");
+  return url;
+  //return url.replace(/^\/+/, "");
   //console.log(currentLang.value.path, url);
   //return "/" + currentLang.value.path + url;
 }

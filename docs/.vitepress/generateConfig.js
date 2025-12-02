@@ -1,10 +1,10 @@
 import MarkdownIt from "markdown-it";
-import fg from "fast-glob";
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
 import sharp from "sharp";
 import { getPreview } from "./oembed.js";
+import { generateNav } from "./navBar.js";
 
 const md = new MarkdownIt({ html: true, linkify: true });
 
@@ -120,77 +120,23 @@ function addMeta(fm, config) {
   fm.head.push(["meta", { property: "og:type", content: "website" }], ["meta", { property: "og:title", content: fm.title || config.title }], ["meta", { property: "og:description", content: fm.description || config.description }], ["meta", { property: "og:image", content: fm.image || config.image }], ["name", { property: "twitter:card", content: fm.image || config.image }]);
 }
 
-async function generateNav(data) {
-  // Build VitePress nav
-  return data.nav.map((section) => ({
-    text: section.title,
-    items: section.links.map((linkPath) => ({
-      text: readFrontmatter(linkPath)?.title || path.basename(linkPath, ".md"),
-      link: "/" + linkPath.replace(/^docs\//, "").replace(/\.md$/, ""),
-    })),
-  }));
-}
-
-/** Genera el árbol de navegación */
-async function generateNav2() {
-  const files = fg.sync(["**/*.md"], {
-    cwd: "./docs/",
-    ignore: ["node_modules", ".vitepress", "index.md"],
-  });
-
-  const posts = files.map((file) => {
-    const parts = file.split("/").filter(Boolean);
-
-    // Leer frontmatter
-    const content = fs.readFileSync(`./docs/${file}`, "utf-8");
-    const { data } = matter(content);
-    const title = data.title || parts[parts.length - 1].replace(".md", "");
-
-    return { file, parts, title };
-  });
-
-  const tree = [];
-
-  const insertNode = (tree, parts, file, title) => {
-    const [head, ...tail] = parts;
-    if (!head) return;
-    let node = tree.find((n) => n.key === head);
-    if (!node) {
-      node = { key: head, title: head, children: [], posts: [] };
-      tree.push(node);
-    }
-    if (tail.length === 0) node.posts.push({ file, title });
-    else insertNode(node.children, tail, file, title);
-  };
-
-  for (const post of posts) insertNode(tree, post.parts, post.file, post.title);
-
-  const sortTree = (nodes) => {
-    nodes.sort((a, b) => a.title.localeCompare(b.title));
-    nodes.forEach((n) => sortTree(n.children));
-  };
-  sortTree(tree);
-
-  const toVitepressNav = (nodes) =>
-    nodes.map((n) => {
-      if (n.children.length === 0) {
-        const items = n.posts.map((p) => ({
-          text: p.title.replaceAll("-", " "),
-          link: "/" + p.file.replace(".md", ".html"),
-        }));
-        return items.length === 1 ? { text: items[0].text, link: items[0].link } : { text: n.title, items };
-      }
-      return { text: n.title, items: toVitepressNav(n.children) };
-    });
-
-  return toVitepressNav(tree);
-}
-
 function googleFont(theme, weights = "400,700", styles = "normal,italic") {
   // Google Fonts URL format
   const baseURL = "https://fonts.googleapis.com/css2";
   return `${baseURL}?family=${theme.bodyFont.replace(/\s+/g, "+")}&family=${theme.headingFont.replace(/\s+/g, "+")}&display=swap`;
 }
+
+const getHue = (hex) => {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const max = Math.max(r, g, b),
+    min = Math.min(r, g, b),
+    d = max - min;
+  if (d === 0) return 0;
+  let h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return h * 60;
+};
 
 async function printCSS(config) {
   let css = `/* global.css or in your <style> block */
@@ -205,6 +151,7 @@ async function printCSS(config) {
   --border-radius-mult: ${config.theme.borderRadius};
   --border-width-mult: ${config.theme.borderWidth};
   --shadow-depth-mult: ${config.theme.shadowDepth};
+  --accent-angle: ${getHue(config.theme.accentColor)}deg;
 
     
   /* === Derived Tailwind vars (reactive) === */

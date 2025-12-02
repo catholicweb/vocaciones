@@ -21,39 +21,6 @@ function extractIframeSrc(html) {
   return match ? match[1] : null;
 }
 
-async function getMediaInfo(url) {
-  if (/youtu\.?be/.test(url)) {
-    const id = extractVideoId(url);
-    const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`);
-    const data = await res.json();
-
-    return {
-      type: "youtube",
-      id,
-      title: data.title,
-      author: data.author_name,
-      src: `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`,
-      image: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
-      vertical: data.height / data.width > 1,
-    };
-  } else if (/open\.spotify\.com/.test(url)) {
-    // Spotify
-    const res = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`);
-    const data = await res.json();
-
-    const idMatch = url.match(/spotify\.com\/[^/]+\/([A-Za-z0-9]+)/);
-    return {
-      type: "spotify",
-      id: idMatch ? idMatch[1] : null,
-      title: data.title,
-      author: data.author_name,
-      src: extractIframeSrc(data.html),
-      image: data.thumbnail_url,
-      vertical: false,
-    };
-  }
-}
-
 async function fetchOembed(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -63,7 +30,7 @@ async function fetchOembed(url) {
     author: data.author_name,
     src: extractIframeSrc(data.html),
     image: data.thumbnail_url,
-    vertical: false,
+    aspect: data.width / data.height,
   };
 }
 
@@ -155,6 +122,7 @@ async function getOEmbed(url) {
     src: og.url || url,
     title: og.title || "",
     image: og.image || "",
+    aspect: 16 / 9,
   };
 }
 
@@ -166,6 +134,7 @@ function localLinks(linkPath) {
     title: fm.title || path.basename(linkPath, ".md"),
     description: fm.description || "",
     image: fm.image || "",
+    aspect: 16 / 9,
     link: linkPath.replace("docs/", "").replace(".md", ""),
   };
 }

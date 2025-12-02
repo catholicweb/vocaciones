@@ -1,7 +1,7 @@
 <template>
 	<div class="gospel max-w-3xl mx-auto p-6 my-6">
 		<div v-if="block.title" class="text-center">
-			<h2 class="my-6 text-4xl font-bold">{{ block.title }}</h2>
+			<h2 class="my-4 text-4xl font-bold">{{ block.title }}</h2>
 		</div>
 		<h3 class="text-xl font-bold text-center mb-6">
 			{{ readings?.day_title || "Lecturas del día" }}

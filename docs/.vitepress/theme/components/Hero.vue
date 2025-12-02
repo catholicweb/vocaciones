@@ -26,13 +26,13 @@ function heroBgStyle(imageUrl) {
   if (!imageUrl) return "background-color: #808080;";
   const src720 = imageUrl.replace("480", "720");
   const src1080 = imageUrl.replace("480", "1080");
-
-  return {
-    backgroundImage: `image-set(
+  /*`image-set(
       url('${imageUrl}') 1x,
       url('${src720}') 2x,
       url('${src1080}') 3x
-    )`,
+    )`,*/
+  return {
+    backgroundImage: `url('${imageUrl}')`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   };

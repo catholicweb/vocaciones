@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { data } from "./../../blocks.data.js";
 
 const props = defineProps({
@@ -21,21 +21,47 @@ const mapContainer = ref(null);
 let map = null;
 let markersLayer = null;
 
+async function loadCSS(url) {
+  return new Promise((resolve, reject) => {
+    // Check if the CSS is already loaded
+    if (!document.querySelector(`link[href="${url}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = url;
+      link.onload = resolve;
+      link.onerror = reject;
+      document.head.appendChild(link);
+    } else {
+      resolve(); // CSS already loaded
+    }
+  });
+}
+
 onMounted(async () => {
   if (!mapContainer.value) return;
 
+  if (!data.maps.length) {
+    data.maps.push(props.block);
+  }
+
+  await loadCSS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
+  await import("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
+
+  // Optionally load additional plugins (like fullscreen)
+  await loadCSS("https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css");
+  await import("https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js");
+
   var supportsTouch = "ontouchstart" in window || navigator.msMaxTouchPoints;
 
-  // Carga dinámica de Leaflet solo cuando el componente se monta
+  const map = L.map(mapContainer.value, { fullscreenControl: true, zoomControl: !supportsTouch });
 
-  const L = await import("leaflet");
-  await import("leaflet/dist/leaflet.css"); // carga el CSS dinámicamente
+  const latLngBounds = data.maps.map((m) => m.geo.split(",").map((s) => Number(s.trim())));
 
-  //await import("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
-  //await import("https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css");
-  //await import("https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js");
+  var bounds = L.latLngBounds(latLngBounds);
 
-  const map = L.map(mapContainer.value, { fullscreenControl: true, zoomControl: !supportsTouch }).setView(props.block.geo?.split(",").map((s) => Number(s.trim())) || [0, 0], props.block.zoom || 13);
+  map.fitBounds(bounds, {
+    padding: [40, 40],
+  });
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
     attribution: "Voyager",
@@ -44,32 +70,17 @@ onMounted(async () => {
 
   markersLayer = L.layerGroup().addTo(map);
 
-  var redIcon = L.icon({
-    iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-    iconSize: [20, 32],
-  });
-
-  let blueIcon = L.icon({
-    iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    iconSize: [20, 32],
-  });
-
-  if (!data.maps.length) {
-    data.maps.push(props.block);
-  }
-
   data.maps.forEach((m) => {
     const g = m.geo.split(",").map((s) => Number(s.trim()));
-    let config = { icon: redIcon };
     const html = `<a href="${m.url}">
-                    <h3 style="text-transform: capitalize; color: black;text-align: center;">
+                    <h3 class="text-xl font-bold text-center text-accent">
                                             ${m.name}
                                         </h3>
                                 <div style="margin: 0;background: white;">
                                         <img width="100%" style="width:100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy" src="${m.image} " alt="">
                                 </div>
                         </a>`;
-    const marker = L.marker(g, config).addTo(markersLayer).bindPopup(html);
+    const marker = L.marker(g).addTo(markersLayer).bindPopup(html);
     if (m.geo != props.block.geo) {
       marker._icon.style.opacity = "0.4";
       //marker._icon.style.filter = "grayscale(1)";
@@ -80,10 +91,18 @@ onMounted(async () => {
 </script>
 
 <style>
-/* para que los iconos de leaflet se vean correctamente en Vite */
-.leaflet-container {
-  width: 100%;
-  height: 100%;
+.leaflet-pane .leaflet-marker-pane img {
+  filter: hue-rotate(calc(var(--accent-angle) - 204deg));
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0px !important;
+  overflow: hidden;
+}
+
+.leaflet-popup {
+  width: 300px; /* Increase or decrease the width */
+  max-width: 400px; /* Optional: max-width, to prevent the popup from getting too large */
 }
 
 .bounce {
@@ -91,16 +110,17 @@ onMounted(async () => {
 }
 
 .leaflet-popup-content {
-  margin: 10px;
-  max-width: 250px !important;
+  min-width: 100%;
+  min-height: 100%;
+  margin: 0px !important;
 }
 
-.leaflet-container a.leaflet-popup-close-button {
-  font-size: 25px;
-  font-weight: bold;
-  top: 3px;
+body .leaflet-container a.leaflet-popup-close-button {
+  top: 1px;
   right: 3px;
-  color: #009c46;
+  font: inherit;
+  font-weight: bold;
+  font-size: large;
 }
 
 @keyframes bounce {

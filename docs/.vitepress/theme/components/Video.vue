@@ -5,9 +5,9 @@
 
   <div class="video" :class="block.grid">
     <div v-for="(item, i) in block.elements" :key="i">
-      <div class="relative rounded-lg overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-all aspect-[16/9]">
-        <div v-if="playingVideo === item.src" class="w-full h-full items-end bg-black">
-          <iframe :src="item.src" data-testid="embed-iframe" width="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="w-full h-full" loading="lazy"></iframe>
+      <div class="rounded-lg overflow-hidden cursor-pointer aspect-[16/9]">
+        <div v-if="playingVideo === item.src" class="w-full h-full items-center">
+          <iframe :src="item.src" data-testid="embed-iframe" width="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="w-full h-full rounded-lg overflow-hidden"></iframe>
         </div>
 
         <div v-else @click="handleClick(item)" class="w-full h-full relative facade-image bg-cover bg-center bg-no-repeat" :style="{ backgroundImage: `url(${item.image})` }">
@@ -32,6 +32,19 @@ const props = defineProps({
     required: true,
   },
 });
+
+function ratio(ratio) {
+  const validRatios = {
+    "aspect-[9/16]": 0.5625,
+    "aspect-[16/9]": 1.777,
+    "aspect-[3/1]": 3,
+    "aspect-[4/3]": 1.333,
+    "aspect-[1/1]": 1.0,
+  };
+  return Object.keys(validRatios).reduce((closest, key) => {
+    return Math.abs(validRatios[key] - ratio) < Math.abs(validRatios[closest] - ratio) ? key : closest;
+  });
+}
 
 const playingVideo = ref(null);
 
