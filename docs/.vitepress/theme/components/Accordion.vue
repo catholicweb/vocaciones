@@ -2,7 +2,7 @@
   <div v-if="block.title" class="text-center">
     <h2 class="my-6 text-4xl font-bold">{{ block.title }}</h2>
   </div>
-  <div class="max-w-3xl mx-auto space-y-3 px-4">
+  <div class="max-w-3xl mx-auto space-y-3 px-4 mb-12">
     <div v-for="(item, i) in block.elements" :key="i" class="rounded-md shadow-md overflow-hidden">
       <button @click="toggleAccordion(i)" class="w-full px-6 py-4 flex items-center justify-between text-left">
         <div class="text-md font-bold text-center text-gray-900 pr-4">{{ item.title }}</div>

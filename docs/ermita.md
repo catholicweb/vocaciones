@@ -1,6 +1,6 @@
 ---
 title: Ermita
-image: https://cdn.pixabay.com/photo/2017/07/22/21/36/church-2530017_1280.jpg
+image: /media/church-2530017_1280.webp
 sections:
   - _block: map
     title: Conócenos

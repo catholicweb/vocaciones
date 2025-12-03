@@ -16,11 +16,11 @@ export default {
     async function loadMarkdownFiles(dir) {
       const files = await fg("**/*.md", {
         cwd: dir,
-        absolute: true,
+        absolute: false,
       });
 
       for (const file of files) {
-        const content = fs.readFileSync(file, "utf-8");
+        const content = fs.readFileSync("./docs/" + file, "utf-8");
         const { data } = matter(content);
         // Chequea si existe data.sections._block
         if (data.sections && Array.isArray(data.sections)) {
@@ -31,7 +31,7 @@ export default {
             } else if (section._block === "map") {
               section.image = section.image || data.image;
               section.name = section.name || data.title;
-              section.url = file.replace(".md", "");
+              section.url = "./" + file.replace(/index\.md$/, "").replace(/\.md$/, "");
               maps.push(section);
             }
           });

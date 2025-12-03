@@ -70,7 +70,7 @@ components:
     options:
       multiple: true
       creatable: true
-      values: ["a", "b"]
+      values: ["Parroquia Nª Sra Asunción", "Ermita Virgen del Olmo"]
   rrule:
     label: Fechas
     type: select
@@ -181,6 +181,7 @@ content:
               - { name: title, type: string, label: Titulo sección }
               - { name: readings, label: Mostrar primera/segunda y salmo, type: boolean, default: false }
               - { name: audio, label: Añadir audio, type: boolean, default: false }
+              - { name: images, label: Mostrar imagenes, type: boolean, default: true }
           - name: calendar
             label: Eventos
             fields:
@@ -248,7 +249,8 @@ content:
         fields:
           - { name: title, label: Nombre del difunto, type: string }
           - { name: location, label: Ubicación, component: location }
-          - { name: date, type: date, label: Fecha y hora, options: { time: true, format: dd/MM/yyyy HH:mm, step: "300" } }
+          - { name: date, type: date, label: Fecha del funeral }
+          - { name: times, label: Hora del funeral, component: times, options: { multiple: false }}
       - name: events-masses
         label: Horario de misas
         type: object
@@ -259,6 +261,19 @@ content:
           - { name: times, label: Horas, component: times }
           - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
           - { name: except, type: date, label: Excepto, options: { format: dd/MM/yyyy }, list: { collapsible: { collapsed: true } } }
+      - name: events-feast
+        label: Festividades especiales
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        fields:
+        - { name: title, label: "Nombre festividad (ej: Navidad, Pascua...)", type: string }
+        - { name: date, type: date, label: Fecha de la festividad }
+        - { name: image, label: "Image", type: image }
+        - name: Celebraciones
+          list: { collapsible: { collapsed: true, summary: "{fields.location}" } }
+          fields:
+            - { name: location, label: Ubicación, component: location }
+            - { name: times, label: Horas, component: times }
       - name: events-group
         label: Catequesis
         type: object
@@ -277,7 +292,8 @@ content:
           - { name: image, label: Image, type: image }
           - { name: title, label: Titulo, type: string }
           - { name: location, label: Ubicación, component: location }
-          - { name: date, type: date, label: Fecha y hora de inicio, options: { time: true, format: dd/MM/yyyy HH:mm, step: 300 } }
+          - { name: date, type: date, label: Fechas, list: { collapsible: { collapsed: true } } }
+          - { name: times, label: Hora de fin, component: times, options: { multiple: false }}
           - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
           - { name: except, type: date, label: Excepto, options: { format: dd/MM/yyyy }, list: { collapsible: { collapsed: true } } }
       - { name: urls, type: string, list: true, label: Calendarios externos a importar (ej. url de Google Calendar terminada en .ics) }

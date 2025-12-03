@@ -61,6 +61,7 @@ async function autocomplete(fm, config) {
   if (!fm.sections) return;
 
   for (var i = 0; i < fm.sections.length; i++) {
+    fm.sections[i].index = i;
     if (fm.sections[i].links) {
       fm.sections[i].elements = await Promise.all(fm.sections[i].links.map((url) => getPreview(url)));
     }
