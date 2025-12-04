@@ -18,17 +18,18 @@ npm run docs:build
 
 ## TODO
 
-| **HIGH PRIORITY**                             | Complexity |
-| --------------------------------------------- | ---------- |
-| Improve events display (upgrade events input) | 3          |
-| Improve spacing between headers               | 1          |
+| **HIGH PRIORITY** | Complexity |
+| ----------------- | ---------- |
 
 | **MEDIUM PRIORITY**                    | Complexity |
 | -------------------------------------- | ---------- |
 | Enable alternative grid configurations | 2          |
 | Enable PWA push notifications          | 3          |
+| Improve spacing between headers        | 1          |
 
 | **LOW PRIORITY**                     | Complexity |
 | ------------------------------------ | ---------- |
 | Enable autotranslate                 | 4          |
 | Import youtube/spotify full channels | 4          |
+| Add storytelling                     | 2          |
+| Images as image set                  | 1          |

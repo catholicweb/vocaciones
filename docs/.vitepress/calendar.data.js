@@ -10,7 +10,6 @@ function readFrontmatter(filePath) {
   if (filePath.endsWith(".json")) {
     return JSON.parse(content || "{}");
   }
-
   return matter(content).data || {};
 }
 
@@ -48,6 +47,12 @@ function intersectOptions(options, field) {
   return valid;
 }
 
+function toArray(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string") return [value];
+  return [];
+}
+
 export default {
   async load() {
     let config = readFrontmatter("./docs/events.json");
@@ -56,19 +61,27 @@ export default {
     Object.keys(config).forEach((key) => {
       if (!key.startsWith("events")) return;
       for (var i = 0; i < config[key].length; i++) {
-        const event = config[key][i];
-        events.push({
-          summary: event.title || event.summary || "",
-          startTime: event.date?.split(" ")[1] || event.times,
-          startDate: event.date?.split(" ")[0],
-          image: event.image,
-          byday: intersectOptions(event.rrule, "BYDAY")?.join(","),
-          freq: intersectOptions(event.rrule, "FREQ")?.join(","),
-          location: event.location?.join(","),
-          exceptions: event.exceptions,
-        });
+        const def = config[key][i];
+        const custom = def.custom || [{}];
+        for (var j = 0; j < custom.length; j++) {
+          const e = { ...def, ...custom[j] };
+          events.push({
+            type: key.split("-")[1],
+            title: e.title || e.summary || "",
+            times: toArray(e.times),
+            dates: toArray(e.date),
+            images: toArray(e.image),
+            byday: intersectOptions(toArray(e.rrule), "BYDAY"),
+            freq: intersectOptions(toArray(e.rrule), "FREQ"),
+            end: "",
+            locations: toArray(e.location),
+            exceptions: toArray(e.except),
+          });
+        }
       }
     });
+
+    console.log(events);
 
     for (var i = 0; i < config.urls?.length; i++) {
       const url = config.urls[i];
@@ -98,14 +111,15 @@ export default {
             });
 
             events.push({
-              summary: event.summary || "",
-              startTime: event.startDate.toJSDate().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }),
-              startDate: event.startDate.toJSDate().toLocaleDateString("es-ES"),
+              type: "ics",
+              title: event.summary || "",
+              times: toArray(event.startDate.toJSDate().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })),
+              dates: toArray(event.startDate.toJSDate().toLocaleDateString("es-ES")),
               end: event.endDate.toJSDate(),
-              image: image,
-              location: event.location || "",
+              images: toArray(image),
+              locations: toArray(event.location),
               ...JSON.parse(JSON.stringify(rrule)),
-              exceptions: exdates,
+              exceptions: toArray(exdates),
             });
           } else {
             const now = ICAL.Time.now();
@@ -113,19 +127,21 @@ export default {
 
             if (isPast) return;
             events.push({
-              summary: event.summary || "",
-              startTime: event.startDate.toJSDate().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }),
-              startDate: event.startDate.toJSDate().toLocaleDateString("es-ES"),
-              image: image,
-              byday: ["oneoff"],
+              title: event.summary || "",
+              times: toArray(event.startDate.toJSDate().toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })),
+              dates: toArray(toevent.startDate.toJSDate().toLocaleDateString("es-ES")),
+              images: toArray(image),
+              byday: [],
+              freq: ["oneoff"],
               end: event.endDate.toJSDate(),
-              location: event.location || "",
+              locations: toArray(event.location),
+              exceptions: [],
             });
           }
         });
 
         // Sort by start date
-        events.sort((a, b) => a.startDate + b.startTime - (b.startDate + b.startTime));
+        events.sort((a, b) => a.dates[0] + b.dates[0] - (b.times[0] + b.times[0]));
       } catch (error) {
         console.error("Error loading calendar data:", error);
       }
