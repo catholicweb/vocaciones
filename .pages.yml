@@ -23,10 +23,14 @@ components:
           { value: "https://youtube.com/playlist?list=PLco5FD9I9WmIbbQTBKMqaMq1kjwiZoO6B", label: "Homilias (Mons. Munilla)" },
           { value: "https://open.spotify.com/show/1oX36lcEOra7ADQCUlE2LY?si=e177f860f0164661", label: "Hablemos Sin Filtro" },
           { value: "https://open.spotify.com/show/6y1J3OXyuHGivMhIy7LB4Q?si=23fdbfd73b6645c7", label: "Es de Humanos" },
-          { value: "https://open.spotify.com/show/7LonKVvfQIsCp45TM58h7y?si=5974a35003ef4ecb", label: "10 minutos con Jesús" },
+          { value: "https://open.spotify.com/show/7LonKVvfQIsCp45TM58h7y?si=5974a35003ef4ecb", label: "10 minutos con Jesús (Opus Dei)" },
           { value: "https://open.spotify.com/show/2stzE1aIR8elv3tEIHNosr?si=f5f8c6b65d82421a", label: "Radio María" },
           { value: "https://open.spotify.com/show/1zR5ODOgjx1lGObG2gJvox", label: "Homilias Papa León XIV (Igles-IA)" },
           { value: "https://youtube.com/playlist?list=PL2fBaIU3WZ23ahmPx34yYXDu3yrp-yASO", label: "Rosario desde Lourdes" },
+          { value: "https://open.spotify.com/show/2z0RRDpp9rP6urEwdBrGpe?si=256c183f69e0457f", label: "Rezando voy (Jesuitas)" },
+          { value: "https://open.spotify.com/show/6FJFJ46Q4aPXIWWDKY9tYf?si=c17c97479bbb4fbe", label: "Evangelio del día (sercreyente.com)" },
+          { value: "https://open.spotify.com/show/1OUhu57FCAscICoEMwyONY?si=5f7ea6ad49394828", label: "Liturgia de las horas (litur pro)" },
+          { value: "https://open.spotify.com/show/6mpihPJzRA61GEdomhzGqq?si=b59a6acf96104988", label: "Jose Camacho Cotto" },
         ]
   languages:
     label: Idioma
