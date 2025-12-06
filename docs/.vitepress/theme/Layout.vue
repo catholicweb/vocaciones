@@ -1,6 +1,6 @@
 <!-- .vitepress/theme/Layout.vue -->
 <template>
-  <div class="min-h-screen flex flex-col max-w-screen overflow-hidden">
+  <div class="min-h-screen flex flex-col max-w-screen clip-x">
     <!-- Navbar Component -->
     <component :is="components.Navbar" />
 

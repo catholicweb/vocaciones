@@ -169,6 +169,17 @@ content:
                 fields:
                   - { name: title, label: Pregunta, type: string }
                   - { name: html, label: Respuesta, type: rich-text }
+          - name: scrollyTelling
+            label: Narración interactiva
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - name: elements
+                label: Viñetas
+                type: object
+                list: { collapsible: { collapsed: true } }
+                fields:
+                  - { name: text, label: Texto, type: rich-text }
+                  - { name: image, label: Imagen, type: image }
           - name: gallery
             label: Galeria de imagenes
             fields:

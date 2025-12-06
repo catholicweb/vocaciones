@@ -61,7 +61,14 @@ function groupData(data) {
 }
 
 function slugify(str) {
-  return str;
+  if (!str) return "";
+  return str
+    .normalize("NFD") // separa acentos
+    .replace(/[\u0300-\u036f]/g, "") // quita acentos
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-") // cualquier cosa rara → guion
+    .replace(/^-+|-+$/g, ""); // limpia bordes
 }
 
 function formatDate(isoString) {
