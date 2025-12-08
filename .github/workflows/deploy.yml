@@ -52,12 +52,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if this is the template repo
-        run: |
-          if [ "${{ github.repository }}" == "catholicweb/web-template" ]; then
-            echo "This is the template repository. Skipping sync."
-            exit 0
-          fi
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -77,6 +71,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           EVENT_NAME: ${{ github.event_name }}
           EVENT_SCHEDULE: ${{ github.event.schedule }}
+          YT_API_KEY: ${{ secrets.YT_API_KEY }}
       - name: Build with VitePress
         run: npm run docs:build
       - name: Upload artifact
