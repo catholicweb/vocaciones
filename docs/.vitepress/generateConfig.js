@@ -113,6 +113,9 @@ function grid(section) {
   if (section.grid == "small") {
     return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-1/2 *:sm:w-1/3 *:md:w-1/4 *:p-2";
   }
+  if (section._block == "video-channel") {
+    return "container mx-auto flex flex-nowrap overflow-x-scroll *:flex-shrink-0 py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2 video-channel";
+  }
   return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
 }
 

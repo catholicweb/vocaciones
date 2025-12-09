@@ -5,7 +5,8 @@
   "scripts": {
     "optimize-images": "node docs/.vitepress/optimizeImages.js",
     "fetch-upstream": "node docs/.vitepress/fetchUpstream.js",
-    "docs:before-build": "npm run optimize-images && npm run fetch-upstream",
+    "fetch-youtube": "node docs/.vitepress/fetchYoutube.js",
+    "docs:before-build": "npm run fetch-upstream && npm run optimize-images && npm run fetch-youtube",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

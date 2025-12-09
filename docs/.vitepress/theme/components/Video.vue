@@ -2,15 +2,14 @@
   <div v-if="block.title" class="text-center pt-12 px-6">
     <h2 class="my-2 text-4xl font-bold">{{ block.title }}</h2>
   </div>
-
   <div class="video mb-8" :class="block.grid">
-    <div v-for="(item, i) in block.elements" :key="i">
-      <div class="rounded-lg overflow-hidden cursor-pointer aspect-[16/9]">
-        <div v-if="playingVideo === item.src" class="w-full h-full items-center">
+    <div v-for="(item, i) in videos" :key="i">
+      <div class="relative">
+        <div v-if="playingVideo === item.src" class="w-full h-full items-center rounded-lg overflow-hidden cursor-pointer aspect-[16/9]">
           <iframe :src="item.src" data-testid="embed-iframe" width="100%" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" class="w-full h-full rounded-lg overflow-hidden"></iframe>
         </div>
 
-        <div v-else @click="handleClick(item)" class="w-full h-full relative facade">
+        <div v-else @click="handleClick(item)" class="w-full h-full relative facade rounded-lg overflow-hidden cursor-pointer aspect-[16/9]">
           <img :src="item.image" :alt="`Thumbnail for ${item.title}`" :fetchpriority="block.index >= 1 ? 'low' : 'high'" :loading="block.index >= 1 ? 'lazy' : 'eager'" class="absolute inset-0 w-full h-full object-cover rounded-lg" />
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 text-center to-transparent flex items-end">
@@ -20,12 +19,20 @@
           <div class="absolute inset-0 flex items-center justify-center logo" :class="logo(item)"></div>
         </div>
       </div>
+
+      <div v-if="item.publishedAt" class="pt-2 text-center w-full text-black">
+        {{ formatDate(item.publishedAt) }}
+        <div class="w-[14px] h-[14px] mx-auto rounded-full bg-accent"></div>
+        <div class="h-[4px] -mt-[8px] bg-accent -mx-[8px]"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
+import { formatDate } from "./../../helpers.js";
+import { data as youtube } from "./../../youtube.data.js";
 
 function logo(item) {
   if (item.src.includes("youtube")) return "youtube-logo";
@@ -40,6 +47,18 @@ const props = defineProps({
     required: true,
   },
 });
+const videos = ref(props.block.elements);
+
+// Load channel data when needed :)
+if (props.block._block == "video-channel") {
+  videos.value = youtube
+    .filter((obj) =>
+      JSON.stringify(obj)
+        .toLowerCase()
+        .includes((props.block.filter || "").toLowerCase()),
+    )
+    .map((v) => ({ ...v, src: `https://www.youtube.com/embed/${v.videoId}?autoplay=1`, image: `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` }));
+}
 
 function ratio(ratio) {
   const validRatios = {
@@ -99,5 +118,9 @@ function handleClick(item) {
 /* efecto hover opcional */
 .facade:hover .logo {
   transform: scale(1.1);
+}
+
+.video-channel::-webkit-scrollbar {
+  display: none;
 }
 </style>

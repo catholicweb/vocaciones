@@ -8,6 +8,9 @@ sections:
     name: Nuestra ermita
   - _block: calendar
     title: No te pierdas nuestros eventos!
+  - _block: video-channel
+    title: Últimos videos en nuestro canal
+    filter:
   - _block: fundraising
     title: Añade campañas de financiación
     name: Calefacción para la ermita

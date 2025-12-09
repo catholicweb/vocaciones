@@ -2,16 +2,7 @@ import fg from "fast-glob";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-function slugify(str) {
-  return str
-    .normalize("NFD") // separa acentos
-    .replace(/[\u0300-\u036f]/g, "") // quita acentos
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-") // cualquier cosa rara → guion
-    .replace(/^-+|-+$/g, ""); // limpia bordes
-}
+import { slugify } from "./helpers.js";
 
 function readFrontmatter(filePath) {
   if (!fs.existsSync(filePath)) return {};

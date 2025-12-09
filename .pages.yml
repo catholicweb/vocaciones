@@ -207,12 +207,17 @@ content:
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: links, label: Podcast, component: podcast }
+          - name: video-channel
+            label: Últimos videos de tu canal de Youtube
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: filter, label: Filtro. Incluir solo videos que contengan, type: string }
           - name: video
             label: Youtube/Vimeo/Spotify/....
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: links, label: Enlaces externos, type: string, list: { collapsible: { collapsed: true } } }
-              - { name: filter, label: Filtro. Incluir solo videos/audios que contengan, type: string, hidden: true }
+
           - name: map
             label: Mapa
             fields:
