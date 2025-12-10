@@ -199,7 +199,7 @@ async function getChannelIdFromUrl(channelUrl) {
     }
     console.log("Fetching videos...");
     const config = readFrontmatter("./docs/config.json");
-    let videos = await loadCachedVideos("./docs/public/videos.json");
+    let videos = await loadCachedVideos("./docs/src/videos.json");
     const CHANNEL_ID = await getChannelIdFromUrl(config.social.youtube);
     console.log(videos, config, config?.social?.youtube, CHANNEL_ID);
     // Get main videos
@@ -213,7 +213,7 @@ async function getChannelIdFromUrl(channelUrl) {
     }
 
     // Save videos
-    await saveVideosToFile(videos, "./docs/public/videos.json"); // Guardar el resultado en un archivo
+    await saveVideosToFile(videos, "./docs/src/videos.json"); // Guardar el resultado en un archivo
     await writeNotification(newImportantVideos);
   } catch (error) {
     console.error("Error loading youtube data:", error);

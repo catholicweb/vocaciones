@@ -32,14 +32,7 @@
 <script setup>
 import { ref } from "vue";
 import { formatDate } from "./../../helpers.js";
-import { data as youtube } from "./../../youtube.data.js";
-
-function logo(item) {
-  if (item.src.includes("youtube")) return "youtube-logo";
-  if (item.src.includes("spotify")) return "spotify-logo";
-  if (item.src.includes("videmo")) return "vimeo-logo";
-  return "generic-logo";
-}
+import youtube from "./../../../src/videos.json";
 
 const props = defineProps({
   block: {
@@ -51,6 +44,7 @@ const videos = ref(props.block.elements);
 
 // Load channel data when needed :)
 if (props.block._block == "video-channel") {
+  //  const { default: youtube } = await import("./../../../src/videos.json");
   videos.value = youtube
     .filter((obj) =>
       JSON.stringify(obj)
@@ -58,6 +52,13 @@ if (props.block._block == "video-channel") {
         .includes((props.block.filter || "").toLowerCase()),
     )
     .map((v) => ({ ...v, src: `https://www.youtube.com/embed/${v.videoId}?autoplay=1`, image: `https://img.youtube.com/vi/${v.videoId}/hqdefault.jpg` }));
+}
+
+function logo(item) {
+  if (item.src.includes("youtube")) return "youtube-logo";
+  if (item.src.includes("spotify")) return "spotify-logo";
+  if (item.src.includes("videmo")) return "vimeo-logo";
+  return "generic-logo";
 }
 
 function ratio(ratio) {
