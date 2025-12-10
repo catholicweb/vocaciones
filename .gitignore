@@ -1,4 +1,5 @@
 node_modules
+docs/**/*.md
 docs/public/calendar.json
 docs/public/manifest.json
 docs/.vitepress/theme/vars.css

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { data } from "./../../blocks.data.js";
 import { useData } from "vitepress";
-const { theme } = useData();
+const { theme, page } = useData();
 const config = ref(theme.value.config || {});
 
 const props = defineProps({
@@ -17,16 +17,9 @@ const startX = ref(0);
 const currentX = ref(0);
 const donate = ref(false);
 
-let cards = data.fundraisings;
+let cards = data.fundraisings.filter((f) => f.lang === page.value.frontmatter.lang);
 
 const currentIndex = ref(cards.findIndex((item) => item.name === props.block.name) || 0);
-
-if (!cards.length) {
-  cards.push(props.block);
-  cards.push(props.block);
-  cards.push(props.block);
-  currentIndex.value = 1;
-}
 
 const getCardStyle = (index) => {
   const offset = index - currentIndex.value;
@@ -37,7 +30,7 @@ const getCardStyle = (index) => {
     return {
       transform: "translateX(0%) scale(1) translateZ(0)",
       opacity: 1,
-      zIndex: 30,
+      zIndex: 15,
       filter: "grayscale(0%)",
     };
   } else if (absOffset === 1) {
@@ -46,7 +39,7 @@ const getCardStyle = (index) => {
     return {
       transform: `translateX(${translateX}%) scale(0.85) translateZ(-100px)`,
       opacity: 0.6,
-      zIndex: 20,
+      zIndex: 10,
       filter: "grayscale(80%)",
     };
   } else if (absOffset === 2) {
@@ -55,7 +48,7 @@ const getCardStyle = (index) => {
     return {
       transform: `translateX(${translateX}%) scale(0.7) translateZ(-200px)`,
       opacity: 0.3,
-      zIndex: 10,
+      zIndex: 5,
       filter: "grayscale(100%)",
     };
   } else {
@@ -146,11 +139,11 @@ const goToCard = (index) => {
                 </div>
                 <!-- Action Buttons -->
                 <div class="flex gap-3">
-                  <button @click.stop="donate = true" v-if="donate == false || index != currentIndex" class="flex-1 bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg hover:scale-101 transition-all duration-200 cursor-pointer">Donar</button>
+                  <button @click.stop="donate = true" v-if="donate == false || index != currentIndex" class="flex-1 bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg hover:scale-101 transition-all duration-200 cursor-pointer">{{ card.action }}</button>
 
                   <div v-else v-for="bank in config.bank" class="text-accent">
                     <p v-if="bank.account.includes('https://')">
-                      <strong>{{ bank.title }}: </strong><a :href="bank.account">Donar</a>
+                      <strong>{{ bank.title }}: </strong><a :href="bank.account">{{ card.action }}</a>
                     </p>
                     <p v-else>
                       <strong>{{ bank.title }}: </strong>{{ bank.account }}
@@ -163,13 +156,13 @@ const goToCard = (index) => {
         </div>
 
         <!-- Navigation Arrows -->
-        <button v-if="cards.length > 1" @click="prevCard" :disabled="currentIndex === 0" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-50 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+        <button v-if="cards.length > 1" @click="prevCard" :disabled="currentIndex === 0" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
 
-        <button v-if="cards.length > 1" @click="nextCard" :disabled="currentIndex === cards.length - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-50 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === cards.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+        <button v-if="cards.length > 1" @click="nextCard" :disabled="currentIndex === cards.length - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === cards.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="9 18 15 12 9 6" />
           </svg>

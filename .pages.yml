@@ -143,7 +143,7 @@ content:
     label: Paginas
     type: collection
     subfolders: false
-    path: docs
+    path: pages
     view:
       fields: [image, title]
       primary: title
@@ -241,6 +241,7 @@ content:
               - { name: description, type: string, label: Descripcion }
               - { name: raised, type: number, label: Recaudado hasta la fecha }
               - { name: goal, type: number, label: Total a recaudar }
+              - { name: action, type: string, label: Nombre acción, hidden: true, default: Donar }
               - { name: image, type: image, label: Imagen }
           - name: hero
             label: Cabezera de sección
@@ -260,7 +261,7 @@ content:
     type: file
     label: Eventos
     format: json
-    path: docs/events.json
+    path: pages/events.json
     fields:
       - name: events-funerals
         label: Funerales
@@ -321,7 +322,7 @@ content:
   - name: config
     type: file
     label: Configuración
-    path: docs/config.json
+    path: pages/config.json
     format: json
     fields:
       - { name: title, label: Titulo sitio, type: string }

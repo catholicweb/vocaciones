@@ -19,9 +19,7 @@ function fetchUpstream() {
 
   // 4) Quitar workflows... del staging (si no existen, no pasa nada)
   sh(`git reset .github/workflows || true`);
-  sh(`git reset docs/index.md || true`);
-  sh(`git reset docs/config.json || true`);
-  sh(`git reset docs/events.json || true`);
+  sh(`git reset pages || true`);
 
   // 5) Commit (si no hay cambios, fallo → también bien)
   sh(`git commit -m "Sync template changes" || true`);

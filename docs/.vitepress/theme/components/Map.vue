@@ -12,6 +12,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { data } from "./../../blocks.data.js";
+import { useData } from "vitepress";
+const { page } = useData();
 
 const props = defineProps({
   block: { type: Object, required: true },
@@ -43,6 +45,8 @@ onMounted(async () => {
   if (!data.maps.length) {
     data.maps.push(props.block);
   }
+
+  data.maps = data.maps.filter((f) => f.lang === page.value.frontmatter.lang);
 
   await loadCSS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
   await import("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");

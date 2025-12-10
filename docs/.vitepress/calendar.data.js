@@ -55,7 +55,7 @@ function toArray(value) {
 
 export default {
   async load() {
-    let config = readFrontmatter("./docs/events.json");
+    let config = readFrontmatter("./pages/events.json");
     const events = [];
 
     Object.keys(config).forEach((key) => {
@@ -80,8 +80,6 @@ export default {
         }
       }
     });
-
-    console.log(events);
 
     for (var i = 0; i < config.urls?.length; i++) {
       const url = config.urls[i];

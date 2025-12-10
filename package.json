@@ -6,7 +6,9 @@
     "optimize-images": "node docs/.vitepress/optimizeImages.js",
     "fetch-upstream": "node docs/.vitepress/fetchUpstream.js",
     "fetch-youtube": "node docs/.vitepress/fetchYoutube.js",
-    "docs:before-build": "npm run fetch-upstream && npm run optimize-images && npm run fetch-youtube",
+    "translate": "node docs/.vitepress/translate.js",
+    "create-files": "node docs/.vitepress/createFiles.js",
+    "docs:before-build": "npm run fetch-upstream && npm run optimize-images && npm run fetch-youtube && npm run translate && npm run create-files",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

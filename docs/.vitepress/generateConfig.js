@@ -233,7 +233,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 export async function generate() {
-  let config = readFrontmatter("./docs/config.json");
+  let config = readFrontmatter("./pages/config.json");
 
   config.languages = [
     { code: "es", label: "Español", path: "/" },
