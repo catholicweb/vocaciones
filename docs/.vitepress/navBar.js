@@ -58,6 +58,10 @@ async function generateManualNav(config) {
     let items = {};
     section.links.forEach((file) => {
       const data = readFrontmatter(file);
+      if (!data.equiv) {
+        console.log("[generateManualNav] Missing file: ", file);
+        return;
+      }
       data.equiv.forEach((equiv) => {
         const linkEquiv = readFrontmatter("./docs" + equiv.href + ".md");
         if (!items[equiv.lang]) items[equiv.lang] = [];
