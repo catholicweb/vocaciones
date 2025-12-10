@@ -6,10 +6,6 @@ function sh(cmd) {
 }
 
 function fetchUpstream() {
-  // 1) Configurar Git
-  sh(`git config user.name "github-actions[bot]"`);
-  sh(`git config user.email "github-actions[bot]@users.noreply.github.com"`);
-
   // 2) Añadir remote upstream (si ya existe, simplemente falla → bien)
   sh(`git remote add upstream https://github.com/catholicweb/web-template.git || true`);
   sh(`git fetch upstream`);
@@ -33,6 +29,16 @@ function fetchUpstream() {
 const eventName = process.env.EVENT_NAME;
 const schedule = process.env.EVENT_SCHEDULE;
 const repository = process.env.GITHUB_REPOSITORY;
+
+// 1) Configurar Git
+sh(`git config user.name "github-actions[bot]"`);
+sh(`git config user.email "github-actions[bot]@users.noreply.github.com"`);
+
+// 5) Commit (si no hay cambios, fallo → también bien)
+sh(`git commit -m "commit so far" || true`);
+
+// 6) Push final
+sh(`git push origin main`);
 
 if (repository == "catholicweb/web-template") {
   console.log("Do not autofecth...");
