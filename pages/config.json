@@ -3,6 +3,9 @@
   "description": "Dios te sueña a lo grande. ¿Y tú? ¿Cómo te sueñas? Atrévete a descubrir el sentido de tu vida.",
   "image": "/media/YESYES.webp",
   "icon": "/media/unnamed-removebg-preview.webp",
+  "social": [
+    "https://www.youtube.com/@seminariopamplona"
+  ],
   "bank": [
     {
       "title": "Dono a mi Iglesia",
