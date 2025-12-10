@@ -35,6 +35,7 @@ sh(`git config user.name "github-actions[bot]"`);
 sh(`git config user.email "github-actions[bot]@users.noreply.github.com"`);
 
 // 5) Commit (si no hay cambios, fallo → también bien)
+sh(`git add . || true`);
 sh(`git commit -m "commit so far" || true`);
 
 // 6) Push final
