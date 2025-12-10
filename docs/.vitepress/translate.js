@@ -91,7 +91,7 @@ async function translateMissing(valuesArray, language) {
   let code = getCode(language);
   if (!dictionary[code]) dictionary[code] = {};
 
-  const missing = valuesArray.filter((phrase) => !dictionary[code][phrase]);
+  const missing = valuesArray.filter((phrase) => !dictionary[code][phrase]).slice(0, 100);
 
   const translations = await translateWithOpenAI(missing, language);
 
