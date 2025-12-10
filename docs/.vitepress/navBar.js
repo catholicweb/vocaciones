@@ -52,12 +52,20 @@ function tr(str, lang) {
   return str;
 }
 
+function getEquiv(file) {
+  if (path.basename(file) == "index.md") return readFrontmatter("./docs/index.md");
+
+  let original = readFrontmatter(file);
+  let equiv = slugify(original.title);
+  return readFrontmatter("./docs/" + equiv + ".md");
+}
+
 async function generateManualNav(config) {
   let nav = {};
   config.nav.forEach((section) => {
     let items = {};
     section.links.forEach((file) => {
-      const data = readFrontmatter(file);
+      const data = getEquiv(file);
       if (!data.equiv) {
         console.log("[generateManualNav] Missing file: ", file);
         return;
