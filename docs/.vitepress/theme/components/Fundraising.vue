@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { data } from "./../../blocks.data.js";
 import { useData } from "vitepress";
 const { theme, page } = useData();
@@ -17,9 +17,9 @@ const startX = ref(0);
 const currentX = ref(0);
 const donate = ref(false);
 
-let cards = data.fundraisings.filter((f) => f.lang === page.value.frontmatter.lang);
+const cards = computed(() => data.fundraisings.filter((f) => f.lang === page.value.frontmatter.lang));
 
-const currentIndex = ref(cards.findIndex((item) => item.name === props.block.name) || 0);
+const currentIndex = ref(cards.value.findIndex((item) => item.name === props.block.name) || 0);
 
 const getCardStyle = (index) => {
   const offset = index - currentIndex.value;
@@ -64,7 +64,7 @@ const getCardStyle = (index) => {
 };
 
 const nextCard = () => {
-  if (currentIndex.value < cards.length - 1) {
+  if (currentIndex.value < cards.value.length - 1) {
     donate.value = false;
     currentIndex.value++;
   }

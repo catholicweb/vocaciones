@@ -7,9 +7,9 @@ import { slugify } from "./helpers.js";
 
 const ROOT = "./pages/";
 const OUT = "./docs/";
-const DICTIONARY = JSON.parse(fs.readFileSync("./docs/public/dictionary.json", "utf8"));
+const DICTIONARY = readFrontmatter("./docs/public/dictionary.json");
 
-const config = JSON.parse(fs.readFileSync("./pages/config.json", "utf8"));
+const config = readFrontmatter("./pages/config.json");
 // Lista de lenguas a generar
 const TARGET_LANGS = (config.languages?.length ? config.languages : ["Español"]).map(getCode);
 
@@ -19,6 +19,16 @@ const FIELDS = ["title", "description", "html", "name", "action"];
 function translateValue(value, dict) {
   if (typeof value === "string") return dict[value] || value;
   return value;
+}
+
+function readFrontmatter(filePath, fallback = {}) {
+  if (!fs.existsSync(filePath)) return {};
+  const content = fs.readFileSync(filePath, "utf8");
+
+  if (filePath.endsWith(".json")) {
+    return JSON.parse(content || `${fallback}`);
+  }
+  return matter(content).data || fallback;
 }
 
 // Recursivo
@@ -72,7 +82,7 @@ function getCode(lang) {
   return languageToCodeMap[lang] || lang.slice(0, 2).toLowerCase();
 }
 
-function filename(file, title, lang, i) {
+function filename(file, title, lang) {
   let code = TARGET_LANGS[0] == lang ? "" : lang + "/";
   if (path.basename(file) == "index.md") return code + path.parse(file).name;
   const dict = DICTIONARY[lang] || {};

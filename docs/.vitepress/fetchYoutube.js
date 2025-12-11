@@ -200,7 +200,8 @@ async function getChannelIdFromUrl(channelUrl) {
     console.log("Fetching videos...");
     const config = readFrontmatter("./pages/config.json");
     let videos = await loadCachedVideos("./docs/src/videos.json");
-    const CHANNEL_ID = await getChannelIdFromUrl(config.social.youtube);
+    const youtubeStr = config.social.find((s) => s.toLowerCase().includes("youtube"));
+    const CHANNEL_ID = await getChannelIdFromUrl(youtubeStr);
     console.log(videos, config, config?.social?.youtube, CHANNEL_ID);
     // Get main videos
     const playlistId = await getUploadsPlaylistId(CHANNEL_ID);
