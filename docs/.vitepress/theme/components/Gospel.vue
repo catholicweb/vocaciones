@@ -5,7 +5,7 @@
 		</div>
 		<template v-for="(reading, key) in displayedReadings" :key="key">
 			<div v-if="block.images" class="relative w-full sm:w-1/2 mx-auto rounded-lg overflow-hidden my-4 mt-8">
-				<img :src="`${imageBaseUrl}/${reading.tag}.png`" :alt="`${reading.title} icon`" class="w-full aspect-square object-cover" />
+				<img :src="`${imageBaseUrl}/${reading.tag}.png`" loading="lazy" :alt="`${reading.title} icon`" class="w-full aspect-square object-cover" />
 
 				<div class="absolute inset-0 w-full h-full p-4 bg-gradient-to-b from-black/60 via-black/10 text-white flex flex-col items-end text-center font-bold">
 					<h2 class="text-xl text-white! text-center w-full">
