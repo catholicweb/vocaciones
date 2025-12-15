@@ -41,9 +41,6 @@ export async function generateNav(config) {
     (acc[data.lang] ??= []).push(nav);
     return acc;
   }, {});
-
-  console.log(nav);
-
   return nav;
 }
 
@@ -54,7 +51,6 @@ function tr(str, lang) {
 
 function getEquiv(file) {
   if (path.basename(file) == "index.md") return readFrontmatter("./docs/index.md");
-
   let original = readFrontmatter(file);
   let equiv = slugify(original.title);
   return readFrontmatter("./docs/" + equiv + ".md");
@@ -76,15 +72,10 @@ async function generateManualNav(config) {
         items[equiv.lang].push({ text: linkEquiv.title, link: equiv.href });
       });
     });
-    console.log(items);
     for (const lang in items) {
       if (!nav[lang]) nav[lang] = [];
-      nav[lang].push({
-        text: tr(section.title, lang),
-        items: items[lang],
-      });
+      nav[lang].push({ text: tr(section.title, lang), items: items[lang] });
     }
   });
-  console.log(nav);
   return nav;
 }

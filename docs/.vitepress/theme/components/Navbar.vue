@@ -59,21 +59,21 @@ const mobileMenuOpen = ref(false);
         <div class="flex items-center space-x-2 bg-white">
           <!-- Language Switcher -->
           <div v-if="$frontmatter?.equiv?.length > 1" class="relative group bg-white">
-            <button class="uppercase px-2 py-1 rounded-sm hover:bg-white dark:hover:bg-gray-700 hover:text-accent transition-colors flex items-center space-x-1">
-              <span>{{ $frontmatter.lang }}</span>
+            <button class="px-2 py-1 rounded-sm hover:bg-white dark:hover:bg-gray-700 hover:text-accent transition-colors flex items-center space-x-1">
+              <span>{{ $frontmatter.lang.split(":")[0] }}</span>
               <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M5.23 7.21a.75.75 0 011.06 0L10 10.91l3.71-3.7a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.23 8.27a.75.75 0 010-1.06z" />
               </svg>
             </button>
             <div class="absolute right-0 w-36 opacity-0 group-hover:opacity-100 invisible group-hover:visible group-focus-within:visible group-focus-within:opacity-100 transition-all z-50 bg-white">
-              <a v-for="equiv in $frontmatter.equiv" :key="equiv.lang" :href="equiv.href" class="block px-3 py-2 rounded-sm hover:bg-white dark:hover:bg-gray-700 cursor-pointer transition-colors uppercase" :class="equiv.lang === $frontmatter.lang ? 'text-accent' : ''">
-                {{ equiv.lang }}
+              <a v-for="equiv in $frontmatter.equiv" :key="equiv.lang" :href="equiv.href" class="block px-3 py-2 rounded-sm hover:bg-white dark:hover:bg-gray-700 cursor-pointer transition-colors" :class="equiv.lang === $frontmatter.lang ? 'text-accent' : ''">
+                {{ equiv.lang.split(":")[0] }}
               </a>
             </div>
           </div>
 
           <!-- Mobile Menu Button -->
-          <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden px-2 py-1 rounded-sm hover:bg-white dark:hover:bg-gray-700 transition-colors hover:text-accent">
+          <button @click="mobileMenuOpen = !mobileMenuOpen" class="lg:hidden px-2 py-1 rounded-sm hover:bg-white dark:hover:bg-gray-700 transition-colors hover:text-accent" aria-label="Toggle Mobile Menu">
             <svg v-if="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>

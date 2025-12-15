@@ -104,6 +104,7 @@ async function autocomplete(fm, config) {
     }
     fm.sections[i].grid = grid(fm.sections[i]);
   }
+  addMeta(fm, config);
 }
 
 function grid(section) {
@@ -119,9 +120,27 @@ function grid(section) {
   return "container mx-auto flex flex-wrap justify-center text-center py-4 *:w-full *:sm:w-1/2 *:md:w-1/3 *:p-2 px-2";
 }
 
+function absoluteURL(url, config) {
+  if (url.startsWith("/")) {
+    const siteurl = config.siteurl || "";
+    return siteurl + url;
+  }
+}
+
 function addMeta(fm, config) {
   fm.head ??= [];
-  fm.head.push(["meta", { property: "og:type", content: "website" }], ["meta", { property: "og:title", content: fm.title || config.title }], ["meta", { property: "og:description", content: fm.description || config.description }], ["meta", { property: "og:image", content: fm.image || config.image }], ["name", { property: "twitter:card", content: fm.image || config.image }]);
+  fm.head.push(["meta", { property: "og:type", content: "website" }]);
+  fm.head.push(["meta", { property: "og:title", content: fm.title || config.title }]);
+  fm.head.push(["meta", { property: "og:description", content: fm.description || config.description }]);
+  fm.head.push(["meta", { property: "og:image", content: absoluteURL(fm.image || config.image, config) }]);
+  fm.head.push(["name", { property: "twitter:card", content: "summary_large_image" }]);
+  fm.head.push(["name", { property: "twitter:image", content: absoluteURL(fm.image || config.image, config) }]);
+
+  if (!fm?.equiv) return;
+  for (var i = 0; i < fm.equiv.length; i++) {
+    const hreflang = i == 0 ? "x-default" : fm.equiv[i].lang.split(":").pop();
+    fm.head.push(["link", { rel: "alternate", hreflang, href: absoluteURL(fm.equiv[i].href, config) }]);
+  }
 }
 
 function googleFont(theme, weights = "400,700", styles = "normal,italic") {
@@ -232,14 +251,20 @@ h1, h2, h3, h4, h5, h6 {
   fs.writeFileSync(baseDir + "/docs/.vitepress/theme/vars.css", css, "utf8");
 }
 
+function locales(languages) {
+  const loc = {};
+  for (var i = 0; i < languages.length; i++) {
+    const label = languages[i].split(":")[0];
+    const lang = languages[i].split(":")[1];
+    const key = i === 0 ? "root" : lang;
+    loc[key] = { label, lang };
+  }
+  console.log(loc);
+  return loc;
+}
+
 export async function generate() {
   let config = readFrontmatter("./pages/config.json");
-
-  config.languages = [
-    { code: "es", label: "Español", path: "/" },
-    { code: "en", label: "English", path: "en/" },
-    { code: "eus", label: "Euskara", path: "eus/" },
-  ];
 
   config.goatcounter = "https://vocacion.goatcounter.com/count";
 
@@ -266,12 +291,12 @@ export async function generate() {
       ["link", { rel: "icon", href: "/favicon.ico", type: "image/x-icon" }],
       ["script", { "data-goatcounter": config.goatcounter, async: true, src: "//gc.zgo.at/count.js" }],
     ],
+    locales: locales(config.languages),
     title: config.title,
     cleanUrls: true,
     description: config.description,
     themeConfig: {
       nav: await generateNav(config),
-      languages: config.languages,
       config: config,
     },
     async transformPageData(pageData) {

@@ -33,11 +33,13 @@ components:
           { value: "https://open.spotify.com/show/6mpihPJzRA61GEdomhzGqq?si=b59a6acf96104988", label: "Jose Camacho Cotto" },
         ]
   languages:
-    label: Idioma
+    label: "Idioma"
     type: select
     options:
       multiple: true
-      values: ["Español", "Catalán", "Gallego", "Euskera", "Inglés", "Francés", "Alemán", "Italiano", "Portugués", "Rumano", "Árabe", "Chino", "Búlgaro", "Polaco"]
+      creatable: true
+      values: ["Español:es", "Català:ca", "Galego:gl", "Euskara:eu", "English:en", "Français:fr", "Deutsch:de", "Italiano:it", "Português:pt", "Română:ro", "العربية:ar", "中文:zh", "Български:bg", "Polski:pl"]
+
   font:
     label: Tipo letra
     type: select
@@ -381,3 +383,6 @@ content:
               - { name: selector, label: "Elemento", component: selector }
               - { name: cssClass, label: "Efecto a aplicar", component: effect }
               - { name: scroll, label: "Aplicar al hacer scroll", type: boolean, default: false }
+      - name: siteurl
+        label: "URL absoluta del sitio web, ej: https://parroquia.app"
+        type: string

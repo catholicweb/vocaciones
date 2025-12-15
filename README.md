@@ -12,24 +12,6 @@ npm run docs:build
 
 ## What's Included
 
-- ✅VitePress + Tailwind CSS v4
+- VitePress + Tailwind CSS v4
 - Pages CMS
 - Custom web components
-
-## TODO
-
-| **HIGH PRIORITY** | Complexity |
-| ----------------- | ---------- |
-
-| **MEDIUM PRIORITY**                    | Complexity |
-| -------------------------------------- | ---------- |
-| Enable alternative grid configurations | 2          |
-| Enable PWA push notifications          | 3          |
-| Improve spacing between headers        | 1          |
-
-| **LOW PRIORITY**                     | Complexity |
-| ------------------------------------ | ---------- |
-| Enable autotranslate                 | 4          |
-| Import youtube/spotify full channels | 4          |
-| Add storytelling                     | 2          |
-| Images as image set                  | 1          |
