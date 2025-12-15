@@ -36,7 +36,7 @@ function extractValues(obj, keys) {
 async function translateMissing(valuesArray, language) {
   if (!dictionary[language]) dictionary[language] = {};
 
-  const missing = valuesArray.filter((phrase) => !dictionary[language][phrase]).slice(0, 50);
+  const missing = valuesArray.filter((phrase) => !dictionary[language][phrase]).slice(0, 15);
 
   const translations = await translateWithOpenAI(missing, language.split(":")[0]);
 
@@ -91,7 +91,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
       input: [
         {
           role: "system",
-          content: "You are a professional translator for a Catholic website. " + "Translate the given sentences preserving HTML or Markdown. " + "Do NOT translate sentences already written in the target language. " + "Do NOT include explanations or reasoning.",
+          content: "You are a professional translator for a Catholic website. " + "Translate the given sentences preserving HTML or Markdown. " + "If a sentence is already written in the target language, do NOT translate it, just fix ortography" + "Do NOT include explanations or reasoning.",
         },
         {
           role: "user",
