@@ -16,7 +16,13 @@ const TARGET_LANGS = config.languages?.length ? config.languages : ["Español:es
 const FIELDS = ["title", "description", "html", "name", "action"];
 
 function translateValue(value, dict) {
-  if (typeof value === "string") return dict[value] || value;
+  if (typeof value === "string") {
+    const list = value
+      .replace(/\n +\n/g, "\n\n")
+      .split("\n\n")
+      .map((s) => s.trim());
+    return list.map((v) => dict[v] || v).join("\n\n");
+  }
   return value;
 }
 
