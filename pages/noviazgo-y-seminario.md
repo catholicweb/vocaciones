@@ -4,6 +4,6 @@ image: /media/caminos-que-se-bifurcan.webp
 sections:
   - _block: links
     links:
-      - docs/seminario.md
-      - docs/noviazgo.md
+      - pages/seminario.md
+      - pages/noviazgo.md
 ---

@@ -14,12 +14,12 @@ sections:
       **Atrévete a descubrirla… y a vivirla a fondo.**
   - _block: links
     links:
-      - docs/discierne.md
-      - docs/contacto.md
-      - docs/contacto-1.md
-      - docs/5-pasos.md
-      - docs/7-pasos.md
-      - docs/noviazgo-y-seminario.md
+      - pages/discierne.md
+      - pages/contacto.md
+      - pages/contacto-1.md
+      - pages/5-pasos.md
+      - pages/7-pasos.md
+      - pages/noviazgo-y-seminario.md
   - _block: hero
     title: ¡Busca el relevo!
     description: Pedir al dueño de la mies. Con rostros concretos
@@ -32,33 +32,33 @@ sections:
       camino.**
   - _block: links
     links:
-      - docs/pedid-al-dueno-de-la-mies.md
-      - docs/no-solo-rezar-buscar.md
-      - docs/el-papel-de-la-familia-y-la-comunidad.md
+      - pages/pedid-al-dueno-de-la-mies.md
+      - pages/no-solo-rezar-buscar.md
+      - pages/el-papel-de-la-familia-y-la-comunidad.md
   - _block: hero
     title: "¿Dios me está llamando al sacerdocio? "
     description: "Llevar a Cristo a todos los hombres "
     image: /media/istockphoto-1464747649-612x612.webp
   - _block: links
     links:
-      - docs/porque-ser-sacerdote.md
-      - docs/que-hace-un-sacerdote.md
-      - docs/seminario.md
+      - pages/porque-ser-sacerdote.md
+      - pages/que-hace-un-sacerdote.md
+      - pages/seminario.md
   - _block: hero
     title: ¿Y si Dios me llama a darle todo?
     description: "Llevar el mundo a Cristo "
     image: /media/istockphoto-108270861-612x612.webp
   - _block: links
     links:
-      - "docs/Los votos: pobreza-castidad-obediencia.md"
-      - docs/vida-activa.md
-      - docs/vida-contemplativa.md
+      - "pages/Los votos: pobreza-castidad-obediencia.md"
+      - pages/vida-activa.md
+      - pages/vida-contemplativa.md
   - _block: hero
     title: ¿Llevar a Cristo a todas las partes de la sociedad?
     description: "Ordenar todo a Cristo desde dentro "
     image: /media/Los-Laicos-en-la-vida-publica.webp
   - _block: links
     links:
-      - docs/ser-laico-es-una-vocacion.md
-      - docs/desafios.md
+      - pages/ser-laico-es-una-vocacion.md
+      - pages/desafios.md
 ---

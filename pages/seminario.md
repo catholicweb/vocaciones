@@ -27,7 +27,7 @@ sections:
       * * *
   - _block: links
     links:
-      - docs/como-funciona-el-seminario.md
-      - docs/conoce-a-nuestros-seminaristas.md
-      - docs/colabora-el-semianrio-es-de-todos.md
+      - pages/como-funciona-el-seminario.md
+      - pages/conoce-a-nuestros-seminaristas.md
+      - pages/colabora-el-semianrio-es-de-todos.md
 ---
