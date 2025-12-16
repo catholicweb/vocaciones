@@ -1,9 +1,17 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 import { data } from "./../../blocks.data.js";
 import { useData } from "vitepress";
 const { theme, page } = useData();
 const config = ref(theme.value.config || {});
+
+watch(
+  () => page.value.frontmatter.lang,
+  (lang, from) => {
+    cards.value = data.fundraisings.filter((f) => f.lang === lang);
+    numCards.value = cards.value.length;
+  },
+);
 
 const props = defineProps({
   block: {
@@ -18,15 +26,8 @@ const currentX = ref(0);
 const donate = ref(false);
 
 const numCards = ref(0);
-const currentIndex = ref(null);
-
-function cards(lang) {
-  if (!lang) lang = page.value.frontmatter.lang;
-  const filtered = data.fundraisings.filter((f) => f.lang === lang);
-  numCards.value = filtered.length;
-  if (currentIndex === null) currentIndex.value = filtered.findIndex((item) => item.name === props.block.name) || 0;
-  return filtered;
-}
+const cards = ref(data.fundraisings.filter((f) => f.lang === page.value.frontmatter.lang));
+const currentIndex = ref(cards.value.findIndex((item) => item.name === props.block.name) || 0);
 
 const getCardStyle = (index) => {
   const offset = index - currentIndex.value;
@@ -116,7 +117,7 @@ const goToCard = (index) => {
       <div class="relative w-full max-w-6xl h-[500px] flex items-center justify-center">
         <!-- Cards -->
         <div class="relative w-full" @touchstart.passive="handleTouchStart" @touchend.passive="handleTouchEnd">
-          <div v-for="(card, index) in cards()" :key="card.id" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 transition-all duration-700 ease-out cursor-pointer" :style="getCardStyle(index)" @click="goToCard(index)">
+          <div v-for="(card, index) in cards" :key="card.id" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 transition-all duration-700 ease-out cursor-pointer" :style="getCardStyle(index)" @click="goToCard(index)">
             <div class="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden">
               <!-- Image Section -->
               <div class="relative aspect-16/9 overflow-hidden">
@@ -131,7 +132,7 @@ const goToCard = (index) => {
                 <p class="text-slate-600 mb-4">{{ card.description }}</p>
 
                 <!-- Progress Stats -->
-                <div class="mb-4">
+                <div class="mb-4" v-if="card.goal">
                   <div class="flex justify-between items-baseline mb-2">
                     <span class="text-lg font-bold">{{ card.raised }}€</span>
                     <span class="text-slate-500 text-sm"> de {{ card.goal }}€</span>
@@ -146,7 +147,7 @@ const goToCard = (index) => {
                 </div>
                 <!-- Action Buttons -->
                 <div class="flex gap-3">
-                  <button @click.stop="donate = true" v-if="donate == false || index != currentIndex" class="flex-1 bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg hover:scale-101 transition-all duration-200 cursor-pointer">{{ card.action || "Donar" }}</button>
+                  <button v-if="donate == false || index != currentIndex" @click.stop="donate = true" class="flex-1 bg-accent text-white font-semibold py-3 px-6 rounded-xl hover:shadow-lg hover:scale-101 transition-all duration-200 cursor-pointer">{{ card.action || "Donar" }}</button>
 
                   <div v-else v-for="bank in config.bank" class="text-accent">
                     <p v-if="bank.account.includes('https://')">
@@ -163,13 +164,13 @@ const goToCard = (index) => {
         </div>
 
         <!-- Navigation Arrows -->
-        <button v-if="numCards > 1" @click="prevCard" :disabled="currentIndex === 0" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+        <button v-if="numCards > 1" @click="prevCard" :disabled="currentIndex === 0" aria-label="Previous card" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
 
-        <button v-if="numCards > 1" @click="nextCard" :disabled="currentIndex === numCards - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === numCards - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+        <button v-if="numCards > 1" @click="nextCard" aria-label="Next card" :disabled="currentIndex === numCards - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', currentIndex === numCards - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="9 18 15 12 9 6" />
           </svg>

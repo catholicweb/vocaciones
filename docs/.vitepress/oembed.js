@@ -1,19 +1,6 @@
 // oembed-ultra.js
 import { Parser } from "htmlparser2";
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-
-  return matter(content).data || {};
-}
+import { read, write, path } from "./node_helpers.js";
 
 function extractIframeSrc(html) {
   // Busca el atributo src dentro del iframe de Spotify
@@ -127,13 +114,11 @@ async function getOEmbed(url) {
 }
 
 function localLinks(linkPath) {
-  const baseDir = path.resolve("");
-  const fullPath = path.resolve(baseDir, linkPath);
-  const fm = readFrontmatter(fullPath);
+  const { data } = read(linkPath);
   return {
-    title: fm.title || path.basename(linkPath, ".md"),
-    description: fm.description || "",
-    image: fm.image || "",
+    title: data.title,
+    description: data.description || "",
+    image: data.image || "",
     aspect: 16 / 9,
     link: linkPath.replace("docs/", "").replace(".md", ""),
   };

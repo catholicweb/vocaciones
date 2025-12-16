@@ -1,19 +1,5 @@
-import fg from "fast-glob";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
 import { slugify } from "./helpers.js";
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-
-  return matter(content).data || {};
-}
+import { read, write, fg, path } from "./node_helpers.js";
 
 const docsDir = path.resolve("./docs");
 
@@ -23,7 +9,7 @@ export async function generateNav(config) {
   // Otherwise, generate automatically
   const files = await fg(["**/*.md", "!aviso-legal.md"], { cwd: docsDir, absolute: false });
   const nav = files.reduce((acc, f) => {
-    const data = readFrontmatter(`docs/${f}`);
+    const { data } = read(`docs/${f}`);
     if (!data.lang) return acc;
 
     const base = "/" + f.replace(/index\.md$/, "").replace(/\.md$/, "");
@@ -50,10 +36,10 @@ function tr(str, lang) {
 }
 
 function getEquiv(file) {
-  if (path.basename(file) == "index.md") return readFrontmatter("./docs/index.md");
-  let original = readFrontmatter(file);
+  if (path.basename(file) == "index.md") return read("./docs/index.md").data;
+  let original = read(file).data;
   let equiv = slugify(original.title);
-  return readFrontmatter("./docs/" + equiv + ".md");
+  return read("./docs/" + equiv + ".md").data;
 }
 
 async function generateManualNav(config) {
@@ -67,7 +53,7 @@ async function generateManualNav(config) {
         return;
       }
       data.equiv.forEach((equiv) => {
-        const linkEquiv = readFrontmatter("./docs" + equiv.href + ".md");
+        const linkEquiv = read("./docs" + equiv.href + ".md").data;
         if (!items[equiv.lang]) items[equiv.lang] = [];
         items[equiv.lang].push({ text: linkEquiv.title, link: equiv.href });
       });

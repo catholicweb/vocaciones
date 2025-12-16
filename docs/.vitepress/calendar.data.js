@@ -1,22 +1,10 @@
 // dataExporter.js
 import ICAL from "ical.js";
-import fs from "fs";
-import matter from "gray-matter";
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-  return matter(content).data || {};
-}
+import { read, write } from "./node_helpers.js";
 
 function exportCalendar(events) {
   // TODO: export also as ICS
-  const jsonString = JSON.stringify(events);
-  fs.writeFileSync("./docs/public/calendar.json", jsonString, "utf8");
+  write("./docs/public/calendar.json", events);
 }
 
 function intersectOptions(options, field) {
@@ -55,7 +43,7 @@ function toArray(value) {
 
 export default {
   async load() {
-    let config = readFrontmatter("./pages/events.json");
+    let config = read("./pages/events.json");
     const events = [];
 
     Object.keys(config).forEach((key) => {

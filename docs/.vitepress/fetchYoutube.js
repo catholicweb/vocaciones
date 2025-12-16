@@ -1,15 +1,4 @@
-import fs from "fs";
-import matter from "gray-matter";
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-  return matter(content).data || {};
-}
+import { read, write } from "./node_helpers.js";
 
 const API_KEY = process.env.YT_API_KEY; // Leer API Key de env
 let newImportantVideos = [];
@@ -94,26 +83,6 @@ async function updateVideos(playlistId, cachedVideos, playlistName = "main") {
   return [...allNewVideos, ...cachedVideos];
 }
 
-async function loadCachedVideos(file) {
-  try {
-    const data = await fs.readFile(file, "utf-8");
-    return JSON.parse(data);
-  } catch (err) {
-    // Si no existe o error al leer, se asume caché vacía
-    return [];
-  }
-}
-
-// Guarda la lista de vídeos en el fichero
-async function saveVideosToFile(videos, file) {
-  try {
-    fs.writeFileSync(file, JSON.stringify(videos));
-    console.log(`Vídeos guardados en ${file}`);
-  } catch (err) {
-    console.error("Error al guardar el archivo:", err);
-  }
-}
-
 async function writeNotification(newImportantVideos) {
   if (!newImportantVideos || !newImportantVideos.length) return;
   let notifications = newImportantVideos.map((video) => {
@@ -128,7 +97,7 @@ async function writeNotification(newImportantVideos) {
     };
   });
   console.log("writeNotification...");
-  return fs.writeFile("notifications.json", JSON.stringify(notifications));
+  return write("notifications.json", notifications);
 }
 async function getChannelIdFromUrl(channelUrl) {
   // 1. Extract the identifier (handle, username, or ID)
@@ -198,8 +167,8 @@ async function getChannelIdFromUrl(channelUrl) {
       return;
     }
     console.log("Fetching videos...");
-    const config = readFrontmatter("./pages/config.json");
-    let videos = await loadCachedVideos("./docs/src/videos.json");
+    const config = read("./pages/config.json");
+    let videos = read("./docs/src/videos.json", []);
     const youtubeStr = config.social.find((s) => s.toLowerCase().includes("youtube"));
     const CHANNEL_ID = await getChannelIdFromUrl(youtubeStr);
     console.log(videos, config, config?.social?.youtube, CHANNEL_ID);
@@ -214,7 +183,7 @@ async function getChannelIdFromUrl(channelUrl) {
     }
 
     // Save videos
-    await saveVideosToFile(videos, "./docs/src/videos.json"); // Guardar el resultado en un archivo
+    write("./docs/src/videos.json", videos); // Guardar el resultado en un archivo
     await writeNotification(newImportantVideos);
   } catch (error) {
     console.error("Error loading youtube data:", error);

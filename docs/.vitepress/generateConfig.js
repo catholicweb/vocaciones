@@ -1,23 +1,11 @@
 import MarkdownIt from "markdown-it";
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
 import sharp from "sharp";
+
+import { read, write, fs, path } from "./node_helpers.js";
 import { getPreview } from "./oembed.js";
 import { generateNav } from "./navBar.js";
 
 const md = new MarkdownIt({ html: true, linkify: true });
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-
-  return matter(content).data || {};
-}
 
 async function createManifest(config) {
   let manifest = {
@@ -80,8 +68,7 @@ async function autocomplete(fm, config) {
       }
     }
 
-    if (fm.sections[i]._block == "links") {
-      fm.sections[i]._block = "gallery";
+    if (fm.sections[i]._block == "gallery-feature") {
       fm.sections[i].type = "team-cards";
       fm.sections[i].grid = "small";
     } else if (fm.sections[i].list) {
@@ -125,6 +112,7 @@ function absoluteURL(url, config) {
     const siteurl = config.siteurl || "";
     return siteurl + url;
   }
+  return url;
 }
 
 function addMeta(fm, config) {
@@ -139,14 +127,8 @@ function addMeta(fm, config) {
   if (!fm?.equiv) return;
   for (var i = 0; i < fm.equiv.length; i++) {
     const hreflang = i == 0 ? "x-default" : fm.equiv[i].lang.split(":").pop();
-    fm.head.push(["link", { rel: "alternate", hreflang, href: absoluteURL(fm.equiv[i].href, config) }]);
+    fm.head.push(["link", { rel: "alternate", hreflang, href: absoluteURL(fm.equiv[i].href, config).replace(/index$/, "") }]);
   }
-}
-
-function googleFont(theme, weights = "400,700", styles = "normal,italic") {
-  // Google Fonts URL format
-  const baseURL = "https://fonts.googleapis.com/css2";
-  return `${baseURL}?family=${theme.bodyFont.replace(/\s+/g, "+")}&family=${theme.headingFont.replace(/\s+/g, "+")}&display=swap`;
 }
 
 const getHue = (hex) => {
@@ -259,24 +241,27 @@ function locales(languages) {
     const key = i === 0 ? "root" : lang;
     loc[key] = { label, lang };
   }
-  console.log(loc);
   return loc;
 }
 
+async function getFontCSS(theme) {
+  const url = googleFont(theme);
+  const res = await fetch(url);
+  let css = await res.text();
+  if (!css.includes("font-display")) css = css.replace(/}/g, "font-display:swap;}");
+  return css;
+}
+
+function googleFont(theme) {
+  return `https://fonts.googleapis.com/css2?family=${theme.bodyFont.replace(/\s+/g, "+")}&family=${theme.headingFont.replace(/\s+/g, "+")}&display=swap`;
+}
+
 export async function generate() {
-  let config = readFrontmatter("./pages/config.json");
+  let config = read("./pages/config.json");
 
   config.goatcounter = "https://vocacion.goatcounter.com/count";
 
   await printCSS(config);
-  const FONT_URL = googleFont(config.theme);
-
-  async function getFontCSS(url) {
-    const res = await fetch(url);
-    let css = await res.text();
-    if (!css.includes("font-display")) css = css.replace(/}/g, "font-display:swap;}");
-    return css;
-  }
 
   await createManifest(config);
 
@@ -286,7 +271,7 @@ export async function generate() {
       //["link", { rel: "preconnect", href: "https://fonts.googleapis.com" }],
       ["link", { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous" }],
       // Link to the Google Font stylesheet
-      ["style", {}, await getFontCSS(FONT_URL)],
+      ["style", {}, await getFontCSS(config.theme)],
       ["link", { rel: "manifest", href: "/manifest.json" }],
       ["link", { rel: "icon", href: "/favicon.ico", type: "image/x-icon" }],
       ["script", { "data-goatcounter": config.goatcounter, async: true, src: "//gc.zgo.at/count.js" }],

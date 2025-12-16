@@ -1,7 +1,8 @@
-export function formatDate(isoString) {
+export function formatDate(isoString, lang = "Español:es") {
+  if (typeof lang !== "string") return isoString;
   if (!isoString) return "";
-  const lang = "es";
-  isoString = isoString.replaceAll("/", "-");
+  const langCode = lang.split(":")[1];
+  isoString = isoString.replaceAll("-", "-");
   const date = new Date(isoString);
   if (isNaN(date.getTime())) return isoString;
   const monthIndex = date.getMonth();
@@ -20,11 +21,11 @@ export function formatDate(isoString) {
     ar: ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"],
     de: ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"],
     fr: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
-    default: ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII"],
+    default: ["-I", "-II", "-III", "-IV", "-V", "-VI", "-VII", "-VIII", "-IX", "-X", "-XI", "-XII"],
   };
 
-  const names = months[lang] || months["default"];
-  return lang === "eu" ? `${names[monthIndex]} ${date.getDate()} ${note}`.trim() : `${date.getDate()} ${names[monthIndex]} ${note}`.trim();
+  const names = months[langCode] || months["default"];
+  return langCode === "eu" ? `${names[monthIndex]} ${date.getDate()} ${note}`.trim() : `${date.getDate()} ${names[monthIndex]} ${note}`.trim();
 }
 
 export function slugify(str) {

@@ -21,7 +21,7 @@
       </div>
 
       <div v-if="item.publishedAt" class="pt-2 text-center w-full text-black">
-        {{ formatDate(item.publishedAt) }}
+        {{ formatDate(item.publishedAt, $frontmatter.lang) }}
         <div class="w-[14px] h-[14px] mx-auto rounded-full bg-accent"></div>
         <div class="h-[4px] -mt-[8px] bg-accent -mx-[8px]"></div>
       </div>

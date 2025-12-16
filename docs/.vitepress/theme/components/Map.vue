@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { data } from "./../../blocks.data.js";
 import { useData } from "vitepress";
 const { page } = useData();
@@ -39,14 +39,17 @@ async function loadCSS(url) {
   });
 }
 
+watch(
+  () => page.value.frontmatter.lang,
+  (lang) => {
+    renderMarkers(lang);
+  },
+);
+
+const allMaps = ref([]);
+
 onMounted(async () => {
   if (!mapContainer.value) return;
-
-  if (!data.maps.length) {
-    data.maps.push(props.block);
-  }
-
-  data.maps = data.maps.filter((f) => f.lang === page.value.frontmatter.lang);
 
   await loadCSS("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
   await import("https://unpkg.com/leaflet@1.9.4/dist/leaflet.js");
@@ -63,35 +66,41 @@ onMounted(async () => {
 
   var bounds = L.latLngBounds(latLngBounds);
 
-  map.fitBounds(bounds, {
-    padding: [40, 40],
-  });
+  map.fitBounds(bounds, { padding: [40, 40] });
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
-    attribution: "Voyager",
-    maxZoom: 16,
-  }).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", { attribution: "Voyager", maxZoom: 16 }).addTo(map);
 
   markersLayer = L.layerGroup().addTo(map);
 
-  data.maps.forEach((m) => {
-    const g = m.geo.split(",").map((s) => Number(s.trim()));
-    const html = `<a href="${m.url}">
-                    <h3 class="text-xl font-bold text-center text-accent">
-                                            ${m.name}
-                                        </h3>
-                                <div style="margin: 0;background: white;">
-                                        <img width="100%" style="width:100%; aspect-ratio: 16/9; object-fit: cover;" loading="lazy" src="${m.image} " alt="">
-                                </div>
-                        </a>`;
-    const marker = L.marker(g).addTo(markersLayer).bindPopup(html);
-    if (m.geo != props.block.geo) {
-      marker._icon.style.opacity = "0.4";
-      //marker._icon.style.filter = "grayscale(1)";
-      //marker._icon.style.transform += ' scale(0.5)'
-    }
-  });
+  renderMarkers(page.value.frontmatter.lang);
 });
+
+function renderMarkers(lang) {
+  if (!markersLayer) return;
+
+  markersLayer.clearLayers();
+
+  data.maps
+    .filter((m) => m.lang === lang)
+    .forEach((m) => {
+      const g = m.geo.split(",").map((s) => Number(s.trim()));
+
+      const html = `
+        <a href="${m.url}">
+          <h3 class="text-xl font-bold text-center text-accent">${m.name}</h3>
+          <div style="background:white">
+            <img src="${m.image}" style="width:100%;aspect-ratio:16/9;object-fit:cover" />
+          </div>
+        </a>
+      `;
+
+      const marker = L.marker(g).bindPopup(html).addTo(markersLayer);
+
+      if (m.geo !== props.block.geo) {
+        marker._icon.style.opacity = "0.4";
+      }
+    });
+}
 </script>
 
 <style>

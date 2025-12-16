@@ -1,7 +1,4 @@
-import fs from "fs";
-import path from "path";
-import fg from "fast-glob";
-import matter from "gray-matter";
+import { read, write, fg, fs, path } from "./node_helpers.js";
 import { slugify } from "./helpers.js";
 
 const ROOT = "./pages/";
@@ -11,7 +8,6 @@ const DICTIONARY = read("./docs/public/dictionary.json");
 const config = read("./pages/config.json");
 // Lista de lenguas a generar
 const TARGET_LANGS = config.languages?.length ? config.languages : ["Español:es"];
-
 // Campos que quieres traducir
 const FIELDS = ["title", "description", "html", "name", "action"];
 
@@ -24,16 +20,6 @@ function translateValue(value, dict) {
     return list.map((v) => dict[v] || v).join("\n\n");
   }
   return value;
-}
-
-function read(filePath, fallback = {}) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || `${fallback}`);
-  }
-  return matter(content) || fallback;
 }
 
 // Recursivo
@@ -53,38 +39,18 @@ function translateObject(obj, dict) {
   return obj;
 }
 
-async function write(filename, data) {
-  let outContent = {};
-  if (filename.endsWith(".md")) {
-    outContent = matter.stringify(data.content || "", data.data || {}, { language: "yaml", yamlOptions: { lineWidth: -1 } });
-  } else {
-    outContent = JSON.stringify(data);
-  }
-  fs.mkdirSync(path.dirname(filename), { recursive: true });
-  fs.writeFileSync(filename, outContent, "utf8");
-}
-
 async function cleanDir(dir) {
-  const files = await fg(["**/*.md", "!aviso-legal.md"], { cwd: OUT, absolute: true });
+  const files = await fg(["**/*.md", "!aviso-legal.md"], { cwd: dir, absolute: true });
   for (const file of files) {
     try {
       const data = read(file, {}).data;
       const source = read(data.source, {}).data;
       const targetUrl = "/" + filename(file, source.title, data.lang).replace("index", "");
-      const redirect = {
+      write(file, {
         source: data.source,
         lang: data.lang,
-        head: [
-          [
-            "meta",
-            {
-              "http-equiv": "refresh",
-              content: `0; url=${targetUrl}`,
-            },
-          ],
-        ],
-      };
-      write(file, { data: redirect });
+        head: [["meta", { "http-equiv": "refresh", content: `0; url=${targetUrl}` }]],
+      });
     } catch (e) {
       console.log(e);
       fs.unlinkSync(file);
@@ -104,7 +70,7 @@ function filename(file, title, lang) {
 }
 
 async function run() {
-  await cleanDir("./docs/");
+  await cleanDir(OUT);
   const files = await fg(["**/*.md", "!aviso-legal.md"], { cwd: ROOT, absolute: false });
 
   for (const file of files) {
@@ -119,15 +85,10 @@ async function run() {
         return { lang: lan, href: "/" + filename(file, original.data.title, lan) };
       });
 
-      const outContent = matter.stringify(original.content, translatedData, { language: "yaml", yamlOptions: { lineWidth: -1 } });
+      const dest = OUT + filename(file, original.data.title, lang) + ".md";
+      write(dest, translatedData, original.content);
 
-      const fname = filename(file, original.data.title, lang) + ".md";
-      const dest = path.join(OUT, fname);
-
-      fs.mkdirSync(path.dirname(dest), { recursive: true });
-      fs.writeFileSync(dest, outContent, "utf8");
-
-      console.log(`→ ${fname}`);
+      console.log(`→ ${dest}`);
     }
   }
 }

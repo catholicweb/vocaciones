@@ -1,22 +1,9 @@
-import fs from "fs";
-import fg from "fast-glob";
-import path from "path";
-import matter from "gray-matter";
+import { read, write, fg } from "./node_helpers.js";
 
 const dictPath = "./docs/public/dictionary.json";
 const keysToExtract = ["description", "html", "title", "name", "action"];
 const valueSet = new Set();
-const dictionary = fs.existsSync(dictPath) ? JSON.parse(fs.readFileSync(dictPath, "utf-8")) : {};
-
-function readFrontmatter(filePath) {
-  if (!fs.existsSync(filePath)) return {};
-  const content = fs.readFileSync(filePath, "utf8");
-
-  if (filePath.endsWith(".json")) {
-    return JSON.parse(content || "{}");
-  }
-  return matter(content).data || {};
-}
+const dictionary = read(dictPath);
 
 // Añade esta función para recorrer objetos recursivamente
 function extractValues(obj, keys) {
@@ -49,7 +36,7 @@ async function translateMissing(valuesArray, language) {
   });
 
   // Guardar actualizaciones
-  fs.writeFileSync(dictPath, JSON.stringify(dictionary, null, 2), "utf-8");
+  write(dictPath, dictionary);
 }
 async function translateWithOpenAI(missing, targetLanguage) {
   if (!Array.isArray(missing) || missing.length === 0) return [];
@@ -112,8 +99,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
     // Get values
     const files = await fg(["*.md", "!aviso-legal.md"], { cwd: "./pages", absolute: false });
     for (const file of files) {
-      const content = fs.readFileSync("./pages/" + file, "utf-8");
-      const parsed = matter(content);
+      const parsed = read("./pages/" + file, {});
       const values = extractValues(parsed.data, keysToExtract);
       values.forEach((v) => valueSet.add(v));
 
@@ -125,7 +111,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
     const valuesArray = [...valueSet];
 
     //
-    let config = readFrontmatter("./pages/config.json");
+    let config = read("./pages/config.json");
     let languages = config.languages?.length ? config.languages : [];
     await Promise.allSettled(languages.map((lang) => translateMissing(valuesArray, lang)));
   } catch (error) {
