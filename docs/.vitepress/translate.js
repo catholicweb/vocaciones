@@ -39,7 +39,7 @@ async function translateMissing(valuesArray, language) {
   write(dictPath, dictionary);
 }
 async function translateWithOpenAI(missing, targetLanguage) {
-  if (!Array.isArray(missing) || missing.length === 0) return [];
+  if (!Array.isArray(missing) || missing.length === 0 || (missing.length === 1 && missing[0] == "")) return [];
 
   console.log("Translating to ", targetLanguage, " the missing texts: ", missing);
 
