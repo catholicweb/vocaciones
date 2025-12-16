@@ -40,7 +40,7 @@ function extractValues(obj, keys) {
 async function translateMissing(valuesArray, language) {
   if (!dictionary[language]) dictionary[language] = {};
 
-  const missing = valuesArray.filter((phrase) => !dictionary[language][phrase]).slice(0, 25);
+  const missing = valuesArray.filter((phrase) => !dictionary[language][phrase]).slice(0, 50);
 
   const translations = await translateWithOpenAI(missing, language.split(":")[0]);
 
@@ -54,7 +54,7 @@ async function translateMissing(valuesArray, language) {
 async function translateWithOpenAI(missing, targetLanguage) {
   if (!Array.isArray(missing) || missing.length === 0) return [];
 
-  console.log("Translating to ", targetLanguage, " the missing sentences: ", missing);
+  console.log("Translating to ", targetLanguage, " the missing texts: ", missing);
 
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
@@ -83,7 +83,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
       input: [
         {
           role: "system",
-          content: "You are a professional translator for a Catholic website. " + "Texts most likely include catholic event titles, descriptions, timings etc..." + "Translate the given sentences preserving HTML or Markdown. Do not scape or modify new lines, tags... anything that is not text must be returned as it is. " + "If a sentence is already written in the target language, do NOT translate it, just fix ortography" + "Do NOT include explanations or reasoning." + "Return only a JSON object with translations, ej translations = { [translation-text-0, translation-text-1... ]}.",
+          content: "You are a professional translator for a Catholic website. " + "Texts most likely include catholic event titles, descriptions, timings etc..." + "Translate the given texts preserving HTML or Markdown. Do not scape or modify new lines, tags... anything that is not text must be returned as it is. " + "If a text is already written in the target language, do NOT translate it, just fix ortography" + "Do NOT include explanations or reasoning." + "Return only a JSON object with translations, ej translations = { [translation-text-0, translation-text-1... ]}.",
         },
         { role: "user", content: `Translate this array of texts to ${targetLanguage}: ${JSON.stringify(missing)}` },
       ],
@@ -127,9 +127,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
     //
     let config = readFrontmatter("./pages/config.json");
     let languages = config.languages?.length ? config.languages : [];
-    for (const lang of languages) {
-      await translateMissing(valuesArray, lang);
-    }
+    await Promise.allSettled(languages.map((lang) => translateMissing(valuesArray, lang)));
   } catch (error) {
     console.error("Error loading translating data:", error);
   }
