@@ -120,6 +120,6 @@ function localLinks(linkPath) {
     description: data.description || "",
     image: data.image || "",
     aspect: 16 / 9,
-    link: linkPath.replace("docs/", "").replace(".md", ""),
+    link: linkPath.replace("pages/", "").replace("docs/", "").replace(".md", ""),
   };
 }
