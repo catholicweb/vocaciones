@@ -13,46 +13,49 @@ const DICTIONARY = read("./docs/public/dictionary.json");
 const config = read("./pages/config.json");
 // Lista de lenguas a generar
 const TARGET_LANGS = config.languages?.length ? config.languages : ["Español:es"];
-// Campos que quieres traducir
-const FIELDS = ["title", "description", "html", "name", "action"];
 import MarkdownIt from "markdown-it";
 import sharp from "sharp";
 
 const md = new MarkdownIt({ html: true, linkify: true });
 
 async function createManifest() {
-  let manifest = {
-    name: config.title,
-    short_name: config.title,
-    description: config.description,
-    start_url: "/",
-    display: "standalone",
-    background_color: config.theme.accentColor,
-    theme_color: config.theme.accentColor,
-    icons: [
-      { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-  };
-  write("./docs/public/manifest.json", manifest);
+  try {
+    const manifest = {
+      name: config.title,
+      short_name: config.title,
+      description: config.description,
+      start_url: "/",
+      display: "standalone",
+      background_color: config.theme.accentColor,
+      theme_color: config.theme.accentColor,
+      icons: [
+        { src: "/icon-192.png", sizes: "192x192", type: "image/png" },
+        { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
+      ],
+    };
+    write("./docs/public/manifest.json", manifest);
 
-  // Generate icons
-  if (!config.icon) return;
-  for (const size of [192, 512]) {
-    try {
-      await sharp("./docs/public" + config.icon)
-        .resize(size, size)
-        .png()
-        .toFile(`./docs/public/icon-${size}.png`);
-    } catch (err) {
-      console.error(`⚠️ Error generando icono ${size}:`, err.message);
+    // Generate icons
+    if (!config.icon) return;
+    for (const size of [192, 512]) {
+      try {
+        await sharp("./docs/public" + config.icon)
+          .resize(size, size)
+          .png()
+          .toFile(`./docs/public/icon-${size}.png`);
+      } catch (err) {
+        console.error(`⚠️ Error generando icono ${size}:`, err.message);
+      }
     }
-  }
 
-  // generate the favicon
-  await sharp(fullPath)
-    .resize(64, 64) // Resize to 32x32 pixels for the favicon size
-    .toFile(`./docs/public/favicon.ico`);
+    // generate the favicon
+
+    await sharp("./docs/public" + config.icon)
+      .resize(64, 64) // Resize to 32x32 pixels for the favicon size
+      .toFile(`./docs/public/favicon.ico`);
+  } catch (e) {
+    console.log(e, "failed to createManifest");
+  }
 }
 
 async function postComplete(fm) {
