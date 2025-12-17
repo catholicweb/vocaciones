@@ -10,13 +10,17 @@ export { path };
 export { fs };
 
 export function read(filename, fallback = {}) {
-  if (!fs.existsSync(filename)) return {};
-  const content = fs.readFileSync(filename, "utf8");
+  try {
+    const content = fs.readFileSync(filename, "utf8");
 
-  if (filename.endsWith(".json")) {
-    return JSON.parse(content || `${fallback}`);
+    if (filename.endsWith(".json")) {
+      return JSON.parse(content) || fallback;
+    }
+    return matter(content) || fallback;
+  } catch (e) {
+    console.error(e);
+    return fallback;
   }
-  return matter(content) || fallback;
 }
 
 export function write(filename, data = {}, content = "") {

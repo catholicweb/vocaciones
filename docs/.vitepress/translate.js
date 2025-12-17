@@ -99,7 +99,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
     // Get values
     const files = await fg(["*.md", "!aviso-legal.md"], { cwd: "./pages", absolute: false });
     for (const file of files) {
-      const parsed = read("./pages/" + file, {});
+      const parsed = read("./pages/" + file);
       const values = extractValues(parsed.data, keysToExtract);
       values.forEach((v) => valueSet.add(v));
 
@@ -110,7 +110,7 @@ async function translateWithOpenAI(missing, targetLanguage) {
     }
     const valuesArray = [...valueSet];
 
-    //
+    // Translate
     let config = read("./pages/config.json");
     let languages = config.languages?.length ? config.languages : [];
     await Promise.allSettled(languages.map((lang) => translateMissing(valuesArray, lang)));
