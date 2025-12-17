@@ -1,13 +1,9 @@
 {
-  "name": "Vocaciones Navarra",
+  "name": "Parroquia.app",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "fetch-upstream": "node docs/.vitepress/fetchUpstream.js",
-    "fetch-youtube": "node docs/.vitepress/fetchYoutube.js",
-    "translate": "node docs/.vitepress/translate.js",
-    "create-files": "node docs/.vitepress/createFiles.js",
-    "docs:before-build": "npm run fetch-upstream",
+    "docs:before-build": "node docs/.vitepress/createFiles.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"

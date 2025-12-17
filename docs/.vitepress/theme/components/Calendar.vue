@@ -1,6 +1,6 @@
 <script setup>
 import { data } from "./../../calendar.data.js";
-import { formatDate, slugify } from "./../../helpers.js";
+import { formatDate, slugify } from "./../../utils.js";
 
 const props = defineProps({
   block: {

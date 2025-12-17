@@ -1,4 +1,4 @@
-import { read, write } from "./node_helpers.js";
+import { read, write } from "./node_utils.js";
 
 const API_KEY = process.env.YT_API_KEY; // Leer API Key de env
 let newImportantVideos = [];
@@ -160,7 +160,7 @@ async function getChannelIdFromUrl(channelUrl) {
   }
 }
 
-(async () => {
+export async function fetchVideos(channelUrl) {
   try {
     if (!API_KEY) {
       console.error("Error: La API Key no está definida. Asegúrate de exportarla.");
@@ -171,7 +171,6 @@ async function getChannelIdFromUrl(channelUrl) {
     let videos = read("./docs/src/videos.json", []);
     const youtubeStr = config.social.find((s) => s.toLowerCase().includes("youtube"));
     const CHANNEL_ID = await getChannelIdFromUrl(youtubeStr);
-    console.log(videos, config, config?.social?.youtube, CHANNEL_ID);
     // Get main videos
     const playlistId = await getUploadsPlaylistId(CHANNEL_ID);
     videos = await updateVideos(playlistId, videos);
@@ -182,10 +181,11 @@ async function getChannelIdFromUrl(channelUrl) {
       videos = await updateVideos(playlists[i].playlistId, videos, playlists[i].title);
     }
 
+    console.log("Fetched ", videos.length, " videos.");
     // Save videos
     write("./docs/src/videos.json", videos); // Guardar el resultado en un archivo
     await writeNotification(newImportantVideos);
   } catch (error) {
     console.error("Error loading youtube data:", error);
   }
-})();
+}

@@ -24,7 +24,7 @@
 
 <script setup>
 import components from "./components";
-import { slugify } from "./../helpers.js";
+import { slugify } from "./../utils.js";
 
 // Get the component matching the block type
 function getBlockComponent(block = "gallery") {

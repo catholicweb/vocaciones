@@ -31,5 +31,6 @@ export function write(filename, data = {}, content = "") {
     outContent = JSON.stringify(data, null, 2);
   }
   fs.mkdirSync(path.dirname(filename), { recursive: true });
+  console.log(`→ ${filename}`);
   fs.writeFileSync(filename, outContent, "utf8");
 }

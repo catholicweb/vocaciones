@@ -1,6 +1,6 @@
 // oembed-ultra.js
 import { Parser } from "htmlparser2";
-import { read, write, path } from "./node_helpers.js";
+import { read, write, path } from "./node_utils.js";
 
 function extractIframeSrc(html) {
   // Busca el atributo src dentro del iframe de Spotify
@@ -13,10 +13,10 @@ async function fetchOembed(url) {
   const data = await res.json();
 
   return {
-    title: data.title,
-    author: data.author_name,
-    src: extractIframeSrc(data.html),
-    image: data.thumbnail_url,
+    title: data.title || "",
+    author: data.author_name || "",
+    src: extractIframeSrc(data.html) || "",
+    image: data.thumbnail_url || "",
     aspect: data.width / data.height,
   };
 }
@@ -106,7 +106,7 @@ async function getOEmbed(url) {
   // --- 3) Fallback OG ultra-minimal
   return {
     type: "link",
-    src: og.url || url,
+    src: og.url || url || "",
     title: og.title || "",
     image: og.image || "",
     aspect: 16 / 9,
@@ -116,10 +116,10 @@ async function getOEmbed(url) {
 function localLinks(linkPath) {
   const { data } = read(linkPath);
   return {
-    title: data.title,
+    title: data.title || "",
     description: data.description || "",
     image: data.image || "",
     aspect: 16 / 9,
-    link: linkPath.replace("pages/", "").replace("docs/", "").replace(".md", ""),
+    file: linkPath,
   };
 }

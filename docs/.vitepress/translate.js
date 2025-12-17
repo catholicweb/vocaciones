@@ -1,4 +1,4 @@
-import { read, write, fg } from "./node_helpers.js";
+import { read, write, fg } from "./node_utils.js";
 
 const dictPath = "./docs/public/dictionary.json";
 const keysToExtract = ["description", "html", "title", "name", "action"];
@@ -94,7 +94,35 @@ async function translateWithOpenAI(missing, targetLanguage) {
   }
 }
 
-(async () => {
+export function translateValue(value, dict) {
+  if (typeof value === "string") {
+    const list = value
+      .replace(/\n +\n/g, "\n\n")
+      .split("\n\n")
+      .map((s) => s.trim());
+    return list.map((v) => dict[v] || v).join("\n\n");
+  }
+  return value;
+}
+
+// Recursivo
+export function translateObject(obj, dict) {
+  if (Array.isArray(obj)) {
+    return obj.map((v) => translateObject(v, dict));
+  }
+  if (obj && typeof obj === "object") {
+    const out = {};
+    for (const k of Object.keys(obj)) {
+      const v = obj[k];
+      if (FIELDS.includes(k)) out[k] = translateValue(v, dict);
+      else out[k] = translateObject(v, dict);
+    }
+    return out;
+  }
+  return obj;
+}
+
+export async function buildDictionary() {
   try {
     // Get values
     const files = await fg(["*.md", "!aviso-legal.md"], { cwd: "./pages", absolute: false });
@@ -117,4 +145,4 @@ async function translateWithOpenAI(missing, targetLanguage) {
   } catch (error) {
     console.error("Error loading translating data:", error);
   }
-})();
+}

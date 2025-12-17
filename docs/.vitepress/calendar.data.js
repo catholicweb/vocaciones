@@ -1,6 +1,6 @@
 // dataExporter.js
 import ICAL from "ical.js";
-import { read, write } from "./node_helpers.js";
+import { read, write } from "./node_utils.js";
 
 function exportCalendar(events) {
   // TODO: export also as ICS

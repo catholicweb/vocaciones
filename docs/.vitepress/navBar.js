@@ -1,5 +1,5 @@
-import { slugify } from "./helpers.js";
-import { read, write, fg, path } from "./node_helpers.js";
+import { slugify } from "./utils.js";
+import { read, write, fg, path } from "./node_utils.js";
 
 const docsDir = path.resolve("./docs");
 

@@ -31,7 +31,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { formatDate } from "./../../helpers.js";
+import { formatDate } from "./../../utils.js";
 import youtube from "./../../../src/videos.json";
 
 const props = defineProps({
