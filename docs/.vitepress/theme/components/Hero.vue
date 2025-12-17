@@ -1,7 +1,7 @@
 <template>
   <div class="hero relative flex items-center justify-center min-h-[50vh] mb-2 text-center text-white font-extrabold [text-shadow:_0_0_8px_rgba(0,0,0,1)]">
     <!-- Imagen -->
-    <img :src="block.image" alt="" class="absolute inset-0 size-full object-cover" :fetchpriority="block.index >= 1 ? 'low' : 'high'" :loading="block.index >= 1 ? 'lazy' : 'eager'" />
+    <Image :index="block.index" :src="block.image" alt="" class="absolute inset-0 size-full object-cover" />
     <!-- Overlay -->
     <div class="absolute inset-0 [background:radial-gradient(closest-side,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0)_100%)]"></div>
 
@@ -24,21 +24,7 @@
 </template>
 
 <script setup>
-function heroBgStyle(imageUrl) {
-  if (!imageUrl) return "background-color: #808080;";
-  const src720 = imageUrl.replace("480", "720");
-  const src1080 = imageUrl.replace("480", "1080");
-  /*`image-set(
-      url('${imageUrl}') 1x,
-      url('${src720}') 2x,
-      url('${src1080}') 3x
-    )`,*/
-  return {
-    backgroundImage: `url('${imageUrl}')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
-}
+import Image from "./Image.vue";
 
 defineProps({
   block: {

@@ -1,7 +1,7 @@
 import { read, write, fg } from "./node_utils.js";
 
 const dictPath = "./docs/public/dictionary.json";
-const keysToExtract = ["description", "html", "title", "name", "action"];
+const FIELDS = ["title", "description", "html", "name", "action"];
 const valueSet = new Set();
 const dictionary = read(dictPath);
 
@@ -128,7 +128,7 @@ export async function buildDictionary() {
     const files = await fg(["*.md", "!aviso-legal.md"], { cwd: "./pages", absolute: false });
     for (const file of files) {
       const parsed = read("./pages/" + file);
-      const values = extractValues(parsed.data, keysToExtract);
+      const values = extractValues(parsed.data, FIELDS);
       values.forEach((v) => valueSet.add(v));
 
       if (parsed.content?.trim()) {

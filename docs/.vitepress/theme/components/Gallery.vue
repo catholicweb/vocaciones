@@ -6,7 +6,7 @@
     <!-- 1. Card Full - Image with Overlay (YouTube style) -->
     <div v-if="block.type === 'card-full'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="relative h-64 rounded-lg overflow-hidden group cursor-pointer shadow-lg hover:shadow-xl transition-all">
-        <img :src="item.image" :alt="item.title" class="w-full h-full object-cover" />
+        <Image :src="item.image" :alt="item.title" :index="block.index" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
           <div class="absolute bottom-0 left-0 right-0 p-6">
             <h3 class="text-xl font-bold text-white mb-2">{{ item.title }}</h3>
@@ -23,7 +23,7 @@
     <div v-if="block.type === 'gallery'" :class="block.grid">
       <div v-for="(item, i) in block.elements" :key="i">
         <div class="relative aspect-square rounded-lg overflow-hidden group cursor-pointer">
-          <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
+          <Image :src="item.image" :alt="item.title" :index="block.index" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all">
             <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity">
               <h3 class="text-white font-bold text-lg mb-1">{{ item.title }}</h3>
@@ -39,7 +39,7 @@
     <!-- 3. Book/Resource List -->
     <div v-if="block.type === 'resource-list'" class="space-y-4">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 flex gap-4 cursor-pointer">
-        <img :src="item.image" :alt="item.title" loading="lazy" class="w-24 h-32 object-cover rounded shadow-sm flex-shrink-0" />
+        <Image :src="item.image" :alt="item.title" :index="block.index" class="w-24 h-32 object-cover rounded shadow-sm flex-shrink-0" />
         <div class="flex-1 flex flex-col">
           <h3 class="text-lg font-bold text-gray-900 mb-1">{{ item.title }}</h3>
           <p class="text-gray-600 text-sm mb-3 flex-1">{{ item.description }}</p>
@@ -54,7 +54,7 @@
     <div v-if="block.type === 'video-grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="group cursor-pointer">
         <div class="relative aspect-video rounded-lg overflow-hidden mb-3 bg-gray-200 facade youtube">
-          <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+          <Image :src="item.image" :alt="item.title" :index="block.index" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
         </div>
         <h3 class="font-semibold text-gray-900 mb-1">{{ item.title }}</h3>
         <p class="text-sm text-gray-600 mb-2">{{ item.description }}</p>
@@ -67,7 +67,7 @@
     <!-- 5. Hero Banner (Featured content) -->
     <div v-if="block.type === 'hero-banner'" class="space-y-6">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="relative h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer">
-        <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        <Image :src="item.image" :alt="item.title" :index="block.index" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent">
           <div class="absolute inset-0 p-8 md:p-12 flex flex-col justify-center max-w-2xl">
             <h2 class="text-3xl md:text-5xl font-bold text-white mb-4">{{ item.title }}</h2>
@@ -84,7 +84,7 @@
     <div v-if="block.type === 'portfolio'" class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="group cursor-pointer">
         <div class="relative aspect-[4/3] rounded-lg overflow-hidden mb-4 bg-gray-100">
-          <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover transition-all group-hover:scale-105 group-hover:brightness-75" />
+          <Image :index="block.index" :src="item.image" :alt="item.title" class="w-full h-full object-cover transition-all group-hover:scale-105 group-hover:brightness-75" />
         </div>
         <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
         <p class="text-gray-600 mb-4">{{ item.description }}</p>
@@ -101,7 +101,7 @@
     <div v-if="block.type === 'product-cards'" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow group cursor-pointer">
         <div class="aspect-square bg-gray-100 overflow-hidden">
-          <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+          <Image :index="block.index" :src="item.image" :alt="item.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
         </div>
         <div class="p-4">
           <h3 class="font-semibold text-gray-900 mb-1 line-clamp-1">{{ item.title }}</h3>
@@ -116,7 +116,7 @@
     <!-- 8. Article/Blog List -->
     <div v-if="block.type === 'article-list'" class="container mx-auto flex flex-wrap justify-center gap-6 mb-4 overflow-hidden">
       <a v-for="(item, i) in block.elements" :key="i" :href="item.link" class="w-full sm:w-1/2 md:w-1/4 flex flex-col gap-3 border-2 border-gray-200 hover:border-accent hover:bg-gray-50 p-3 rounded-md transition cursor-pointer group">
-        <img :src="item.image" :alt="item.title" loading="lazy" class="w-full h-40 object-cover rounded-md" />
+        <Image :index="block.index" :src="item.image" :alt="item.title" class="w-full h-40 object-cover rounded-md" />
 
         <h2 class="text-lg font-semibold text-gray-900 group-hover:text-accent transition-colors flex items-center gap-1">
           {{ item.title }}
@@ -133,7 +133,7 @@
     <div v-if="block.type === 'team-cards'" :class="block.grid">
       <a v-for="(item, i) in block.elements" :key="i" :href="item.link">
         <div class="relative mb-4 inline-block">
-          <img :src="item.image" loading="lazy" :alt="'team-cards ' + item.title" class="w-40 h-40 rounded-full object-cover border-4 border-accent shadow-lg group-hover:scale-105 transition-transform" />
+          <Image :index="block.index" :src="item.image" :alt="'team-cards ' + item.title" class="w-40 h-40 rounded-full object-cover border-4 border-accent shadow-lg group-hover:scale-105 transition-transform" />
         </div>
         <h3 class="text-xl font-bold text-gray-900 mb-1">{{ item.title }}</h3>
         <p class="text-sm text-gray-600 mb-4">{{ item.description }}</p>
@@ -146,7 +146,7 @@
     <!-- 10. Compact List (News/Feed style) -->
     <div v-if="block.type === 'compact-list'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-md divide-y">
       <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="p-4 flex gap-4 hover:bg-gray-50 transition-colors cursor-pointer">
-        <img :src="item.image" :alt="item.title" loading="lazy" class="w-20 h-20 object-cover rounded flex-shrink-0" />
+        <Image :index="block.index" :src="item.image" :alt="item.title" class="w-20 h-20 object-cover rounded flex-shrink-0" />
         <div class="flex-1 min-w-0">
           <h3 class="font-semibold text-gray-900 mb-1 truncate">{{ item.title }}</h3>
           <p class="text-sm text-gray-600 line-clamp-2 mb-2">{{ item.description }}</p>
@@ -169,7 +169,7 @@
           <div v-if="item.date" class="text-sm font-semibold text-accent mb-2">{{ item.date }}</div>
           <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
           <p class="text-gray-600 mb-4">{{ item.description }}</p>
-          <img v-if="item.image" :src="item.image" loading="lazy" :alt="item.title" class="w-full h-48 object-cover rounded-lg mb-3" />
+          <Image :index="block.index" v-if="item.image" :src="item.image" :alt="item.title" class="w-full h-48 object-cover rounded-lg mb-3" />
           <button v-if="item.callToAction" class="text-accent hover:opacity-80 font-medium text-sm">{{ item.callToAction }} →</button>
         </div>
       </div>
@@ -202,7 +202,7 @@
           <div v-for="(item, i) in block.elements" :key="i" @click="handleClick(item)" class="flex-shrink-0 w-80 snap-start">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden group cursor-pointer h-full">
               <div class="aspect-video bg-gray-200 overflow-hidden">
-                <img :src="item.image" loading="lazy" :alt="item.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
+                <Image :index="block.index" :src="item.image" :alt="item.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform" />
               </div>
               <div class="p-6">
                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
@@ -220,6 +220,7 @@
 </template>
 
 <script setup>
+import Image from "./Image.vue";
 import { ref } from "vue";
 
 const props = defineProps({
