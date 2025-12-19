@@ -18,11 +18,9 @@ const basePath = computed(() => {
 });
 
 const srcset = computed(() =>
-  `
-  /media/sm/${basePath.value} 480w,
+  `/media/sm/${basePath.value} 480w,
   /media/md/${basePath.value} 768w,
-  /media/lg/${basePath.value} 1080w
-`.trim(),
+  /media/lg/${basePath.value} 1080w`.trim(),
 );
 </script>
 
@@ -32,7 +30,7 @@ const srcset = computed(() =>
 
   <!-- Optimised local image -->
   <picture v-else>
-    <source type="image/webp" :srcset="srcset" sizes="(max-width: 768px) 100vw, 768px" />
-    <img :src="`/media/lg/${basePath}`" :alt="alt" :class="class" :fetchpriority="index >= 1 ? 'low' : 'high'" :loading="index >= 1 ? 'lazy' : 'eager'" />
+    <source type="image/webp" :srcset="srcset" />
+    <img :src="`/media/md/${basePath}`" :alt="alt" :class="class" :fetchpriority="index >= 1 ? 'low' : 'high'" :loading="index >= 1 ? 'lazy' : 'eager'" />
   </picture>
 </template>
