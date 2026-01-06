@@ -6,8 +6,8 @@ import path from "path";
 const MEDIA_DIR = path.resolve("docs/public/media");
 
 const SIZES = {
-  sm: { width: 480, quality: 70 },
-  md: { width: 768, quality: 80 },
+  sm: { width: 480, quality: 60 },
+  md: { width: 768, quality: 70 },
   lg: { width: 1080, quality: 90 },
 };
 

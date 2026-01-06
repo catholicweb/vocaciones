@@ -18,7 +18,7 @@ export function read(filename, fallback = {}) {
     }
     return matter(content) || fallback;
   } catch (e) {
-    console.error(e);
+    console.error("Unable to read", filename, e);
     return fallback;
   }
 }

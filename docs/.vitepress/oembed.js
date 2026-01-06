@@ -8,6 +8,10 @@ function extractIframeSrc(html) {
   return match ? match[1] : null;
 }
 
+function round(num) {
+  return Math.round(num * 100) / 100;
+}
+
 async function fetchOembed(url) {
   const res = await fetch(url);
   const data = await res.json();
@@ -17,7 +21,7 @@ async function fetchOembed(url) {
     author: data.author_name || "",
     src: extractIframeSrc(data.html) || "",
     image: data.thumbnail_url || "",
-    aspect: data.width / data.height,
+    aspect: round(data.width / data.height),
   };
 }
 
@@ -42,10 +46,21 @@ const KNOWN_PROVIDERS = [
 ];
 
 export async function getPreview(url) {
-  if (url.endsWith(".md")) {
-    return localLinks(url);
-  } else {
-    return getOEmbed(url);
+  try {
+    if (url.endsWith(".md")) {
+      return await localLinks(url);
+    } else {
+      return await getOEmbed(url);
+    }
+  } catch (e) {
+    console.log(e);
+    return {
+      type: "link",
+      src: url,
+      title: "",
+      image: "",
+      aspect: round(16 / 9),
+    };
   }
 }
 
@@ -109,7 +124,7 @@ async function getOEmbed(url) {
     src: og.url || url || "",
     title: og.title || "",
     image: og.image || "",
-    aspect: 16 / 9,
+    aspect: round(16 / 9),
   };
 }
 
@@ -119,7 +134,7 @@ function localLinks(linkPath) {
     title: data.title || "",
     description: data.description || "",
     image: data.image || "",
-    aspect: 16 / 9,
+    aspect: round(16 / 9),
     file: linkPath,
   };
 }

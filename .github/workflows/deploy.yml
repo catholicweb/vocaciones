@@ -73,6 +73,9 @@ jobs:
           EVENT_SCHEDULE: ${{ github.event.schedule }}
           YT_API_KEY: ${{ secrets.YT_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          VAPID_PUBLIC: ${{ secrets.VAPID_PUBLIC }}
+          VAPID_PRIVATE: ${{ secrets.VAPID_PRIVATE }}
+          NOTIF_TOKEN: ${{ secrets.NOTIF_TOKEN }}
       - name: Build with VitePress
         run: npm run docs:build
       - name: Upload artifact

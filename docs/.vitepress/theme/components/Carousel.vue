@@ -23,9 +23,6 @@ onUnmounted(() => clearInterval(timer));
 
 <template>
   <div class="carousel w-full text-center">
-    <h2 class="text-2xl font-bold mb-1">{{ block.title }}</h2>
-    <p class="text-gray-500 mb-4">{{ block.subtitle }}</p>
-
     <div class="relative mx-auto container px-8 h-[10vh]">
       <div v-for="(item, i) in block.elements" :key="i" class="absolute inset-0 w-full transition-all duration-2000 ease-in-out" :class="{ 'opacity-100': current === i, 'opacity-0': current !== i }">
         <img :src="item.image" class="w-full object-cover aspect-16/9" alt="" />

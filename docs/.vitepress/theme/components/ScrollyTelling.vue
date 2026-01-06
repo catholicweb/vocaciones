@@ -39,9 +39,6 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="w-full mt-[10vh] relative z-[-20]">
-    <div v-if="block.title" class="text-center pt-12 px-6">
-      <h2 class="my-2 text-4xl font-bold">{{ block.title }}</h2>
-    </div>
     <div v-for="(item, i) in block.elements" :key="i" class="step relative h-[75vh] my-0 p-0">
       <div v-if="item.id" :id="item.id" class="scroll__id absolute max-w-[700px] -mt-[75vh]"></div>
 

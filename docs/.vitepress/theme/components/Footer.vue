@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-gray-100 border-t border-gray-700 pt-8 pb-4">
+  <footer class="border-t border-gray-700 pt-8 pb-4" :class="navStyle == '47herri' ? '[&_*]:text-white bg-[#222831] pt-4' : 'bg-gray-100'">
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
         <!-- Contact Section -->
@@ -94,7 +94,7 @@
       <!-- Footer Info -->
       <div class="mt-4 pt-4 text-center text-gray-800">
         <p class="text-sm">
-          <em> &copy; {{ new Date().getFullYear() }} — <a href="/aviso-legal" class="hover:text-accent transition-colors"> Aviso Legal </a></em>
+          <em> &copy; {{ new Date().getFullYear() }} <a href="https://parroquia.app" class="hover:text-accent transition-colors">parroquia.app </a> — <a href="/aviso-legal-y-politica-de-privacidad" class="hover:text-accent transition-colors"> Aviso Legal </a> — <a href="/aviso-legal-y-politica-de-privacidad" class="hover:text-accent transition-colors"> Política privacidad </a></em>
         </p>
       </div>
     </div>
@@ -106,4 +106,5 @@ import { ref } from "vue";
 import { useData } from "vitepress";
 const { theme } = useData();
 const config = ref(theme.value.config || {});
+const navStyle = ref(theme.value?.config?.theme?.navStyle);
 </script>

@@ -1,7 +1,4 @@
 <template>
-  <div v-if="block.title" class="text-center">
-    <h2 class="mt-12 text-4xl font-bold">{{ block.title }}</h2>
-  </div>
   <div class="gallery pb-6 pt-4 container mx-auto px-4">
     <!-- 1. Card Full - Image with Overlay (YouTube style) -->
     <div v-if="block.type === 'card-full'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -20,9 +17,9 @@
     </div>
 
     <!-- 2. Image Gallery (Pinterest/Instagram style) -->
-    <div v-if="block.type === 'gallery'" :class="block.grid">
+    <div v-if="block.type === 'gallery'" :class="grid(block)">
       <div v-for="(item, i) in block.elements" :key="i">
-        <div class="relative aspect-square rounded-lg overflow-hidden group cursor-pointer">
+        <div class="relative aspect-square rounded-lg overflow-hidden group cursor-pointer" @click="currentGalleryIdx = i">
           <Image :src="item.image" :alt="item.title" :index="block.index" class="w-full h-full object-cover transition-transform group-hover:scale-110" />
           <div class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all">
             <div class="absolute inset-0 p-4 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity">
@@ -34,6 +31,7 @@
           </div>
         </div>
       </div>
+      <PopupGallery :images="block.elements" :activeIndex="currentGalleryIdx" @close="currentGalleryIdx = null" @select="(i) => (currentGalleryIdx = i)"></PopupGallery>
     </div>
 
     <!-- 3. Book/Resource List -->
@@ -130,7 +128,7 @@
     </div>
 
     <!-- 9. Team Members/People Cards -->
-    <div v-if="block.type === 'team-cards'" :class="block.grid">
+    <div v-if="block.type === 'team-cards'" :class="grid(block)">
       <a v-for="(item, i) in block.elements" :key="i" :href="item.link">
         <div class="relative mb-4 inline-block">
           <Image :index="block.index" :src="item.image" :alt="'team-cards ' + item.title" class="w-40 h-40 rounded-full object-cover border-4 border-accent shadow-lg group-hover:scale-105 transition-transform" />
@@ -156,7 +154,7 @@
     </div>
 
     <!-- 11. HTML text -->
-    <div v-if="block.type === 'text'">
+    <div v-if="block.type === 'text'" class="[&_img]:mx-auto [&_img]:w-2/3 [&_img]:sm:w-1/2">
       <div v-if="block.html" class="prose p-2 max-w-2xl mx-auto" v-html="block.html"></div>
     </div>
 
@@ -220,8 +218,12 @@
 </template>
 
 <script setup>
+import { grid } from "./../../utils.js";
 import Image from "./Image.vue";
+import PopupGallery from "./PopupGallery.vue";
 import { ref } from "vue";
+
+const currentGalleryIdx = ref(null);
 
 const props = defineProps({
   block: {

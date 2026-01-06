@@ -4,14 +4,16 @@
     <!-- Navbar Component -->
     <component :is="components.Navbar" />
 
-    <!-- Hero Component (optional?) -->
-    <component :is="components.Hero" :block="$frontmatter" />
-
     <!-- Main Content - Block System -->
-    <main class="flex-1" v-if="$frontmatter.sections">
-      <section v-for="(section, index) in $frontmatter.sections" :id="slugify(section.title)">
-        <component :key="index" :is="getBlockComponent(section._block)" :block="section" />
-      </section>
+    <main class="flex-1 flex flex-wrap" v-if="$frontmatter.sections">
+      <template v-for="(section, index) in $frontmatter.sections">
+        <section :class="getSectionClasses(section.tags)" v-if="!section.tags?.includes('hidden')">
+          <div v-if="section.title && section._block != 'hero'" class="text-center mt-8 mb-4 container mx-auto">
+            <h2 :id="slugify(section.title)" class="text-4xl font-bold">{{ section.title }}</h2>
+          </div>
+          <component :key="slugify(section.title)" :is="getBlockComponent(section._block)" :block="section" />
+        </section>
+      </template>
     </main>
 
     <!-- Footer Component -->
@@ -25,6 +27,22 @@
 <script setup>
 import components from "./components";
 import { slugify } from "./../utils.js";
+
+function getSectionClasses(tags = []) {
+  const classes = [];
+
+  if (tags.includes("dark")) {
+    classes.push("[&_*]:text-white", "bg-[#222831]", "pt-4");
+  }
+
+  if (tags.includes("twocols")) {
+    classes.push("w-full", "md:w-1/2", "flex-none", "align-top", "px-4", "mx-auto");
+  } else {
+    classes.push("block", "w-full");
+  }
+
+  return classes;
+}
 
 // Get the component matching the block type
 function getBlockComponent(block = "gallery") {

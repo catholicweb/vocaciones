@@ -14,7 +14,7 @@ const isMedia = computed(() => props.src?.startsWith("/media/"));
 
 const basePath = computed(() => {
   const p = props.src?.replace(/^\/media\//, "");
-  return p?.replace(/\.[^/.]+$/, ".webp");
+  return encodeURIComponent(p?.replace(/\.[^/.]+$/, ".webp"));
 });
 
 const srcset = computed(() =>
@@ -26,7 +26,7 @@ const srcset = computed(() =>
 
 <template>
   <!-- External or non-media image -->
-  <img v-if="isExternal || !isMedia" :src="src" :alt="alt" :class="class" :fetchpriority="index >= 1 ? 'low' : 'high'" :loading="index >= 1 ? 'lazy' : 'eager'" />
+  <img v-if="isExternal || !isMedia" :src="src" :alt="alt" :class="class" crossorigin="anonymous" :fetchpriority="index >= 1 ? 'low' : 'high'" :loading="index >= 1 ? 'lazy' : 'eager'" />
 
   <!-- Optimised local image -->
   <picture v-else>

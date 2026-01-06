@@ -2,7 +2,7 @@ node_modules
 docs/**/*.md
 docs/public/calendar.json
 docs/public/manifest.json
-docs/.vitepress/theme/vars.css
+docs/.vitepress/theme/style.css
 docs/.vitepress/cache
 docs/.vitepress/dist
 *.log
