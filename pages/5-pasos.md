@@ -1,5 +1,5 @@
 ---
-title: Los 6 formas de discernir
+title: Las 6 formas de discernir
 image: /media/abrio-libro-sagrada-biblia-sobre-fondo-oscuro_488220-43539.webp
 sections:
   - _block: text
