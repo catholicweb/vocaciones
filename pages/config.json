@@ -3,9 +3,7 @@
   "description": "Dios te sueña a lo grande. ¿Y tú? ¿Cómo te sueñas? Atrévete a descubrir el sentido de tu vida.",
   "image": "/media/YESYES.webp",
   "icon": "/media/unnamed-removebg-preview.webp",
-  "social": [
-    "https://www.youtube.com/@seminariopamplona"
-  ],
+  "social": ["https://www.youtube.com/@seminariopamplona"],
   "bank": [
     {
       "title": "Dono a mi Iglesia",
@@ -19,54 +17,22 @@
   "nav": [
     {
       "title": "Disciernimiento",
-      "links": [
-        "pages/discierne.md",
-        "pages/7-pasos.md",
-        "pages/5-pasos.md",
-        "pages/noviazgo-y-seminario.md",
-        "pages/faq.md",
-        "pages/miedo.md",
-        "pages/contacto-1.md"
-      ]
+      "links": ["pages/discierne.md", "pages/7-pasos.md", "pages/5-pasos.md", "pages/noviazgo-y-seminario.md", "pages/faq.md", "pages/miedo.md", "pages/contacto-1.md"]
     },
     {
       "title": "Sacerdocio",
-      "links": [
-        "pages/porque-ser-sacerdote.md",
-        "pages/que-hace-un-sacerdote.md",
-        "pages/celibato.md",
-        "pages/seminario.md",
-        "pages/diaconado-permanente.md"
-      ]
+      "links": ["pages/porque-ser-sacerdote.md", "pages/que-hace-un-sacerdote.md", "pages/celibato.md", "pages/seminario.md", "pages/diaconado-permanente.md"]
     },
     {
       "title": "Vida laical y familia ",
-      "links": [
-        "pages/ser-laico-es-una-vocacion.md",
-        "pages/desafios.md",
-        "pages/vocacion-matrimonial.md",
-        "pages/familia-iglesia-domestica.md",
-        "pages/diaconado-permanente.md",
-        "pages/ministerios-laicales.md",
-        "pages/noviazgo.md"
-      ]
+      "links": ["pages/ser-laico-es-una-vocacion.md", "pages/desafios.md", "pages/vocacion-matrimonial.md", "pages/familia-iglesia-domestica.md", "pages/diaconado-permanente.md", "pages/ministerios-laicales.md", "pages/noviazgo.md"]
     },
     {
       "title": "Vida religiosa y misión",
-      "links": [
-        "pages/Los votos: pobreza-castidad-obediencia.md",
-        "pages/porque-ser-monja.md",
-        "pages/que-hace-un-monje.md",
-        "pages/vida-activa.md",
-        "pages/vida-contemplativa.md"
-      ]
+      "links": ["pages/los-votos.md", "pages/porque-ser-monja.md", "pages/que-hace-un-monje.md", "pages/vida-activa.md", "pages/vida-contemplativa.md"]
     }
   ],
-  "languages": [
-    "Español:es",
-    "Euskara:eu",
-    "English:en"
-  ],
+  "languages": ["Español:es", "Euskara:eu", "English:en"],
   "theme": {
     "bodyFont": "Quicksand",
     "headingFont": "Story Script",
