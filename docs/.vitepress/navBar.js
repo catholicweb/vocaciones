@@ -78,5 +78,6 @@ async function generateManualNav(config) {
       nav[lang].push({ text: tr(section.title, lang), items: items[lang] });
     }
   });
+  console.log(nav);
   return nav;
 }
