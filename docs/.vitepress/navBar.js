@@ -47,10 +47,14 @@ function tr(str, lang) {
 }
 
 function getEquiv(file) {
-  if (path.basename(file) == "index.md") return read("./docs/index.md").data;
-  let original = read("./" + file).data;
-  let equiv = slugify(original.title);
-  return read("./docs/" + equiv + ".md").data;
+  try {
+    if (path.basename(file) == "index.md") return read("./docs/index.md").data;
+    let original = read("./" + file).data;
+    let equiv = slugify(original.title);
+    return read("./docs/" + equiv + ".md").data;
+  } catch (e) {
+    return {};
+  }
 }
 
 async function generateManualNav(config) {
