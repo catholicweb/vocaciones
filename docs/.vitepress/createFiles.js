@@ -61,24 +61,30 @@ async function createManifest() {
   }
 }
 
+function render(text, index = 1) {
+  if (typeof text !== "string") return "";
+  const loading = index >= 1 ? 'fetchpriority="low" loading="lazy"' : 'fetchpriority="high" loading="eager"';
+  return md.render(text).replaceAll("<img ", "<img " + loading + " ");
+}
+
 async function postComplete(fm) {
   if (!fm.sections) return;
   addMeta(fm);
   for (var i = 0; i < fm.sections.length; i++) {
     if (typeof fm.sections[i].html === "string") {
-      fm.sections[i].html = md.render(fm.sections[i].html);
+      fm.sections[i].html = render(fm.sections[i].html, i);
       fm.sections[i].type = "text";
       fm.sections[i]._block = "gallery";
     }
     if (fm.sections[i]._block == "legal") {
       // simple hack to avoid 'legal' being translated, update to interpolate text {{}}
-      fm.sections[i].html = md.render(fm.sections[i].legal);
+      fm.sections[i].html = render(fm.sections[i].legal, i);
       fm.sections[i].type = "text";
       fm.sections[i]._block = "gallery";
     }
     if (fm.sections[i].elements && fm.sections[i].elements[0]?.html) {
       for (var j = 0; j < fm.sections[i].elements.length; j++) {
-        fm.sections[i].elements[j].html = md.render(fm.sections[i].elements[j].html);
+        fm.sections[i].elements[j].html = render(fm.sections[i].elements[j].html, i);
       }
     }
     if (fm.sections[i].elements && fm.sections[i].elements[0]?.file) {

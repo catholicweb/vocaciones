@@ -23,7 +23,7 @@ watch(
     <div>
       <a :key="item.url" :href="item.url" class="group flex flex-col overflow-hidden rounded-xl bg-[#2d3436] transition-transform">
         <div class="aspect-square overflow-hidden bg-gray-200">
-          <Image :src="item.image" :alt="item.title" :index="block.index" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+          <Image :src="item.image" :alt="'Cover image for ' + item.title" :index="block.index" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
         </div>
         <div class="p-4 text-center">
           <h3 class="text-white font-bold capitalize text-lg m-0">

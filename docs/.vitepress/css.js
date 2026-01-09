@@ -1,14 +1,13 @@
 import { read, write, fs, path } from "./node_utils.js";
 
 const config = read("./pages/config.json");
-
 export async function getFontCSS(theme) {
   const fonts = [theme.headingFont, theme.bodyFont];
   let finalCSS = "";
+  let preloads = []; // Return as an array for easier VitePress integration
   let googleFontsToFetch = [];
 
   for (const fontName of fonts) {
-    // 1. Convert "Basque Smile" -> "BasqueSmile"
     const camelCaseName =
       fontName
         .split(" ")
@@ -16,26 +15,38 @@ export async function getFontCSS(theme) {
         .join("") + ".woff";
 
     if (fs.existsSync("./docs/public/" + camelCaseName)) {
+      const fontUrl = `/${camelCaseName}`;
       finalCSS += `
   @font-face {
     font-family: '${fontName}';
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url(/${camelCaseName});
+    src: url(${fontUrl});
   }\n`;
+      // Push local preload
+      preloads.push(["link", { rel: "preload", href: fontUrl, as: "font", type: "font/woff", crossorigin: "" }]);
     } else {
       googleFontsToFetch.push(fontName);
     }
   }
 
-  // 5. Batch fetch from Google for missing fonts
   if (googleFontsToFetch.length > 0) {
     const gUrl = `https://fonts.googleapis.com/css2?family=${googleFontsToFetch.map((f) => f.replace(/\s+/g, "+")).join("&family=")}&display=swap`;
 
     try {
       const res = await fetch(gUrl);
       let gCss = await res.text();
+
+      // Extract the specific .ttf/.woff2 URLs that PageSpeed is complaining about
+      const fontUrls = gCss.match(/url\(([^)]+)\)/g);
+      if (fontUrls) {
+        fontUrls.forEach((url) => {
+          const cleanUrl = url.replace(/url\(|'|"|\)/g, "");
+          preloads.push(["link", { rel: "preload", href: cleanUrl, as: "font", type: "font/woff2", crossorigin: "" }]);
+        });
+      }
+
       if (!gCss.includes("font-display")) {
         gCss = gCss.replace(/}/g, "font-display:swap;}");
       }
@@ -44,7 +55,7 @@ export async function getFontCSS(theme) {
       console.error("Error fetching from Google Fonts:", e.message);
     }
   }
-  return finalCSS;
+  return { css: finalCSS, preloads };
 }
 
 const getHue = (hex) => {

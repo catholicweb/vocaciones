@@ -1,6 +1,7 @@
 // dataExporter.js
 import ICAL from "ical.js";
 import { read, write } from "./node_utils.js";
+const config = read("./pages/config.json");
 
 function exportCalendar(events) {
   // TODO: export also as ICS
@@ -222,4 +223,83 @@ export async function fetchCalendar() {
   exportCalendar(sorted);
   console.log("Events parsed ", sorted?.length);
   return sorted;
+}
+
+export function events2JSONLD(events) {
+  if (!events || !Array.isArray(events)) return [];
+
+  const dayMap = {
+    SU: "Sunday",
+    MO: "Monday",
+    TU: "Tuesday",
+    WE: "Wednesday",
+    TH: "Thursday",
+    FR: "Friday",
+    SA: "Saturday",
+  };
+
+  const eventNodes = events.map((event) => {
+    // Definición base del nodo del evento
+    const node = {
+      "@type": "Event",
+      name: event.title,
+      description: event.notes?.join(". ") || `Evento en ${event.locations?.[0]}`,
+      image: event.images?.map((img) => (img.startsWith("http") ? img : `${config?.dev?.siteurl || ""}${img}`)),
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: "https://schema.org/EventScheduled",
+      location: {
+        "@type": "Place",
+        name: event.locations?.[0] || "Ubicación por confirmar",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: event.locations?.[0],
+          addressCountry: "ES",
+        },
+      },
+    };
+
+    // CASO 1: Evento con fecha específica (Prioridad)
+    if (event.dates && event.dates.length > 0) {
+      // Tomamos la primera fecha y la combinamos con la primera hora
+      const date = event.dates[0];
+      const time = event.times?.[0] || "00:00";
+      node.startDate = `${date}T${time.replace(".", ":")}:00`;
+      // Nota: No añadimos eventSchedule aquí para evitar confusiones a Google
+    }
+    // CASO 2: Evento recurrente (Sin fechas específicas, pero con byday)
+    else if (event.byday && event.byday.length > 0) {
+      let byDayValue = event.byday[0];
+      let weekNumber = null;
+
+      // Manejo de recurrencias tipo 1SU, 2MO
+      if (/^\d/.test(byDayValue)) {
+        weekNumber = byDayValue[0];
+        byDayValue = byDayValue.substring(1);
+      }
+
+      node.eventSchedule = {
+        "@type": "Schedule",
+        byDay: `https://schema.org/${dayMap[byDayValue]}`,
+        startTime: event.times?.[0]?.replace(".", ":"),
+        repeatFrequency: weekNumber ? "Monthly" : "Weekly",
+      };
+
+      if (weekNumber) {
+        node.eventSchedule.repeatDay = weekNumber;
+      }
+    }
+
+    return node;
+  });
+
+  return [
+    [
+      "script",
+      { type: "application/ld+json" },
+      JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": eventNodes,
+      }),
+    ],
+  ];
 }

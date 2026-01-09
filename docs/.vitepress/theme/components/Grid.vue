@@ -82,7 +82,7 @@ const getCardClass = (index) => {
 };
 </script>
 <template>
-	<div v-if="block.filters" class="max-w-4xl mx-auto px-6 flex flex-wrap justify-center gap-2 my-5">
+	<div v-if="block.filters" class="max-w-4xl mx-auto px-3 flex flex-wrap justify-center gap-2 my-4">
 		<button
 			v-for="(filter, index) in block.filters"
 			:key="index"
@@ -97,7 +97,7 @@ const getCardClass = (index) => {
 		</button>
 	</div>
 
-	<div v-if="block.query" class="relative max-w-md mx-auto mb-5">
+	<div v-if="block.query" class="relative max-w-md mx-auto mb-4 px-3">
 		<span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -115,7 +115,7 @@ const getCardClass = (index) => {
 			</div>
 		</div>
 		<div class="flex gap-2 mt-4 ml-4">
-			<button v-for="(_, index) in filteredItems" :key="index" @click="activeIndex = index" class="w-4 h-4 rounded-full transition-colors" :class="activeIndex === index ? 'bg-accent' : 'bg-gray-400'" />
+			<button v-for="(_, index) in filteredItems" :key="index" @click="activeIndex = index" :aria-label="'Go to item ' + index" class="w-4 h-4 rounded-full transition-colors" :class="activeIndex === index ? 'bg-accent' : 'bg-gray-400'" />
 		</div>
 	</template>
 
@@ -132,20 +132,20 @@ const getCardClass = (index) => {
 			</div>
 			<div>
 				<!-- Navigation Arrows -->
-				<button v-if="filteredItems.length > 1" @click="prevItem" :disabled="activeIndex === 0" aria-label="Previous card" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+				<button v-if="filteredItems.length > 1" @click="prevItem" :disabled="activeIndex === 0" aria-label="Previous item" :class="['absolute left-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', activeIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 						<polyline points="15 18 9 12 15 6" />
 					</svg>
 				</button>
 
-				<button v-if="filteredItems.length > 1" @click="nextItem" aria-label="Next card" :disabled="activeIndex === filteredItems.length - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', activeIndex === filteredItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
+				<button v-if="filteredItems.length > 1" @click="nextItem" aria-label="Next item" :disabled="activeIndex === filteredItems.length - 1" :class="['absolute right-4 top-1/2 -translate-y-1/2 z-25 w-14 h-14 rounded-full bg-black/30 backdrop-blur-md text-white flex items-center justify-center transition-all duration-200 hover:bg-black/50 hover:scale-110 cursor-pointer hidden md:flex', activeIndex === filteredItems.length - 1 ? 'opacity-30 cursor-not-allowed' : 'opacity-100']">
 					<svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
 						<polyline points="9 18 15 12 9 6" />
 					</svg>
 				</button>
 			</div>
 			<div class="flex gap-2 mt-4 ml-4">
-				<button v-for="(_, index) in filteredItems" :key="index" @click="activeIndex = index" class="w-4 h-4 rounded-full transition-colors" :class="activeIndex === index ? 'bg-accent' : 'bg-gray-400'" />
+				<button v-for="(_, index) in filteredItems" :key="index" @click="activeIndex = index" :aria-label="'Go to item ' + index" class="w-4 h-4 rounded-full transition-colors" :class="activeIndex === index ? 'bg-accent' : 'bg-gray-400'" />
 			</div>
 		</div>
 	</template>

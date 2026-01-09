@@ -15,12 +15,18 @@ async function ensureDir(dir) {
   await fs.mkdir(dir, { recursive: true });
 }
 
-async function fileExists(p) {
+/**
+ * Checks if the target needs updating based on existence and modification time.
+ * Returns true if the output file is missing or older than the source.
+ */
+async function needsUpdate(sourcePath, targetPath) {
   try {
-    await fs.access(p);
+    const [sourceStat, targetStat] = await Promise.all([fs.stat(sourcePath), fs.stat(targetPath)]);
+    // Overwrite if the source was modified after the target was created
+    return sourceStat.mtime > targetStat.mtime;
+  } catch (err) {
+    // If target doesn't exist, stat(targetPath) fails, meaning we need to create it
     return true;
-  } catch {
-    return false;
   }
 }
 
@@ -39,7 +45,11 @@ async function processImage(imgPath) {
     const outPath = path.join(outDir, `${baseName}.webp`);
 
     await ensureDir(outDir);
-    if (await fileExists(outPath)) continue;
+
+    // Check if the file exists AND if it's up to date
+    if (!(await needsUpdate(imgPath, outPath))) {
+      continue;
+    }
 
     const pipeline = sharp(imgPath).webp({ quality });
 
@@ -48,7 +58,7 @@ async function processImage(imgPath) {
     }
 
     await pipeline.toFile(outPath);
-    console.log(`✔ ${label}/${relPath}`);
+    console.log(`✔ ${label}/${relPath} (updated)`);
   }
 }
 

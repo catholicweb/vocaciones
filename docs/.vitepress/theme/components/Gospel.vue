@@ -1,5 +1,5 @@
 <template>
-	<div class="gospel max-w-5xl mx-auto p-4 mb-6">
+	<div class="gospel max-w-5xl mx-auto py-4 mb-6">
 		<template v-for="(reading, key) in readings.list" :key="key">
 			<div v-if="block.images" class="relative w-full sm:w-1/2 mx-auto rounded-lg overflow-hidden my-4">
 				<img :src="reading.image" loading="lazy" :alt="`${reading.title} icon`" class="w-full aspect-square object-cover" />
