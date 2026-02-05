@@ -31,5 +31,6 @@ sections:
   - _block: gallery
     list:
       - /media/ABRE LOS OJOS STANDAR.png
+      - /media/ChatGPT Image 5 feb 2026, 18_53_33.png
 hideHero: false
 ---
