@@ -36,4 +36,5 @@ sections:
       *   Si buscas orientación —ya sea que tengas preguntas sencillas o
       necesites un acompañamiento más profundo—, **¡estamos aquí para
       ayudarte!**
+hideHero: false
 ---
