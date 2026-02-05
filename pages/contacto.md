@@ -14,10 +14,9 @@ sections:
       quienes ya viven esta vocación de cerca.
 
 
-      Además, hay **grupos más amplios** que se encuentran de manera periódica
-      para recibir formación y crecer en la comprensión de la vida cristiana y
-      la vocación en general. Estas reuniones ayudan a clarificar la propia
-      vocación y a dar pasos concretos hacia ella.
+      Contamos con un grupo de discernimiento amplío para jovenes y otro
+      sacerdotal para jovenes varones. Estas reuniones ayudan a clarificar la
+      propia vocación y a dar pasos concretos hacia ella.
 
 
       Si quieres informarte o unirte a alguno de estos grupos, ¡contacta con tu
@@ -29,12 +28,8 @@ sections:
       Seminario  
 
       **Teléfono:** 660 36 39 53
-  - _block: fundraising
-    title: Grupo Abre los ojos
-    name: Jovenes que se preguntan para quienes son
-    description: "Claves del discernimiento y formación vocacional "
-  - _block: fundraising
-    title: "Grupo Duc in altum "
-    name: Chicos jovenes que disciernen su vocación sacerdotal
-    description: "Discernimiento sacerdotal "
+  - _block: gallery
+    list:
+      - /media/ABRE LOS OJOS STANDAR.png
+hideHero: false
 ---
