@@ -79,4 +79,5 @@ sections:
       constante y esperanza que no muere**. Una llamada a vivir lo invisible
       para sostener lo visible. Porque donde hay contemplación, hay luz, hay
       gracia y hay esperanza para todos.
+hideHero: false
 ---
