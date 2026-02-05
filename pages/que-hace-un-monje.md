@@ -141,4 +141,5 @@ sections:
       > “No antepongas nada al amor de Cristo.”  
 
       > — _Regla de San Benito, cap. 4_
+hideHero: false
 ---
