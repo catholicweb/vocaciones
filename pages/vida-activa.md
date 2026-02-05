@@ -180,4 +180,5 @@ sections:
       Su labor es **complementaria a la Vida Contemplativa**, que sostiene la
       Iglesia desde la oración y la intercesión. Juntas permiten a la Iglesia
       cumplir su misión: **servir y evangelizar integralmente**.
+hideHero: false
 ---
