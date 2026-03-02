@@ -4,7 +4,7 @@ image: /media/cerca-feliz-padre-maduro-hijo-adulto-abrazandose-acurrucandose-dis
 sections:
   - _block: text
     html: >-
-      ## **No solo rezar, buscar**
+      ## **No solo rezar, animar**
 
 
       ### **La vocación no nace de la nada**
@@ -17,7 +17,8 @@ sections:
       Pero no es así: **Dios llama a través de rostros concretos, de comunidades
       vivas, de personas que se interesan de verdad.**  
 
-      Por eso, no basta con rezar por las vocaciones. **Hay que buscarlas.**
+      Por eso, no basta con rezar por las vocaciones. **Hay que plantearlo con
+      la vida.**
 
 
       * * *
@@ -39,15 +40,15 @@ sections:
       paciencia, a quien vive la fe con coherencia.  
 
       Cuando veas a alguien así, **no te calles**. Quizá sea momento de
-      plantear, con sencillez y confianza:
+      plantear, con sencillez y discreción:
 
 
-      > “¿Has pensado alguna vez que Dios podría llamarte a algo más?”
+      > “¿Has pensado a qué te llama Dios?”
 
 
       A veces una pregunta como esa, lanzada por un **sacerdote**, un
-      **catequista** o un **amigo creyente**, puede despertar una vocación
-      dormida.
+      **catequista** o un **amigo creyente**, despierta el discernimiento
+      vocacional que ha podido quedarse desplazado por uno mismo.
 
 
       * * *
@@ -65,22 +66,8 @@ sections:
 
 
       El mundo necesita **buenos esposos**, **buenos sacerdotes**, **buenas
-      consagradas**. Y eso empieza cuando alguien se atreve a mirar con fe las
-      cualidades del otro:
-
-
-      > “Sería un padre entregado.”  
-
-      > “Podría ser una gran hermana.”  
-
-      > “Tiene alma de pastor.”
-
-
-      No se trata de etiquetar, sino de **reconocer la acción de Dios** en las
-      personas y ayudarles a discernirla.
-
-
-      * * *
+      consagradas**. Y eso empieza cuando cada uno es buen ejemplo de su
+      vocación y se esfuerza en mostrar la alegría de la entrega.
 
 
       ### **Apuntar, acompañar, orar**
