@@ -1,6 +1,6 @@
 ---
 title: "Colabora, el seminario es de todos. "
-image: /media/68b57188679d1.r_d.0-0-12008.webp
+image: /media/dfe68572-ccf3-470d-94ef-62c1e235514f.png
 sections:
   - _block: text
     html: >-
@@ -114,7 +114,7 @@ sections:
       *   Bizum al **04698** 
           
       *   Mediante transferencia a la cuenta: **ES00 0000 0000 0000 0000 00**
-      _(reemplaza este número por el real)_. 
+      _(reemplaza este número por el real)_.
           
 
       Cada aporte, grande o pequeño, ayuda a **formar a los futuros
@@ -122,4 +122,5 @@ sections:
       todos nosotros. Con tu oración y tu colaboración, **ayudamos a que la
       semilla de la vocación crezca y dé fruto abundante**. ¡Dios nos premiará
       por cada esfuerzo y cada gesto generoso!
+hideHero: false
 ---
