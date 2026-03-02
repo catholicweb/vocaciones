@@ -30,4 +30,16 @@ sections:
       - pages/como-funciona-el-seminario.md
       - pages/conoce-a-nuestros-seminaristas.md
       - pages/colabora-el-semianrio-es-de-todos.md
+  - _block: video
+    title: RECURSOS
+    links:
+      - https://www.youtube.com/watch?v=a5QwVPj8lQk
+      - https://www.youtube.com/watch?v=dteZubaXCMQ
+      - https://www.youtube.com/watch?v=R8PHD0p3XKs
+      - https://www.youtube.com/watch?v=8B8KQtLhGHg
+      - https://www.youtube.com/watch?v=ohzqScjzv5Y
+      - https://www.youtube.com/watch?v=YGTbKkU8bPg
+      - https://www.youtube.com/watch?v=dM1H3L8nBnE
+      - https://www.youtube.com/watch?v=nyrqxY7PvbA
+hideHero: false
 ---
