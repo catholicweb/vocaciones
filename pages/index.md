@@ -1,5 +1,5 @@
 ---
-title: Dios te sueña a lo grande
+title: Vocaciones Navarra
 image: /media/Gemini_Generated_Image_1nlm3l1nlm3l1nlm.webp
 sections:
   - _block: text
