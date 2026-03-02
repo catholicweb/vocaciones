@@ -1,5 +1,5 @@
 ---
-title: "No solo rezar: buscar "
+title: "No solo rezar: animar"
 image: /media/cerca-feliz-padre-maduro-hijo-adulto-abrazandose-acurrucandose-disfrutando-momento-tierno-pie-casa-sonriendo-joven-padre-mayor-gafas-divirtiendose-dos-generaciones-buena-relacion_650366-8997.webp
 sections:
   - _block: text
@@ -112,4 +112,5 @@ sections:
 
       Cada vocación, cada historia, es fruto de un pueblo que acompaña, propone
       y sostiene.
+hideHero: false
 ---
