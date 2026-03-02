@@ -86,7 +86,7 @@ sections:
       **Diego, Xavi,** en cuarto curso
 
 
-      ![](/media/Gemini_Generated_Image_jixow0jixow0jixo.webp)
+      ![](/media/Gemini_Generated_Image_jixow0jixow0jixo%20(1).jpg)
 
 
       Y **Andoni y Miguel**, en sexto curso, creciendo en experiencia y entrega
@@ -117,4 +117,6 @@ sections:
 
 
       ![](/media/unnamed.webp)
+description: https://app.pagescms.org/catholicweb/vocaciones/main/collection/pages
+hideHero: false
 ---
