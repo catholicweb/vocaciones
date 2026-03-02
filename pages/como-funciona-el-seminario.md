@@ -13,15 +13,17 @@ sections:
 
       1.  Tener el acceso a la universidad.
           
-      2.  Cursar **dos años de Filosofía**.
+      2.  Etapa Propedeutica: afianzar la vocación durante un año creciendo en
+      oración y vida de comunidad.
           
-      3.  Completar **cuatro años de Teología**.
+      3.  Etapa Discipular: crecer en la configuración con Cristo mientras se
+      cursan **dos años de Filosofía**.
+          
+      4.  Etapa Configuradora: **asimilar el corazón de Cristo Pastor y Siervo**
+      cursando **tres años de Teología**.
           
 
       * * *
-
-
-      ### **La vida diaria de un seminarista**
 
 
       ### **La vida diaria de un seminarista**
@@ -78,4 +80,5 @@ sections:
           
       4.  **Formación pastoral:** aprender a ser un verdadero **pastor de
       almas**, acompañando a los fieles en sus alegrías y sufrimientos.
+hideHero: false
 ---
