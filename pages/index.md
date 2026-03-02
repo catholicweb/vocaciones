@@ -20,11 +20,7 @@ sections:
     description: Pedir al dueño de la mies. Con rostros concretos
     image: /media/cambio-batuta-carrera-relevos_70391-11.webp
   - _block: text
-    html: >-
-      Todos caminamos juntos y **lo que vivimos de Dios se transmite**.  
-
-      **Observa quién puede continuar la entrega y anima a otros a seguir este
-      camino.**
+    html: Todos caminamos juntos y **lo que vivimos de Dios se transmite**.
   - _block: links
     links:
       - pages/pedid-al-dueno-de-la-mies.md
