@@ -71,7 +71,7 @@
   "theme": {
     "bodyFont": "Quicksand",
     "headingFont": "Story Script",
-    "accentColor": "#2e7d32",
+    "accentColor": "orange",
     "borderRadius": "1",
     "borderWidth": "1.25",
     "shadowDepth": "1.50",
