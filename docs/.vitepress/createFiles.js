@@ -134,6 +134,7 @@ async function autocomplete(fm) {
     }
     if (fm.sections[i]._block == "links") {
       fm.sections[i]._block = "gallery-feature";
+      (fm.sections[i].tags ??= []).push("small");
       fm.sections[i].type = fm.sections[i].type || "team-cards";
     } else if (fm.sections[i]._block == "gallery-feature") {
       fm.sections[i].type = "team-cards";
