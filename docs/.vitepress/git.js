@@ -14,16 +14,19 @@ sh(`git config user.name "github-actions[bot]"`);
 sh(`git config user.email "github-actions[bot]@users.noreply.github.com"`);
 
 export function fetchUpstream() {
-  if (repository == "catholicweb/web-template") {
-    return console.log("Do not fecth ourself", repository);
-  } else if (schedule != "0 3 * * *" && eventName != "workflow_dispatch") {
+  if (schedule != "0 3 * * *" && eventName != "workflow_dispatch") {
     return console.log("Not the right time to fetch...", schedule, eventName);
   }
 
   console.log("Fetching upstream");
 
   // 2) Añadir remote upstream (si ya existe, simplemente falla → bien)
-  sh(`git remote add upstream https://github.com/catholicweb/web-template.git || true`);
+  if (repository == "catholicweb/web-template") {
+    sh(`git remote add upstream https://github.com/catholicweb/47herri.git || true`);
+  } else {
+    sh(`git remote add upstream https://github.com/catholicweb/web-template.git || true`);  
+  }
+  
   sh(`git fetch upstream`);
 
   // 3) Merge plantilla (sin hacer commit, version remota si hay conflicto)
