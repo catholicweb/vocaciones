@@ -41,9 +41,9 @@ sections:
     image: /media/istockphoto-108270861-612x612.webp
   - _block: links
     links:
-      - "pages/Los votos: pobreza-castidad-obediencia.md"
       - pages/vida-activa.md
       - pages/vida-contemplativa.md
+      - pages/los-votos.md
   - _block: hero
     title: ¿Llevar a Cristo a todas las partes de la sociedad?
     description: "Ordenar todo a Cristo desde dentro "
