@@ -16,6 +16,12 @@
       "account": "04698"
     }
   ],
+  "collaborators": [
+    {
+      "name": "Iñigo Beunza",
+      "phonenumber": "660 36 39 53",
+    },
+  ],
   "nav": [
     {
       "title": "Disciernimiento",
@@ -98,5 +104,8 @@
       }
     ]
   },
-  "siteurl": "https://vocacion.iglesianavarra.org/"
+  "dev": {
+    "goatcounter": "https://vocacion.goatcounter.com/count",
+    "siteurl": "https://vocacion.iglesianavarra.org/"
+  }
 }
