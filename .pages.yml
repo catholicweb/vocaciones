@@ -6,13 +6,20 @@ components:
   text:
     label: Text Content
     type: rich-text
+  ordering:
+    label: Ordering
+    type: select
+    options:
+      multiple: true
+      creatable: true
+      values: ["title", "dates", "times", "locations", "byday", "language", "notes", "weekday", "byweek", "empty"]
   times:
     label: horas
     type: select
     options:
       multiple: true
       creatable: true
-      values: ["06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00"]
+      values: ["06:00", "06:30", "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00","22:30", "23:00", "23:30", "06:15", "06:45", "07:15", "07:45", "08:15", "08:45", "09:15", "09:45", "10:15", "10:45", "11:15", "11:45", "12:15", "12:45", "13:15", "13:45", "14:15", "14:45", "15:15", "15:45", "16:15", "16:45", "17:15", "17:45", "18:15", "18:45", "19:15", "19:45", "20:15", "20:45", "21:15", "21:45", "22:15"]
   podcast:
     label: Podcast católicos
     type: select
@@ -33,6 +40,8 @@ components:
           { value: "https://open.spotify.com/show/6FJFJ46Q4aPXIWWDKY9tYf?si=c17c97479bbb4fbe", label: "Evangelio del día (sercreyente.com)" },
           { value: "https://open.spotify.com/show/1OUhu57FCAscICoEMwyONY?si=5f7ea6ad49394828", label: "Liturgia de las horas (litur pro)" },
           { value: "https://open.spotify.com/show/6mpihPJzRA61GEdomhzGqq?si=b59a6acf96104988", label: "Jose Camacho Cotto" },
+          { value: "https://open.spotify.com/show/1XWvEFBoCvahdELmEXgSfL", label: "Rezar Hoy" },
+          { value: "https://sallebarne.eus", label: "Egunez Egun (SalleBARNE)" },          
         ]
   languages:
     label: "Idioma"
@@ -78,7 +87,7 @@ components:
     options:
       multiple: true
       creatable: true
-      values: ["Albiasu", "Aldatz", "Alli", "Arano", "Arrarats", "Arribe", "Arruitz", "Areso", "Astitz", "Atallu", "Azkarate", "Azpirotz", "Baraibar", "Beramendi", "Beruete", "Betelu", "Eraso", "Erbiti", "Errazkin", "Etxaleku", "Etxarri - larraun", "Gaintza", "Gartzaron", "Goldaratz", "Goizueta", "Gorriti", "Igoa eta aizarotz", "Ihaben", "Intza", "Iribas", "Itsaso", "Jauntsarats", "Latasa", "Leitza", "Lekunberri", "Lezaeta", "Madotz", "Mugiro", "Muskitz", "Oderitz", "Orokieta", "Oskotz", "Udabe", "Uitzi", "Urritza", "Uztegi", "Zarrantz"]
+      values: ["Albiasu", "Aldatz", "Agustinas Aldatz", "Alli", "Arano", "Arrarats", "Arribe", "Arribe/Atallu", "Arruitz", "Areso", "Astitz", "Atallu", "Azkarate", "Azpirotz", "Baraibar", "Beramendi", "Beruete", "Betelu", "Eraso", "Erbiti", "Errazkin", "Etxaleku", "Etxarri", "Gaintza", "Gartzaron", "Goldaratz", "Goizueta", "Gorriti", "Igoa eta Aizarotz", "Ihaben", "Intza", "Iribas", "Itsaso", "Jauntsarats", "Latasa", "Leitza", "Lekunberri", "Lezaeta", "Madotz", "Mugiro", "Muskitz", "Oderitz", "Orokieta", "Oskotz", "Udabe", "Uitzi", "Urritza", "Uztegi", "Zarrantz"]
   tags:
     label: Options
     type: select
@@ -159,7 +168,7 @@ content:
       - name: events-funeral
         label: Funerales
         type: object
-        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} - {fields.times}" } }
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} - {fields.date} - {fields.times}" } }
         fields:
           - { name: title, label: Nombre del difunto, type: string }
           - { name: location, label: Ubicación, component: location }
@@ -167,22 +176,37 @@ content:
           - { name: times, label: Hora del funeral, component: times, options: { multiple: false } }
           - { name: notes, label: Notas sobre el evento (opcional), type: string }
       - name: events-feast
-        label: Festividades especiales
+        label: Días especiales
         type: object
         list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.date}" } }
         fields:
-          - { name: title, label: "Nombre festividad (ej: Navidad, Pascua...)", type: string }
-          - { name: date, type: date, label: Fecha de la festividad }
-          - { name: image, label: "Image", type: image }
+          - { name: title, type: string, label: "Nombre (ej: Navidad, Pascua...)" }
+          - { name: date, type: date, label: Fecha }
+          - { name: image, type: image, label: "Image" }
+          - { name: notes, label: Notas (opcional), type: string }
           - name: custom
-            label: Celebraciones/Eventos
+            label: Actos concretos
             list: { collapsible: { collapsed: true, summary: "{fields.location} - {fields.times}" } }
             fields:
               - { name: location, label: Ubicación, component: location }
-              - { name: times, label: Horas, component: times }
-              - { name: notes, label: Notas sobre el evento (opcional), type: string }
+              - { name: times, label: Hora, component: times }
+      - name: events-multidate
+        label: Eventos en multiples fechas
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.date}" } }
+        fields:
+          - { name: title, type: string, label: "Nombre (ej: Navidad, Pascua...)" }
+          - { name: image, type: image, label: "Image" }
+          - { name: notes, label: Notas (opcional), type: string }
+          - name: custom
+            label: Actos concretos
+            list: { collapsible: { collapsed: true, summary: "{fields.location} - {fields.times} - {fields.date}" } }
+            fields:
+              - { name: location, label: Ubicación, component: location }
+              - { name: times, label: Hora, component: times }
+              - { name: date, label: Fecha, type: date  }
       - name: events-mass
-        label: Horario de misas
+        label: Horarios de misas
         type: object
         list: { collapsible: { collapsed: true, summary: "{fields.location} - {fields.rrule} - {fields.times}" } }
         fields:
@@ -199,7 +223,7 @@ content:
         fields:
           - { name: title, label: Título del evento, type: string }
           - { name: location, label: Ubicación, component: location }
-          - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
+          - { name: rrule, label: Se repite todos los, component: rrule }
           - { name: times, label: Hora, component: times }
           - { name: notes, label: Notas sobre el evento (opcional), type: string }
       - name: events-custom
@@ -215,6 +239,34 @@ content:
           - { name: rrule, label: Se repite todos los, component: rrule, default: "Nunca" }
           - { name: except, type: date, label: Excepto, list: { collapsible: { collapsed: true } } }
           - { name: notes, label: Notas sobre el evento (opcional), type: string }
+      - name: default
+        label: "Valores por defecto para:"
+        type: object
+        fields:
+          - name: funeral
+            label: Funerales
+            type: object
+            fields:
+              - { name: image, label: Imagen, type: image }
+              - { name: description, label: Descripción, type: text }
+          - name: mass
+            label: Horarios de misas
+            type: object
+            fields:
+              - { name: image, label: Imagen, type: image }
+              - { name: description, label: Descripción, type: text }
+          - name: group
+            label: Grupos y Catequesis
+            type: object
+            fields:
+              - { name: image, label: Imagen, type: image }
+              - { name: description, label: Descripción, type: text }
+          - name: feast
+            label: Festividades especiales
+            type: object
+            fields:
+              - { name: image, label: Imagen, type: image }
+              - { name: description, label: Descripción, type: text }
       - { name: urls, type: string, list: true, label: Calendarios externos a importar (ej. url de Google Calendar terminada en .ics) }
 
   - name: pages
@@ -248,6 +300,7 @@ content:
                 fields:
                   - { name: title, label: Pregunta, type: string }
                   - { name: html, label: Respuesta, type: rich-text }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: scrollyTelling
             label: Narración interactiva
             fields:
@@ -259,6 +312,7 @@ content:
                 fields:
                   - { name: text, label: Texto, type: rich-text }
                   - { name: image, label: Imagen, type: image }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: gallery
             label: Galeria de imagenes
             fields:
@@ -278,39 +332,51 @@ content:
               - { name: readings, label: Mostrar primera/segunda y salmo, type: boolean, default: false }
               - { name: audio, label: Añadir audio, type: boolean, default: false }
               - { name: images, label: Mostrar imagenes, type: boolean, default: true }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: calendar
             label: Eventos
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: filter, label: Filtro. Incluir solo eventos que contengan, type: string }
+              - { name: order, label: "Agrupación de eventos (tabla, fila, columna, subfila, notas)", component: ordering }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
+          - name: video-gospel
+            label: Audios Nuevo Testamento
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: video-podcast
             label: Podcast católicos
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: links, label: Podcast, component: podcast }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: video-channel
-            label: Últimos videos de tu canal de Youtube
+            label: Canal de Youtube
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: filter, label: Filtro. Incluir solo videos que contengan, type: string }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
+          - name: town
+            label: Lista de pueblos
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: filters, label: Filtros a mostrar, type: select, options: { multiple: true, creatable: true } }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: video
-            label: Youtube/Vimeo/Spotify/....
+            label: Lista de videos/audios (Youtube/Spotify/...)
             fields:
               - { name: title, type: string, label: Titulo sección }
               - { name: links, label: Enlaces externos, type: string, list: { collapsible: { collapsed: true } } }
-
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: map
             label: Mapa
             fields:
               - { name: title, type: string, label: Título sección }
               - { name: geo, type: string, label: "Coordenadas (ej: 42.801941, -1.645660)" }
-              - { name: name, type: string, label: Nombre (opcional) }
-              - { name: image, type: image, label: Imagen (opcional) }
-          - name: form
-            label: Formulario (coming soon)
-            fields:
-              - { name: title, type: string, label: Titulo sección }
-              - { name: field, type: string, label: Pregunta, list: true }
+              - { name: name, type: string, label: Nombre }
+              - { name: image, type: image, label: Imagen }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: fundraising
             label: Campaña financiación
             fields:
@@ -321,11 +387,15 @@ content:
               - { name: goal, type: number, label: Total a recaudar }
               - { name: action, type: string, label: Nombre acción, hidden: true, default: Donar }
               - { name: image, type: image, label: Imagen }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: hero
             label: Cabezera de sección
             component: hero
-          - name: teammembers
-            label: Miembros del equipo (soon)
+          - name: team
+            label: Miembros del equipo
+            fields:
+              - { name: title, type: string, label: Titulo sección }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
           - name: links
             label: Enlaces internos
             fields:
@@ -334,6 +404,7 @@ content:
                 label: Enlaces internos
                 type: reference
                 options: { collection: pages, multiple: true, label: "{title}" }
+              - { name: tags, label: Opciones avanzadas de estilo, component: tags }
 
   - name: config
     type: file
@@ -346,17 +417,17 @@ content:
       - { name: image, label: Imagen del sitio, type: image }
       - { name: icon, label: Icono del sitio, type: image }
       - name: social
-        label: Social links
+        label: Redes sociales, youtube...
         type: string
         list: { collapsible: { collapsed: true } }
       - name: collaborators
         label: Colaboradores
         type: object
-        list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
+        list: { collapsible: { collapsed: true, summary: "{fields.name}" } }
         fields:
-          - { name: title, label: Nombre, type: string }
-          - { name: phonenumber, label: Numero de telefono (opcional), type: string }
-          - { name: email, label: Correo electrónico (opcional), type: string }
+          - { name: name, label: Nombre, type: string }
+          - { name: phonenumber, label: Número de telefono, type: string }
+          - { name: email, label: Correo electrónico, type: string }
           - { name: image, label: Image, type: image }
       - name: bank
         label: Bizum y cuentas bancarias
@@ -364,7 +435,7 @@ content:
         list: { collapsible: { collapsed: true, summary: "{fields.title}" } }
         fields:
           - { name: title, label: "Nombre (ej: BIZUM/BBVA/...)", type: string }
-          - { name: account, label: Numero de cuenta/bizum, type: string }
+          - { name: account, label: Número de cuenta/bizum, type: string }
       - name: nav
         label: Menu de navegación
         type: object
@@ -384,11 +455,9 @@ content:
         fields:
           - { name: bodyFont, label: Tipo de letra del cuerpo (cualquiera de https://fonts.google.com/), component: font }
           - { name: headingFont, label: Tipo de letra de los titulos (cualquiera de https://fonts.google.com/), component: font }
-          - { name: accentColor, label: Color elementos acentuados, component: color }
-          - { name: accentPrimary, label: Color elementos secundario, component: color }
-          - { name: borderRadius, label: Redondeado de borders, component: multiplier }
-          - { name: borderWidth, label: Grosor de los borders, component: multiplier }
-          - { name: shadowDepth, label: Profundidaz de las sombras, component: multiplier }
+          - { name: accentColor, label: "Color elementos acentuados. Código HEX de https://htmlcolorcodes.com/color-picker/", component: color }
+          - { name: accentPrimary, label: "Color secundario. Código HEX de https://htmlcolorcodes.com/color-picker/", component: color }
+          - { name: navStyle, label: Estilo de la barrra de navegación, type: string }
           - name: styles
             label: Estilos y efectos individuales
             type: object
@@ -397,6 +466,10 @@ content:
               - { name: selector, label: "Elemento", component: selector }
               - { name: cssClass, label: "Efecto a aplicar", component: effect }
               - { name: scroll, label: "Aplicar al hacer scroll", type: boolean, default: false }
-      - name: siteurl
-        label: "URL absoluta del sitio web, ej: https://parroquia.app"
-        type: string
+      - name: dev
+        label: Opciones avanzadas
+        type: object
+        hidden: true
+        fields:
+          - { name: siteurl, label: "URL absoluta del sitio web, ej: https://parroquia.app", type: string }
+          - { name: goatcounter, label: "URL de goatcounter endpoint, ej: https://vocacion.goatcounter.com/count", type: string }
