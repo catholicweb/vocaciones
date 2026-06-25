@@ -268,6 +268,22 @@ content:
               - { name: image, label: Imagen, type: image }
               - { name: description, label: Descripción, type: text }
       - { name: urls, type: string, list: true, label: Calendarios externos a importar (ej. url de Google Calendar terminada en .ics) }
+  - name: oldevents
+    type: file
+    label: Funerales antiguos
+    format: json
+    path: pages/events-old.json
+    fields:
+      - name: events-funeral
+        label: Funerales
+        type: object
+        list: { collapsible: { collapsed: true, summary: "{fields.title} - {fields.location} - {fields.date} - {fields.times}" } }
+        fields:
+          - { name: title, label: Nombre del difunto, type: string }
+          - { name: location, label: Ubicación, component: location }
+          - { name: date, type: date, label: Fecha del funeral }
+          - { name: times, label: Hora del funeral, component: times, options: { multiple: false } }
+          - { name: notes, label: Notas sobre el evento (opcional), type: string }
 
   - name: pages
     label: Paginas
